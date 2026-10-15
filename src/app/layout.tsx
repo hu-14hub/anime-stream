@@ -40,7 +40,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={dir} className="dark" suppressHydrationWarning>
       <body
-        className={`${poppins.variable} ${cairo.variable} min-h-screen bg-slate-100 text-slate-900 antialiased transition-colors duration-300 dark:bg-[#0b0b16] dark:text-slate-100 ${
+        className={`${poppins.variable} ${cairo.variable} min-h-screen bg-neutral-950 text-neutral-100 antialiased transition-colors duration-300 ${
           locale === "ar" ? "font-ar" : "font-en"
         }`}
       >

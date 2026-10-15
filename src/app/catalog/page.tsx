@@ -43,10 +43,10 @@ export default async function CatalogPage({
       href={href}
       aria-pressed={active}
       className={cn(
-        "rounded-full border px-4 py-1.5 text-xs font-semibold transition-all duration-200",
+        "rounded-full px-4 py-1.5 text-xs font-semibold transition-colors duration-300",
         active
-          ? "border-transparent bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-purple-900/30"
-          : "border-white/10 bg-white/5 text-slate-300 hover:border-purple-500/40 hover:text-white"
+          ? "bg-cyan-400 text-neutral-950 shadow-lg shadow-cyan-500/20"
+          : "bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white"
       )}
     >
       {label}
@@ -60,9 +60,9 @@ export default async function CatalogPage({
     }).toString()}`;
 
   return (
-    <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8">
-      <h1 className="text-3xl font-extrabold tracking-tight">{t.catalog.title}</h1>
-      <p className="mt-1 text-sm text-slate-400">
+    <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6 sm:py-12">
+      <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{t.catalog.title}</h1>
+      <p className="mt-2 text-sm leading-6 text-neutral-400 sm:text-base sm:leading-7">
         {t.catalog.subtitle} · <span dir="ltr">{items.length}</span> {t.catalog.results}
       </p>
       {failed && (
@@ -82,19 +82,19 @@ export default async function CatalogPage({
       </div>
 
       {items.length === 0 ? (
-        <div className="mt-8 flex flex-col items-center gap-3 rounded-3xl border border-dashed border-white/15 bg-white/[0.03] px-6 py-16 text-center">
-          <SearchX className="h-10 w-10 text-slate-500" aria-hidden />
-          <p className="font-semibold text-slate-300">{t.catalog.noResults}</p>
+        <div className="mt-8 flex flex-col items-center gap-3 rounded-2xl bg-white/[0.03] px-6 py-16 text-center">
+          <SearchX className="h-10 w-10 text-neutral-600" aria-hidden />
+          <p className="font-semibold text-neutral-300">{t.catalog.noResults}</p>
           <Link
             href="/catalog"
-            className="rounded-full bg-white/10 px-5 py-2 text-sm font-semibold transition hover:bg-white/15"
+            className="rounded-full bg-white/10 px-5 py-2 text-sm font-semibold text-white transition-colors duration-300 hover:bg-white/15"
           >
             {t.catalog.all}
           </Link>
         </div>
       ) : (
         <>
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-4 xl:grid-cols-5">
             {items.map((a) => (
               <AnimeCard key={a.id} anime={a} locale={locale} dict={t} />
             ))}

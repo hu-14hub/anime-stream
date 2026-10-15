@@ -38,9 +38,8 @@ export function Navbar({ locale, dict }: NavbarProps) {
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0b0b16]/80 backdrop-blur-xl">
-      <div className="h-0.5 w-full bg-gradient-to-r from-indigo-600 via-purple-500 to-fuchsia-500" aria-hidden />
-      <div className="mx-auto flex h-16 w-full max-w-7xl items-center gap-3 px-4">
+    <header className="sticky top-0 z-50 border-b border-white/5 bg-neutral-950/70 backdrop-blur-xl">
+      <div className="mx-auto flex h-[72px] w-full max-w-7xl items-center gap-3 px-4 sm:px-6">
         <Logo name={dict.common.logo} />
         <nav className="ms-4 hidden items-center gap-1 lg:flex" aria-label="Primary">
           {links.map((l) => (
@@ -49,13 +48,20 @@ export function Navbar({ locale, dict }: NavbarProps) {
               href={l.href}
               aria-current={isActive(l.href) ? "page" : undefined}
               className={cn(
-                "rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
+                "relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300",
                 isActive(l.href)
-                  ? "bg-white/10 text-white shadow-inner"
-                  : "text-slate-400 hover:bg-white/5 hover:text-white"
+                  ? "text-white"
+                  : "text-neutral-400 hover:text-white"
               )}
             >
               {dict.nav[l.key]}
+              <span
+                aria-hidden
+                className={cn(
+                  "absolute inset-x-4 -bottom-px h-0.5 rounded-full bg-cyan-400 transition-all duration-300",
+                  isActive(l.href) ? "opacity-100" : "opacity-0"
+                )}
+              />
             </Link>
           ))}
         </nav>
@@ -71,7 +77,7 @@ export function Navbar({ locale, dict }: NavbarProps) {
             type="search"
             placeholder={dict.nav.searchPlaceholder}
             aria-label={dict.nav.searchPlaceholder}
-            className="h-10 w-full rounded-full border border-white/10 bg-white/5 ps-9 pe-4 text-sm text-slate-100 placeholder:text-slate-500 outline-none transition-all focus:border-purple-500/60 focus:bg-white/10 focus:ring-2 focus:ring-purple-500/30"
+            className="h-10 w-full rounded-full border border-transparent bg-white/5 ps-9 pe-4 text-sm text-neutral-100 placeholder:text-neutral-500 outline-none transition-all duration-300 focus:border-cyan-400/50 focus:bg-white/10 focus:ring-2 focus:ring-cyan-400/20"
           />
         </form>
         <LanguageSwitcher current={locale} label={dict.nav.language} className="hidden sm:flex" />

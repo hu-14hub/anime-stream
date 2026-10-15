@@ -3,6 +3,7 @@ import { getLocale } from "@/i18n/server";
 import { HeroBanner } from "@/components/hero-banner";
 import { AnimeCard } from "@/components/anime-card";
 import { SectionHeading } from "@/components/section-heading";
+import { Reveal } from "@/components/reveal";
 import { animeList, getLatest, getTrending } from "@/data/anime";
 import { getPopularAnime, getTrendingAnime } from "@/services/anilistService";
 
@@ -27,64 +28,66 @@ export default async function Home() {
   } catch { /* offline: keep mock data */ }
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-12 px-4 py-6 sm:py-8">
+    <main className="flex w-full flex-1 flex-col">
       <HeroBanner items={trending.length ? trending : latest} locale={locale} dict={t} />
 
-      <section aria-labelledby="trending-heading" className="space-y-5">
-        <div id="trending-heading">
-          <SectionHeading
-            title={t.sections.trending}
-            actionLabel={t.sections.viewAll}
-            actionHref="/catalog"
-            locale={locale}
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {trending.map((a) => (
-            <AnimeCard key={a.id} anime={a} locale={locale} dict={t} />
-          ))}
-        </div>
-      </section>
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-16 px-4 py-12 sm:px-6 sm:py-16">
+        <Reveal as="section" aria-labelledby="trending-heading" className="space-y-6">
+          <div id="trending-heading">
+            <SectionHeading
+              title={t.sections.trending}
+              actionLabel={t.sections.viewAll}
+              actionHref="/catalog"
+              locale={locale}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-4">
+            {trending.map((a) => (
+              <AnimeCard key={a.id} anime={a} locale={locale} dict={t} />
+            ))}
+          </div>
+        </Reveal>
 
-      <section aria-labelledby="latest-heading" className="space-y-5">
-        <div id="latest-heading">
-          <SectionHeading
-            title={t.sections.latest}
-            actionLabel={t.sections.viewAll}
-            actionHref="/catalog"
-            locale={locale}
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {latest.map((a) => (
-            <AnimeCard key={a.id} anime={a} locale={locale} dict={t} />
-          ))}
-        </div>
-      </section>
+        <Reveal as="section" aria-labelledby="latest-heading" className="space-y-6">
+          <div id="latest-heading">
+            <SectionHeading
+              title={t.sections.latest}
+              actionLabel={t.sections.viewAll}
+              actionHref="/catalog"
+              locale={locale}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-6">
+            {latest.map((a) => (
+              <AnimeCard key={a.id} anime={a} locale={locale} dict={t} />
+            ))}
+          </div>
+        </Reveal>
 
-      <section aria-labelledby="popular-heading" className="space-y-5 pb-4">
-        <div id="popular-heading">
-          <SectionHeading
-            title={t.sections.popular}
-            actionLabel={t.sections.viewAll}
-            actionHref="/catalog"
-            locale={locale}
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {popular.map((a, i) => (
-            <div key={a.id} className="relative">
-              <span
-                dir="ltr"
-                className="absolute -top-3 start-2 z-10 rounded-full bg-gradient-to-r from-indigo-600 to-fuchsia-600 px-2.5 py-0.5 text-xs font-black text-white shadow-lg"
-              >
-                #{i + 1}
-              </span>
-              <AnimeCard anime={a} locale={locale} dict={t} className="pt-1" />
-            </div>
-          ))}
-        </div>
-      </section>
+        <Reveal as="section" aria-labelledby="popular-heading" className="space-y-6 pb-4">
+          <div id="popular-heading">
+            <SectionHeading
+              title={t.sections.popular}
+              actionLabel={t.sections.viewAll}
+              actionHref="/catalog"
+              locale={locale}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-6">
+            {popular.map((a, i) => (
+              <div key={a.id} className="relative">
+                <span
+                  dir="ltr"
+                  className="absolute -top-3 start-2 z-10 rounded-full bg-cyan-400 px-2.5 py-0.5 text-xs font-black text-neutral-950 shadow-lg"
+                >
+                  #{i + 1}
+                </span>
+                <AnimeCard anime={a} locale={locale} dict={t} className="pt-1" />
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </div>
     </main>
   );
 }

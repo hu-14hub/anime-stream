@@ -11,7 +11,7 @@ export function TrailerButton({ label, trailerUrl }: { label: string; trailerUrl
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur transition-all duration-300 hover:bg-white/20"
+        className="flex items-center gap-2 rounded-full bg-white/10 px-7 py-3.5 text-sm font-bold text-white backdrop-blur transition-colors duration-300 hover:bg-white/20"
       >
         <Clapperboard className="h-4 w-4" aria-hidden />
         {label}

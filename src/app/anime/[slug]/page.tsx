@@ -72,36 +72,37 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
     }
   }
   return (
-    <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
-      <Link href="/catalog" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white">
+    <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 sm:py-10">
+      <Link href="/catalog" className="inline-flex items-center gap-1.5 text-xs font-medium text-neutral-400 transition-colors duration-300 hover:text-white">
         <BackIcon className="h-3.5 w-3.5" />{t.detail.backToCatalog}
       </Link>
-      <h1 className="mt-2 text-3xl font-black text-white">{anime.title[locale]}</h1>
-      <p className="mt-1 flex items-center gap-3 text-sm text-slate-300">
-        <span className="flex items-center gap-1 font-bold text-amber-300"><Star className="h-4 w-4 fill-amber-300" /><span dir="ltr">{anime.rating.toFixed(1)}</span></span>
-        <span className="flex items-center gap-1"><Calendar className="h-4 w-4" /><span dir="ltr">{anime.year}</span></span>
-        <span>{anime.status === "ongoing" ? t.detail.ongoing : t.detail.completed}</span>
+      <h1 className="mt-3 text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl">{anime.title[locale]}</h1>
+      <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-neutral-300">
+        <span className="flex items-center gap-1.5 font-bold text-amber-400"><Star className="h-4 w-4 fill-amber-400" /><span dir="ltr">{anime.rating.toFixed(1)}</span></span>
+        <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4" /><span dir="ltr">{anime.year}</span></span>
+        <span className="rounded-full bg-white/5 px-3 py-1 text-xs font-semibold">{anime.status === "ongoing" ? t.detail.ongoing : t.detail.completed}</span>
       </p>
-      <div className="mt-3 flex flex-wrap gap-1.5">{anime.genres.map((g) => (<Link key={g} href={`/catalog?genre=${g}`} className="rounded-full border border-white/15 px-2.5 py-1 text-xs text-slate-200">{genres.find((x) => x.key === g)?.label[locale] ?? g}</Link>))}</div>
-      <div className="relative mt-4 h-64 overflow-hidden rounded-3xl border border-white/10 sm:h-96">
+      <div className="mt-4 flex flex-wrap gap-2">{anime.genres.map((g) => (<Link key={g} href={`/catalog?genre=${g}`} className="rounded-full bg-white/5 px-3 py-1.5 text-xs font-medium text-neutral-300 transition-colors duration-300 hover:bg-white/10 hover:text-white">{genres.find((x) => x.key === g)?.label[locale] ?? g}</Link>))}</div>
+      <div className="relative mt-6 h-64 overflow-hidden rounded-2xl sm:h-96">
         <Image src={anime.banner} alt="" fill priority sizes="100vw" className="object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 via-transparent to-transparent" aria-hidden />
       </div>
-      <div className="mt-4 flex flex-wrap gap-3">
-        <Link href={`/anime/${anime.slug}/watch?ep=1`} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 text-sm font-bold text-white"><Play className="h-4 w-4 fill-white rtl-flip" />{t.hero.watchNow}</Link>
+      <div className="mt-6 flex flex-wrap gap-3">
+        <Link href={`/anime/${anime.slug}/watch?ep=1`} className="flex items-center gap-2 rounded-full bg-cyan-400 px-7 py-3.5 text-sm font-bold text-neutral-950 shadow-xl shadow-cyan-500/25 transition-all duration-300 hover:scale-105 hover:bg-cyan-300"><Play className="h-4 w-4 fill-neutral-950 rtl-flip" />{t.hero.watchNow}</Link>
         {anime.trailerUrl && (<TrailerButton label={t.detail.watchTrailer} trailerUrl={anime.trailerUrl} />)}
       </div>
-      <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">{anime.synopsis[locale]}</p>
-      <dl className="mt-6 grid max-w-3xl grid-cols-2 gap-3 text-sm sm:grid-cols-4">
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3"><dt className="text-xs text-slate-400">{t.detail.status}</dt><dd className="mt-1 font-bold">{anime.status === "ongoing" ? t.detail.ongoing : t.detail.completed}</dd></div>
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3"><dt className="text-xs text-slate-400">{t.detail.totalEpisodes}</dt><dd dir="ltr" className="mt-1 font-bold">{anime.episodeCount}</dd></div>
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3"><dt className="text-xs text-slate-400">{t.detail.studio}</dt><dd className="mt-1 font-bold">{anime.studio[locale]}</dd></div>
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3"><dt className="text-xs text-slate-400">{t.detail.rating}</dt><dd dir="ltr" className="mt-1 font-bold">{anime.rating.toFixed(1)}</dd></div>
+      <p className="mt-6 max-w-3xl text-base leading-8 text-neutral-300">{anime.synopsis[locale]}</p>
+      <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-4 text-sm sm:grid-cols-4">
+        <div className="rounded-xl bg-white/[0.04] p-4"><dt className="text-xs text-neutral-500">{t.detail.status}</dt><dd className="mt-1.5 font-bold text-white">{anime.status === "ongoing" ? t.detail.ongoing : t.detail.completed}</dd></div>
+        <div className="rounded-xl bg-white/[0.04] p-4"><dt className="text-xs text-neutral-500">{t.detail.totalEpisodes}</dt><dd dir="ltr" className="mt-1.5 font-bold text-white">{anime.episodeCount}</dd></div>
+        <div className="rounded-xl bg-white/[0.04] p-4"><dt className="text-xs text-neutral-500">{t.detail.studio}</dt><dd className="mt-1.5 font-bold text-white">{anime.studio[locale]}</dd></div>
+        <div className="rounded-xl bg-white/[0.04] p-4"><dt className="text-xs text-neutral-500">{t.detail.rating}</dt><dd dir="ltr" className="mt-1.5 font-bold text-white">{anime.rating.toFixed(1)}</dd></div>
       </dl>
-      <div className="mt-8 max-w-5xl"><EpisodeSelector anime={anime} locale={locale} dict={t} baseHref={`/anime/${anime.slug}/watch`} /></div>
+      <div className="mt-10 max-w-5xl"><EpisodeSelector anime={anime} locale={locale} dict={t} baseHref={`/anime/${anime.slug}/watch`} /></div>
       {related.length > 0 && (
-        <section className="mt-10 max-w-7xl space-y-5 pb-6">
+        <section className="mt-14 space-y-6 pb-6">
           <SectionHeading title={t.sections.popular} actionLabel={t.sections.viewAll} actionHref="/catalog" locale={locale} />
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">{related.map((a) => (<AnimeCard key={a.id} anime={a} locale={locale} dict={t} />))}</div>
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-4">{related.map((a) => (<AnimeCard key={a.id} anime={a} locale={locale} dict={t} />))}</div>
         </section>
       )}
     </main>
