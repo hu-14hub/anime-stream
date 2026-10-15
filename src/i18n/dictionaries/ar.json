@@ -4,6 +4,8 @@
     "catalog": "المكتبة",
     "genres": "التصنيفات",
     "searchPlaceholder": "ابحث عن أنمي...",
+    "viewAllResults": "عرض كل النتائج",
+    "noSuggestions": "لا توجد نتائج مطابقة — اضغط Enter للبحث الكامل.",
     "language": "اللغة",
     "toggleTheme": "تبديل المظهر",
     "light": "فاتح",

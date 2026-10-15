@@ -4,6 +4,8 @@
     "catalog": "Catalog",
     "genres": "Genres",
     "searchPlaceholder": "Search anime...",
+    "viewAllResults": "View all results",
+    "noSuggestions": "No matches — press Enter for full results.",
     "language": "Language",
     "toggleTheme": "Toggle theme",
     "light": "Light",

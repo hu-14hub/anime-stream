@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Cairo, Poppins } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -44,19 +43,11 @@ export default async function RootLayout({
           locale === "ar" ? "font-ar" : "font-en"
         }`}
       >
-        <ThemeProvider defaultTheme="dark">
-          <div className="flex min-h-screen flex-col">
-            <Navbar locale={locale} dict={dict} />
-            <div className="flex flex-1 flex-col">{children}</div>
-            <Footer locale={locale} dict={dict} />
-          </div>
-        </ThemeProvider>
-        <script
-          // Avoid theme flash: default to dark unless user explicitly chose light.
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("anime-stream-theme");if(t!=="light"){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark";}else{document.documentElement.classList.remove("dark");document.documentElement.style.colorScheme="light";}}catch(e){document.documentElement.classList.add("dark");}})();`,
-          }}
-        />
+        <div className="flex min-h-screen flex-col">
+          <Navbar locale={locale} dict={dict} />
+          <div className="flex flex-1 flex-col">{children}</div>
+          <Footer locale={locale} dict={dict} />
+        </div>
       </body>
     </html>
   );
