@@ -9,6 +9,7 @@ import type { Locale } from "@/i18n/config";
 import type { Anime } from "@/types";
 import { genres } from "@/data/anime";
 import { cn } from "@/lib/utils";
+import { TrailerButton } from "./trailer-button";
 
 export function HeroBanner({
   items,
@@ -127,6 +128,9 @@ export function HeroBanner({
               <Info className="h-4 w-4" aria-hidden />
               {dict.hero.moreInfo}
             </Link>
+            {active.trailerUrl && (
+              <TrailerButton label={dict.hero.trailer} trailerUrl={active.trailerUrl} />
+            )}
           </div>
           </div>
 

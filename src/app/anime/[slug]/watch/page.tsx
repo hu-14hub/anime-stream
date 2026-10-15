@@ -78,7 +78,7 @@ export default async function WatchPage({ params, searchParams }: { params: Prom
         {num < anime.episodes.length && (<Link href={`/anime/${anime.slug}/watch?ep=${num + 1}`} className="rounded-full bg-cyan-400 px-5 py-2.5 text-sm font-bold text-neutral-950 transition-all duration-300 hover:scale-105 hover:bg-cyan-300">{t.watch.nextEpisode}</Link>)}
       </div>
       <EpisodeSelector anime={anime} locale={locale} dict={t} active={num} baseHref={`/anime/${anime.slug}/watch`} />
-      <CommentsSection dict={t} />
+      <CommentsSection target={`watch:${anime.slug}:${num}`} dict={t} title={t.player.commentsHere} />
     </main>
   );
 }

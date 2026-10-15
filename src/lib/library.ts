@@ -61,4 +61,41 @@ export function getContinueWatching(): WatchProgress[] {
     .slice(0, 12);
 }
 
+/** All progress entries for one title, newest first. */
+export function getTitleProgress(slug: string): WatchProgress[] {
+  if (typeof window === "undefined") return [];
+  return read<WatchProgress[]>(PROGRESS_KEY, [])
+    .filter((p) => p.slug === slug)
+    .sort((a, b) => b.ep - a.ep);
+}
+
+/** Highest episode number watched to completion for a title. */
+export function getWatchedEpisodes(slug: string): number[] {
+  if (typeof window === "undefined") return [];
+  return read<WatchProgress[]>(PROGRESS_KEY, [])
+    .filter((p) => p.slug === slug && p.duration > 0 && p.time / p.duration >= 0.9)
+    .map((p) => p.ep);
+}
+
+/** Full watch history (all titles), most recently touched first. */
+export function getHistory(): WatchProgress[] {
+  if (typeof window === "undefined") return [];
+  return read<WatchProgress[]>(PROGRESS_KEY, []).sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
+export function clearHistory(): void {
+  write(PROGRESS_KEY, []);
+}
+
+export function getFavorites(): LibraryEntry[] {
+  return getLibrary().filter((e) => e.status === "favorite" || e.favorited);
+}
+
+/** Number of fully-watched episodes summed over the whole history. */
+export function getWatchedEpisodeCount(): number {
+  if (typeof window === "undefined") return 0;
+  return read<WatchProgress[]>(PROGRESS_KEY, [])
+    .filter((p) => p.duration > 0 && p.time / p.duration >= 0.9).length;
+}
+
 export type { ListStatus, LibraryEntry, WatchProgress } from "@/types";

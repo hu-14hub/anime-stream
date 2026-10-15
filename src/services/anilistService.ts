@@ -152,9 +152,11 @@ export const browseAnime = (opts: {
         search: opts.q || undefined,
         genreIn,
         season: opts.season || undefined,
-        seasonYear: opts.seasonYear || opts.year || undefined,
-        startDateGreater: opts.year && !opts.seasonYear ? opts.year * 10000 : undefined,
-        startDateLesser: opts.year && !opts.seasonYear ? (opts.year + 1) * 10000 : undefined,
+        // seasonYear only applies together with an explicit season; a plain
+        // year filter is expressed via startDate ranges instead.
+        seasonYear: opts.season ? opts.seasonYear || opts.year : undefined,
+        startDateGreater: opts.year && !opts.season ? opts.year * 10000 : undefined,
+        startDateLesser: opts.year && !opts.season ? (opts.year + 1) * 10000 : undefined,
         format: opts.format || undefined,
         status: opts.status ? statusMap[opts.status] : undefined,
         sort: opts.q && !opts.sort ? ["SEARCH_MATCH", "POPULARITY_DESC"] : sortMap[opts.sort ?? "popularity"] ?? ["POPULARITY_DESC"],
