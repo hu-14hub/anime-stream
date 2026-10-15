@@ -5,6 +5,8 @@ import { AnimeCard } from "@/components/anime-card";
 import { SectionHeading } from "@/components/section-heading";
 import { animeList, getLatest, getTrending } from "@/data/anime";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const locale = await getLocale();
   const t = getDictionary(locale);
