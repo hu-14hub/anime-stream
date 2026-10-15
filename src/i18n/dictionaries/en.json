@@ -22,6 +22,9 @@
     "trending": "Trending Now",
     "latest": "Latest Episodes",
     "popular": "Most Popular",
+    "topRated": "Top Rated",
+    "thisSeason": "Popular This Season",
+    "continueWatching": "Continue Watching",
     "viewAll": "View All"
   },
   "card": {

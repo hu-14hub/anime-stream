@@ -3,9 +3,11 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #fafafa;
-  --foreground: #0a0a0b;
-  color-scheme: light;
+  --background: #09090b;
+  --foreground: #fafafa;
+  --accent: #22d3ee;
+  --accent-soft: rgba(34, 211, 238, 0.12);
+  color-scheme: dark;
 }
 
 .dark {
