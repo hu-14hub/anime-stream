@@ -53,7 +53,13 @@ export default async function WatchPage({ params, searchParams }: { params: Prom
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-10 px-4 py-8 sm:px-6 sm:py-10">
       <div>
-        <Link href={`/anime/${anime.slug}`} className="inline-flex items-center gap-1.5 text-xs font-medium text-neutral-400 transition-colors duration-300 hover:text-white"><BackIcon className="h-3.5 w-3.5" />{t.watch.backToDetails}</Link>
+        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1.5 text-xs font-medium text-neutral-400">
+          <Link href="/" className="rounded-full transition-colors duration-300 hover:text-white">{t.nav.home}</Link>
+          <span aria-hidden className="text-neutral-600">/</span>
+          <Link href={`/anime/${anime.slug}`} className="inline-flex items-center gap-1.5 rounded-full transition-colors duration-300 hover:text-white"><BackIcon className="h-3.5 w-3.5" />{t.watch.backToDetails}</Link>
+          <span aria-hidden className="text-neutral-600">/</span>
+          <span aria-current="page" className="text-neutral-200">{t.watch.episode} <span dir="ltr">{num}</span></span>
+        </nav>
         <h1 className="mt-3 text-2xl font-black leading-tight tracking-tight text-white sm:text-4xl">{anime.title[locale]} <span className="text-cyan-300">· {t.watch.episode} <span dir="ltr">{num}</span></span></h1>
         <p className="mt-2 text-sm leading-6 text-neutral-400 sm:text-base sm:leading-7">{current.title[locale]} · <span dir="ltr">{current.duration}</span></p>
       </div>

@@ -73,9 +73,20 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
   }
   return (
     <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 sm:py-10">
-      <Link href="/catalog" className="inline-flex items-center gap-1.5 text-xs font-medium text-neutral-400 transition-colors duration-300 hover:text-white">
-        <BackIcon className="h-3.5 w-3.5" />{t.detail.backToCatalog}
-      </Link>
+      <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1.5 text-xs font-medium text-neutral-400">
+        <Link href="/" className="inline-flex items-center gap-1.5 rounded-full transition-colors duration-300 hover:text-white">
+          <BackIcon className="h-3.5 w-3.5" aria-hidden />
+          {t.nav.home}
+        </Link>
+        <span aria-hidden className="text-neutral-600">/</span>
+        <Link href="/catalog" className="rounded-full transition-colors duration-300 hover:text-white">
+          {t.nav.catalog}
+        </Link>
+        <span aria-hidden className="text-neutral-600">/</span>
+        <span aria-current="page" className="max-w-[40vw] truncate text-neutral-200">
+          {anime.title[locale]}
+        </span>
+      </nav>
       <h1 className="mt-3 text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl">{anime.title[locale]}</h1>
       <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-neutral-300">
         <span className="flex items-center gap-1.5 font-bold text-amber-400"><Star className="h-4 w-4 fill-amber-400" /><span dir="ltr">{anime.rating.toFixed(1)}</span></span>
