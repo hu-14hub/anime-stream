@@ -1,0 +1,75 @@
+{
+  "nav": {
+    "home": "Home",
+    "catalog": "Catalog",
+    "genres": "Genres",
+    "searchPlaceholder": "Search anime...",
+    "language": "Language",
+    "toggleTheme": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "hero": {
+    "trendingBadge": "🔥 #1 Trending Now",
+    "watchNow": "Watch Now",
+    "moreInfo": "More Info",
+    "episodes": "episodes",
+    "seasons": "Seasons"
+  },
+  "sections": {
+    "trending": "Trending Now",
+    "latest": "Latest Episodes",
+    "popular": "Most Popular",
+    "viewAll": "View All"
+  },
+  "card": {
+    "episodes": "EP",
+    "sub": "SUB",
+    "dub": "DUB"
+  },
+  "detail": {
+    "synopsis": "Synopsis",
+    "information": "Information",
+    "status": "Status",
+    "year": "Release Year",
+    "genres": "Genres",
+    "rating": "Rating",
+    "totalEpisodes": "Episodes",
+    "studio": "Studio",
+    "episodesList": "Episodes List",
+    "watchTrailer": "Watch Trailer",
+    "ongoing": "Ongoing",
+    "completed": "Completed",
+    "backToCatalog": "Back to Catalog"
+  },
+  "watch": {
+    "episode": "Episode",
+    "selectEpisode": "Select Episode",
+    "prevEpisode": "Previous",
+    "nextEpisode": "Next",
+    "comments": "Comments",
+    "commentsPlaceholder": "Comments section — coming soon. Share your thoughts after watching!",
+    "writeComment": "Write a comment...",
+    "postComment": "Post",
+    "backToDetails": "Back to Details",
+    "nowPlaying": "Now Playing"
+  },
+  "catalog": {
+    "title": "Anime Catalog",
+    "subtitle": "Browse the full library",
+    "filterByGenre": "Filter by genre",
+    "all": "All",
+    "noResults": "No anime found.",
+    "results": "titles"
+  },
+  "footer": {
+    "description": "Your ultimate destination for watching anime with English & Arabic subtitles.",
+    "quickLinks": "Quick Links",
+    "genresTitle": "Genres",
+    "rights": "All rights reserved."
+  },
+  "common": {
+    "loading": "Loading...",
+    "logo": "AnimeStream"
+  }
+}

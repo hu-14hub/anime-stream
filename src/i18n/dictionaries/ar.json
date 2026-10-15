@@ -1,0 +1,75 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "catalog": "المكتبة",
+    "genres": "التصنيفات",
+    "searchPlaceholder": "ابحث عن أنمي...",
+    "language": "اللغة",
+    "toggleTheme": "تبديل المظهر",
+    "light": "فاتح",
+    "dark": "داكن"
+  },
+  "hero": {
+    "trendingBadge": "🔥 #1 الأكثر رواجاً الآن",
+    "watchNow": "شاهد الآن",
+    "moreInfo": "المزيد من المعلومات",
+    "episodes": "حلقة",
+    "seasons": "مواسم"
+  },
+  "sections": {
+    "trending": "الأكثر رواجاً الآن",
+    "latest": "أحدث الحلقات",
+    "popular": "الأكثر شعبية",
+    "viewAll": "عرض الكل"
+  },
+  "card": {
+    "episodes": "حلقة",
+    "sub": "مترجم",
+    "dub": "مدبلج"
+  },
+  "detail": {
+    "synopsis": "القصة",
+    "information": "معلومات",
+    "status": "الحالة",
+    "year": "سنة الإصدار",
+    "genres": "التصنيفات",
+    "rating": "التقييم",
+    "totalEpisodes": "الحلقات",
+    "studio": "الاستوديو",
+    "episodesList": "قائمة الحلقات",
+    "watchTrailer": "شاهد الإعلان",
+    "ongoing": "مستمر",
+    "completed": "مكتمل",
+    "backToCatalog": "عودة إلى المكتبة"
+  },
+  "watch": {
+    "episode": "الحلقة",
+    "selectEpisode": "اختر الحلقة",
+    "prevEpisode": "السابق",
+    "nextEpisode": "التالي",
+    "comments": "التعليقات",
+    "commentsPlaceholder": "قسم التعليقات — قريباً. شاركنا رأيك بعد المشاهدة!",
+    "writeComment": "اكتب تعليقاً...",
+    "postComment": "نشر",
+    "backToDetails": "عودة إلى التفاصيل",
+    "nowPlaying": "يُعرض الآن"
+  },
+  "catalog": {
+    "title": "مكتبة الأنمي",
+    "subtitle": "تصفح المكتبة الكاملة",
+    "filterByGenre": "تصفية حسب النوع",
+    "all": "الكل",
+    "noResults": "لا توجد نتائج.",
+    "results": "عنوان"
+  },
+  "footer": {
+    "description": "وجهتك المثالية لمشاهدة الأنمي بترجمة عربية وإنجليزية.",
+    "quickLinks": "روابط سريعة",
+    "genresTitle": "التصنيفات",
+    "rights": "جميع الحقوق محفوظة."
+  },
+  "common": {
+    "loading": "جارٍ التحميل...",
+    "logo": "أنمي ستريم"
+  }
+}
