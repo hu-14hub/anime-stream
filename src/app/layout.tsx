@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cairo, Inter } from "next/font/google";
+import { Cairo, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
@@ -8,8 +8,18 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { getDirection } from "@/i18n/config";
 import { getLocale } from "@/i18n/server";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const cairo = Cairo({ subsets: ["arabic", "latin"], variable: "--font-cairo" });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-poppins",
+  display: "swap",
+});
+const cairo = Cairo({
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-cairo",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -30,8 +40,8 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={dir} className="dark" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${cairo.variable} min-h-screen bg-slate-100 font-sans text-slate-900 antialiased transition-colors duration-300 dark:bg-[#0b0b16] dark:text-slate-100 ${
-          locale === "ar" ? "font-[family-name:var(--font-cairo)]" : "font-[family-name:var(--font-inter)]"
+        className={`${poppins.variable} ${cairo.variable} min-h-screen bg-slate-100 text-slate-900 antialiased transition-colors duration-300 dark:bg-[#0b0b16] dark:text-slate-100 ${
+          locale === "ar" ? "font-ar" : "font-en"
         }`}
       >
         <ThemeProvider defaultTheme="dark">
