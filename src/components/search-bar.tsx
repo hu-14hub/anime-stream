@@ -193,7 +193,7 @@ export function SearchBar({
           {items.length > 0 && query.trim() && (
             <button
               type="button"
-              onClick={() => go(`/anime/${items[0].slug}`)}
+              onClick={() => go(`/catalog?q=${encodeURIComponent(query.trim())}`)}
               className="w-full border-t border-white/10 px-4 py-2.5 text-center text-xs font-bold text-cyan-300 transition-colors duration-300 hover:bg-white/5 hover:text-cyan-200"
             >
               {viewAllLabel}
