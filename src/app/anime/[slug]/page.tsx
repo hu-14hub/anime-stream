@@ -5,7 +5,8 @@ import { ArrowLeft, ArrowRight, Calendar, Play, Star } from "lucide-react";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getLocale } from "@/i18n/server";
 import { animeList, genres, getAnimeBySlug } from "@/data/anime";
-import { getAnimeById, idFromSlug } from "@/services/animeService";
+import { anilistIdFromSlug, getAnimeDetail } from "@/services/anilistService";
+import { getAnimeById as getJikanById, idFromSlug as jikanIdFromSlug } from "@/services/animeService";
 import { AnimeCard } from "@/components/anime-card";
 import { EpisodeSelector } from "@/components/episode-selector";
 import { SectionHeading } from "@/components/section-heading";
@@ -20,10 +21,16 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
   const locale = await getLocale();
   const t = getDictionary(locale);
   let anime = getAnimeBySlug(slug);
-  const malId = idFromSlug(slug);
-  if (!anime && malId) {
+  const alId = anilistIdFromSlug(slug);
+  const jikanId = jikanIdFromSlug(slug);
+  if (!anime && alId) {
     try {
-      anime = await getAnimeById(malId);
+      anime = await getAnimeDetail(alId);
+    } catch { /* try Jikan fallback below */ }
+  }
+  if (!anime && jikanId) {
+    try {
+      anime = await getJikanById(jikanId);
     } catch { /* fallback below */ }
   }
   if (!anime) notFound();

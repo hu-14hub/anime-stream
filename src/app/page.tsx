@@ -4,7 +4,7 @@ import { HeroBanner } from "@/components/hero-banner";
 import { AnimeCard } from "@/components/anime-card";
 import { SectionHeading } from "@/components/section-heading";
 import { animeList, getLatest, getTrending } from "@/data/anime";
-import { getTopAnime } from "@/services/animeService";
+import { getPopularAnime, getTrendingAnime } from "@/services/anilistService";
 
 export const dynamic = "force-dynamic";
 
@@ -15,12 +15,15 @@ export default async function Home() {
   let latest = getLatest(6);
   let popular = [...animeList].sort((a, b) => b.rating - a.rating).slice(0, 6);
   try {
-    const { items } = await getTopAnime(1, 25);
-    if (items.length) {
-      trending = [...items].sort((a, b) => b.rating - a.rating).slice(0, 5);
-      latest = items.slice(5, 11);
-      popular = [...items].sort((a, b) => b.rating - a.rating).slice(11, 17);
+    const [trendingRes, popularRes] = await Promise.all([
+      getTrendingAnime(1, 10),
+      getPopularAnime(1, 12),
+    ]);
+    if (trendingRes.items.length) {
+      trending = trendingRes.items.slice(0, 5);
+      latest = trendingRes.items.slice(5, 11);
     }
+    if (popularRes.items.length) popular = popularRes.items.slice(0, 6);
   } catch { /* offline: keep mock data */ }
 
   return (

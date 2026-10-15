@@ -5,7 +5,8 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getLocale } from "@/i18n/server";
 import { animeList, getAnimeBySlug } from "@/data/anime";
-import { getAnimeById, getAnimeEpisodes, idFromSlug } from "@/services/animeService";
+import { anilistIdFromSlug, getAnimeDetail } from "@/services/anilistService";
+import { getAnimeById as getJikanById, getAnimeEpisodes, idFromSlug as jikanIdFromSlug } from "@/services/animeService";
 import { CommentsSection } from "@/components/comments-section";
 import { EpisodeSelector } from "@/components/episode-selector";
 
@@ -19,10 +20,16 @@ export default async function WatchPage({ params, searchParams }: { params: Prom
   const locale = await getLocale();
   const t = getDictionary(locale);
   let anime = getAnimeBySlug(slug);
-  const malId = idFromSlug(slug);
+  const alId = anilistIdFromSlug(slug);
+  const malId = jikanIdFromSlug(slug);
+  if (!anime && alId) {
+    try {
+      anime = await getAnimeDetail(alId);
+    } catch { /* fallback below */ }
+  }
   if (!anime && malId) {
     try {
-      anime = await getAnimeById(malId);
+      anime = await getJikanById(malId);
     } catch { /* fallback below */ }
   }
   if (!anime) notFound();

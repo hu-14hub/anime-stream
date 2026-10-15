@@ -5,7 +5,7 @@ import { getLocale } from "@/i18n/server";
 import { AnimeCard } from "@/components/anime-card";
 import { Pagination } from "@/components/pagination";
 import { animeList, genres } from "@/data/anime";
-import { getTopAnime, searchAnime } from "@/services/animeService";
+import { browseAnime } from "@/services/anilistService";
 import { cn } from "@/lib/utils";
 
 export default async function CatalogPage({
@@ -25,18 +25,8 @@ export default async function CatalogPage({
   let hasNext = false;
   let failed = false;
   try {
-    if (q) {
-      const r = await searchAnime(q, page, 25, genre || undefined);
-      items = r.items; lastPage = r.lastPage; hasNext = r.hasNext;
-    } else if (genre) {
-      const r = await getTopAnime(page, 25);
-      const filtered = r.items.filter((a) => a.genres.includes(genre));
-      items = filtered.length ? filtered : r.items;
-      lastPage = r.lastPage; hasNext = r.hasNext;
-    } else {
-      const r = await getTopAnime(page, 25);
-      items = r.items; lastPage = r.lastPage; hasNext = r.hasNext;
-    }
+    const r = await browseAnime({ q: q || undefined, genre: genre || undefined, page, perPage: 25 });
+    items = r.items; lastPage = r.lastPage; hasNext = r.hasNext;
     if (!items.length) throw new Error("EMPTY");
   } catch {
     failed = true;
