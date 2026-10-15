@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { Loader2, Search, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -74,25 +73,43 @@ export function SearchBar({
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
+  // Close + clear the dropdown, then navigate imperatively.
+  // We use router.push (not <Link>) so cleanup always runs first —
+  // this avoids the stale "redirect to /catalog" behaviour.
   const go = (href: string) => {
     setOpen(false);
+    setActive(-1);
     onNavigate?.();
     router.push(href);
+    // Clear the text after navigation starts so the dropdown is gone
+    // when the user comes back / on the next page.
+    setQuery("");
+    setItems([]);
   };
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
-    // Submit navigates (detail or full catalog) — typing never does.
-    if (active >= 0 && items[active]) go(`/anime/${items[active].slug}`);
-    else if (items.length === 1) go(`/anime/${items[0].slug}`);
-    else if (query.trim()) go(`/catalog?q=${encodeURIComponent(query.trim())}`);
+    const q = query.trim();
+    if (!q) return;
+    // 1) Highlighted suggestion → its detail page.
+    if (active >= 0 && items[active]) {
+      go(`/anime/${items[active].slug}`);
+      return;
+    }
+    // 2) Loaded suggestions → top match's detail page (not catalog).
+    if (!loading && items.length > 0) {
+      go(`/anime/${items[0].slug}`);
+      return;
+    }
+    // 3) No suggestions yet → catalog search for the typed query.
+    go(`/catalog?q=${encodeURIComponent(q)}`);
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowDown" && items.length) {
+    if (e.key === "ArrowDown" && open && items.length) {
       e.preventDefault();
       setActive((a) => (a + 1) % items.length);
-    } else if (e.key === "ArrowUp" && items.length) {
+    } else if (e.key === "ArrowUp" && open && items.length) {
       e.preventDefault();
       setActive((a) => (a - 1 + items.length) % items.length);
     } else if (e.key === "Escape") {
@@ -140,15 +157,12 @@ export function SearchBar({
             <ul id="anime-search-listbox" role="listbox" className="max-h-80 overflow-y-auto p-2">
               {items.map((a, i) => (
                 <li key={a.slug} id={`search-opt-${i}`} role="option" aria-selected={i === active}>
-                  <Link
-                    href={`/anime/${a.slug}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      go(`/anime/${a.slug}`);
-                    }}
+                  <button
+                    type="button"
+                    onClick={() => go(`/anime/${a.slug}`)}
                     onMouseEnter={() => setActive(i)}
                     className={cn(
-                      "flex items-center gap-3 rounded-xl p-2 transition-colors duration-300",
+                      "flex w-full items-center gap-3 rounded-xl p-2 text-start transition-colors duration-300",
                       i === active ? "bg-white/10" : "hover:bg-white/5"
                     )}
                   >
@@ -171,7 +185,7 @@ export function SearchBar({
                         <span dir="ltr">{a.episodeCount} EP</span>
                       </span>
                     </span>
-                  </Link>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -179,7 +193,7 @@ export function SearchBar({
           {items.length > 0 && query.trim() && (
             <button
               type="button"
-              onClick={() => go(`/catalog?q=${encodeURIComponent(query.trim())}`)}
+              onClick={() => go(`/anime/${items[0].slug}`)}
               className="w-full border-t border-white/10 px-4 py-2.5 text-center text-xs font-bold text-cyan-300 transition-colors duration-300 hover:bg-white/5 hover:text-cyan-200"
             >
               {viewAllLabel}
