@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getLocale } from "@/i18n/server";
 import { animeList, getAnimeBySlug } from "@/data/anime";
+import { getAnimeById, getAnimeEpisodes, idFromSlug } from "@/services/animeService";
 import { CommentsSection } from "@/components/comments-section";
 import { EpisodeSelector } from "@/components/episode-selector";
 
@@ -15,10 +16,30 @@ export function generateStaticParams() {
 export default async function WatchPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ ep?: string }> }) {
   const { slug } = await params;
   const { ep } = await searchParams;
-  const anime = getAnimeBySlug(slug);
-  if (!anime) notFound();
   const locale = await getLocale();
   const t = getDictionary(locale);
+  let anime = getAnimeBySlug(slug);
+  const malId = idFromSlug(slug);
+  if (!anime && malId) {
+    try {
+      anime = await getAnimeById(malId);
+    } catch { /* fallback below */ }
+  }
+  if (!anime) notFound();
+  // Enrich episode titles from Jikan when available (first page covers eps 1-100)
+  if (malId && anime.episodes.length) {
+    try {
+      const { items } = await getAnimeEpisodes(malId, 1);
+      const byNum = new Map(items.map((e) => [parseInt(e.episode, 10), e.title]));
+      anime = {
+        ...anime,
+        episodes: anime.episodes.map((e) => {
+          const rt = byNum.get(e.number);
+          return rt ? { ...e, title: { en: rt, ar: e.title.ar } } : e;
+        }),
+      };
+    } catch { /* keep synthesized titles */ }
+  }
   const num = Math.min(Math.max(parseInt(ep ?? "1", 10) || 1, 1), anime.episodes.length);
   const current = anime.episodes[num - 1];
   const BackIcon = locale === "ar" ? ArrowRight : ArrowLeft;

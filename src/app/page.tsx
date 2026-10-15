@@ -4,15 +4,24 @@ import { HeroBanner } from "@/components/hero-banner";
 import { AnimeCard } from "@/components/anime-card";
 import { SectionHeading } from "@/components/section-heading";
 import { animeList, getLatest, getTrending } from "@/data/anime";
+import { getTopAnime } from "@/services/animeService";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const locale = await getLocale();
   const t = getDictionary(locale);
-  const trending = getTrending();
-  const latest = getLatest(6);
-  const popular = [...animeList].sort((a, b) => b.rating - a.rating).slice(0, 6);
+  let trending = getTrending();
+  let latest = getLatest(6);
+  let popular = [...animeList].sort((a, b) => b.rating - a.rating).slice(0, 6);
+  try {
+    const { items } = await getTopAnime(1, 25);
+    if (items.length) {
+      trending = [...items].sort((a, b) => b.rating - a.rating).slice(0, 5);
+      latest = items.slice(5, 11);
+      popular = [...items].sort((a, b) => b.rating - a.rating).slice(11, 17);
+    }
+  } catch { /* offline: keep mock data */ }
 
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-12 px-4 py-6 sm:py-8">

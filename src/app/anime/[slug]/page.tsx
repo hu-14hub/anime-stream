@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, Calendar, Play, Star } from "lucide-react";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getLocale } from "@/i18n/server";
 import { animeList, genres, getAnimeBySlug } from "@/data/anime";
+import { getAnimeById, idFromSlug } from "@/services/animeService";
 import { AnimeCard } from "@/components/anime-card";
 import { EpisodeSelector } from "@/components/episode-selector";
 import { SectionHeading } from "@/components/section-heading";
@@ -16,10 +17,16 @@ export function generateStaticParams() {
 
 export default async function AnimeDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const anime = getAnimeBySlug(slug);
-  if (!anime) notFound();
   const locale = await getLocale();
   const t = getDictionary(locale);
+  let anime = getAnimeBySlug(slug);
+  const malId = idFromSlug(slug);
+  if (!anime && malId) {
+    try {
+      anime = await getAnimeById(malId);
+    } catch { /* fallback below */ }
+  }
+  if (!anime) notFound();
   const BackIcon = locale === "ar" ? ArrowRight : ArrowLeft;
   const related = animeList.filter((a) => a.id !== anime.id && a.genres.some((g) => anime.genres.includes(g))).slice(0, 4);
   return (

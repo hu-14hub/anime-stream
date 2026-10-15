@@ -60,7 +60,10 @@
     "filterByGenre": "Filter by genre",
     "all": "All",
     "noResults": "No anime found.",
-    "results": "titles"
+    "results": "titles",
+    "offlineNote": "Live API unreachable — showing offline library.",
+    "prevPage": "Prev",
+    "nextPage": "Next"
   },
   "footer": {
     "description": "Your ultimate destination for watching anime with English & Arabic subtitles.",
