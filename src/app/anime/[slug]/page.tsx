@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Calendar, Play, Star } from "lucide-react";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -11,9 +12,33 @@ import { AnimeCard } from "@/components/anime-card";
 import { EpisodeSelector } from "@/components/episode-selector";
 import { SectionHeading } from "@/components/section-heading";
 import { TrailerButton } from "@/components/trailer-button";
+import { browseAnime } from "@/services/anilistService";
 
 export function generateStaticParams() {
   return animeList.map((a) => ({ slug: a.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const locale = await getLocale();
+  let anime = getAnimeBySlug(slug);
+  const alId = anilistIdFromSlug(slug);
+  if (!anime && alId) {
+    try {
+      anime = await getAnimeDetail(alId);
+    } catch {
+      /* fallback to generic metadata */
+    }
+  }
+  if (!anime) return {};
+  return {
+    title: anime.title[locale],
+    description: anime.synopsis[locale].slice(0, 160),
+  };
 }
 
 export default async function AnimeDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -35,7 +60,17 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
   }
   if (!anime) notFound();
   const BackIcon = locale === "ar" ? ArrowRight : ArrowLeft;
-  const related = animeList.filter((a) => a.id !== anime.id && a.genres.some((g) => anime.genres.includes(g))).slice(0, 4);
+  // Related: prefer live AniList results by first genre; fall back to mock list.
+  let related = animeList.filter((a) => a.id !== anime.id && a.genres.some((g) => anime.genres.includes(g))).slice(0, 4);
+  if (anime.genres.length > 0) {
+    try {
+      const r = await browseAnime({ genre: anime.genres[0], page: 1, perPage: 8 });
+      const live = r.items.filter((a) => a.id !== anime.id).slice(0, 4);
+      if (live.length) related = live;
+    } catch {
+      /* keep mock related */
+    }
+  }
   return (
     <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
       <Link href="/catalog" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white">
