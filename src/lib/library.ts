@@ -181,6 +181,36 @@ export function getWatchedEpisodes(slug: string): number[] {
     .map((p) => p.ep);
 }
 
+/**
+ * Mark a set of episodes as fully watched (used when a title is set to
+ * "Completed"). Each entry uses time/duration = 1 so the completion ratio
+ * (time/duration) satisfies getWatchedEpisodes() (>= 0.9) and is excluded
+ * from "Continue Watching" (which requires ratio < 0.95). Existing entries are
+ * preserved so real playback position and watch history stay intact; a partial
+ * entry is simply bumped to complete.
+ */
+export function markAllAsWatched(
+  slug: string,
+  episodes: number[],
+  timestamp = Date.now()
+): void {
+  if (typeof window === "undefined" || episodes.length === 0) return;
+  const all = read<WatchProgress[]>(KEYS.progress, []);
+  for (const ep of episodes) {
+    const existing = all.find((p) => p.slug === slug && p.ep === ep);
+    if (existing) {
+      if (!(existing.duration > 0 && existing.time / existing.duration >= 0.9)) {
+        existing.time = 1;
+        existing.duration = 1;
+        existing.updatedAt = timestamp;
+      }
+    } else {
+      all.push({ slug, ep, time: 1, duration: 1, updatedAt: timestamp });
+    }
+  }
+  setCollection<WatchProgress[]>(KEYS.progress, all);
+}
+
 /** Full watch history (all titles), most recently touched first. */
 export function getHistory(): WatchProgress[] {
   if (typeof window === "undefined") return [];

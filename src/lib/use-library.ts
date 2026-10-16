@@ -7,6 +7,7 @@ import { useStore } from "@/lib/use-store";
 import {
   addFavorite,
   ensureMigrated,
+  markAllAsWatched,
   removeFavorite,
   removeFromLibrary,
   removeFromWatchlist,
@@ -56,6 +57,12 @@ export function useLibraryEntry(anime: Anime) {
           score: entry?.score,
         })
       );
+      if (status === "completed") {
+        // Completing a title marks every episode as watched so the episode
+        // list, watch history, and profile all update instantly (no reload).
+        const epochs = anime.episodes.map((e) => e.number);
+        if (epochs.length) markAllAsWatched(anime.slug, epochs);
+      }
     },
     [anime, entry?.progress, entry?.score]
   );
