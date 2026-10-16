@@ -1,4 +1,5 @@
 import type { Anime } from "@/types";
+import { attachImdbAndAwards } from "@/lib/anime-metadata";
 import {
   AIRING_QUERY,
   BROWSE_QUERY,
@@ -27,7 +28,8 @@ export function anilistIdFromSlug(slug: string): number | null {
   return m ? parseInt(m[1], 10) : null;
 }
 
-export function mapAniList(m: AniListMedia): Anime {
+/** Attach IMDB rating + awards (fallback layer) to an AniList result. */
+const mapAniList = (m: AniListMedia): Anime => {
   const titleEn = m.title.english || m.title.romaji || "Unknown";
   const rawDesc = m.description ? stripHtml(m.description) : "";
   const cover = m.coverImage?.extraLarge || m.coverImage?.large || "";
@@ -35,7 +37,7 @@ export function mapAniList(m: AniListMedia): Anime {
   const epCount = m.episodes ?? 0;
   const n = Math.min(Math.max(epCount || 12, 1), 24);
   const studio = m.studios?.nodes?.[0]?.name ?? "Unknown";
-  return {
+  return attachImdbAndAwards({
     id: `al-${m.id}`,
     slug: toAnilistSlug(m.id, titleEn),
     anilistId: m.id,
@@ -85,7 +87,7 @@ export function mapAniList(m: AniListMedia): Anime {
       thumbnail: cover,
       airedAt: new Date().toISOString(),
     })),
-  };
+  });
 }
 
 function mapAniListLite(m: AniListMedia): Anime {

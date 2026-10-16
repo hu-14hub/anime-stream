@@ -73,7 +73,9 @@
     "scoreOutOf10": "out of 10",
     "cast": "Main cast",
     "episodesTab": "Episodes",
-    "watchEpisode": "Watch"
+    "watchEpisode": "Watch",
+    "imdbRating": "IMDb Rating",
+    "animeAwards": "Anime Awards"
   },
   "watchlist": {
     "watching": "Watching",

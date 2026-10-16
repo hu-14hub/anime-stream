@@ -55,6 +55,18 @@ export function AnimeCard({
           <span dir="ltr" className="text-xs font-bold text-white">
             {anime.episodeCount} {dict.card.episodes}
           </span>
+          {anime.imdbRating != null && (
+            <span
+              dir="ltr"
+              className="flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[11px] font-bold text-yellow-400 backdrop-blur"
+              aria-label={dict.detail.imdbRating}
+            >
+              <span aria-hidden className="rounded bg-yellow-400 px-1 text-[9px] font-black text-neutral-950">
+                IMDb
+              </span>
+              {typeof anime.imdbRating === "number" ? anime.imdbRating.toFixed(1) : anime.imdbRating}
+            </span>
+          )}
         </span>
       </div>
       <div className="mt-3 space-y-1 px-0.5">

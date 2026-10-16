@@ -3,7 +3,7 @@ import { BLUR_DATA_URL } from "@/lib/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Calendar, Clock, MonitorPlay, Play, Star, Tv } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, Clock, MonitorPlay, Play, Star, Trophy, Tv } from "lucide-react";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getLocale } from "@/i18n/server";
 import { animeList, genres, getAnimeBySlug } from "@/data/anime";
@@ -129,12 +129,31 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
               </p>
             )}
 
-            {/* Quick meta: score · year · status · format · episodes */}
+            {/* Quick meta: score · IMDb · awards · year · status · format · episodes */}
             <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-neutral-300">
               <span className="flex items-center gap-1.5 font-bold text-amber-400">
                 <Star className="h-4 w-4 fill-amber-400" aria-hidden />
                 <span dir="ltr">{anime.rating.toFixed(1)}</span>
               </span>
+              {anime.imdbRating != null && (
+                <span
+                  className="flex items-center gap-1.5 rounded-full bg-yellow-500/15 px-2.5 py-1 text-xs font-bold text-yellow-400"
+                  aria-label={t.detail.imdbRating}
+                >
+                  <span dir="ltr" aria-hidden className="rounded bg-yellow-400 px-1 py-px text-[9px] font-black uppercase tracking-wide text-neutral-950">
+                    IMDb
+                  </span>
+                  <span dir="ltr">
+                    {typeof anime.imdbRating === "number" ? anime.imdbRating.toFixed(1) : anime.imdbRating}
+                  </span>
+                </span>
+              )}
+              {(anime.animeAwardsCount ?? 0) > 0 && (
+                <span className="flex items-center gap-1.5 text-xs font-semibold text-amber-300">
+                  <Trophy className="h-4 w-4 text-amber-400" aria-hidden />
+                  <span dir="ltr">{anime.animeAwardsCount}</span> {t.detail.animeAwards}
+                </span>
+              )}
               <span className="flex items-center gap-1.5">
                 <Calendar className="h-4 w-4" aria-hidden />
                 <span dir="ltr">{anime.year}</span>

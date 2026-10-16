@@ -44,6 +44,8 @@ export interface Anime {
   genres: string[]; // genre keys, translated in UI later
   tags?: string[];
   studio: LocalizedText;
+  imdbRating?: number | string;
+  animeAwardsCount?: number;
   episodeCount: number;
   trailerUrl?: string;
   trending?: boolean;
@@ -253,6 +255,8 @@ export interface AdminAnime {
   genres: string[];
   tags?: string[];
   studio: LocalizedText;
+  imdbRating?: number | string;
+  animeAwardsCount?: number;
   episodeCount: number;
   trailerUrl?: string;
   trending?: boolean;
