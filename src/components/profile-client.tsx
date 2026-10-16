@@ -7,9 +7,11 @@ import { BookOpen, Clock, Heart, LayoutList, Star, Trash2 } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { getAnimeBySlug } from "@/data/anime";
-import { clearHistory, getFavorites, getHistory, getWatchedEpisodeCount } from "@/lib/library";
+import { clearHistory, getHistory, getWatchedEpisodeCount } from "@/lib/library";
 import { KEYS, getRatings } from "@/lib/store";
 import { useStore } from "@/lib/use-store";
+import { useFavorites, useWatchlist } from "@/lib/use-library";
+import { BLUR_DATA_URL } from "@/lib/image";
 import type { LibraryEntry, UserRating, WatchProgress } from "@/types";
 import { cn } from "@/lib/utils";
 
@@ -17,13 +19,13 @@ export type ProfileTab = "watchlist" | "favorites" | "history" | "ratings";
 
 export function ProfileClient({ locale, dict: t }: { locale: Locale; dict: Dictionary }) {
   const [tab, setTab] = useState<ProfileTab>("watchlist");
-  const [library] = useStore<LibraryEntry[]>(KEYS.library, []);
+  const watchlist = useWatchlist();
+  const favorites = useFavorites();
   const [ratingsTick] = useStore<UserRating[]>(KEYS.ratings, []);
   const [progressTick] = useStore<WatchProgress[]>(KEYS.progress, []);
 
-  const favorites = useMemo(() => getFavorites(), [library, tab, ratingsTick]);
-  const history = useMemo(() => getHistory(), [progressTick, tab]);
-  const allRatings = useMemo(() => getRatings(), [ratingsTick, tab]);
+  const history = useMemo(() => getHistory(), [progressTick]);
+  const allRatings = useMemo(() => getRatings(), [ratingsTick]);
   const watchedCount = useMemo(() => getWatchedEpisodeCount(), [progressTick]);
 
   const tabs: Record<ProfileTab, { label: string; icon: React.ElementType }> = {
@@ -52,7 +54,7 @@ export function ProfileClient({ locale, dict: t }: { locale: Locale; dict: Dicti
       </div>
       <div className="mb-10 grid gap-4 sm:grid-cols-4">
         <StatCard icon={<LayoutList className="h-5 w-5 text-cyan-400" />} label={t.profile.totalWatched} value={watchedCount} />
-        <StatCard icon={<LayoutList className="h-5 w-5 text-cyan-400" />} label={t.profile.listSize} value={library.length} />
+        <StatCard icon={<LayoutList className="h-5 w-5 text-cyan-400" />} label={t.profile.listSize} value={watchlist.length} />
         <StatCard icon={<Heart className="h-5 w-5 text-red-400" />} label={t.profile.favorites} value={favorites.length} />
         <StatCard icon={<Star className="h-5 w-5 text-amber-400" />} label={t.profile.avgScore} value={avg} />
       </div>
@@ -71,66 +73,96 @@ export function ProfileClient({ locale, dict: t }: { locale: Locale; dict: Dicti
           );
         })}
         {tab === "history" && history.length > 0 && (
-          <button type="button" onClick={() => { clearHistory(); window.location.reload(); }}
+          <button type="button" onClick={() => clearHistory()}
             className="ms-auto mb-2 flex shrink-0 items-center gap-1.5 rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs font-bold text-red-300 transition-all duration-300 hover:bg-red-500/20">
             <Trash2 className="h-3.5 w-3.5" aria-hidden />
             {t.profile.clearHistory}
           </button>
         )}
       </div>
-      <TabGrid tab={tab} locale={locale} t={t} library={library} favorites={favorites} history={history} allRatings={allRatings} />
+      <TabGrid tab={tab} locale={locale} t={t} watchlist={watchlist} favorites={favorites} history={history} allRatings={allRatings} />
     </main>
   );
 }
-function TabGrid({ tab, locale, t, library, favorites, history, allRatings }: {
+function TabGrid({ tab, locale, t, watchlist, favorites, history, allRatings }: {
   tab: ProfileTab; locale: Locale; t: Dictionary;
-  library: LibraryEntry[]; favorites: LibraryEntry[];
+  watchlist: LibraryEntry[]; favorites: LibraryEntry[];
   history: WatchProgress[]; allRatings: UserRating[];
 }) {
   if (tab === "watchlist") {
-    if (!library.length) return <Empty text={t.profile.emptyWatchlist} />;
+    if (!watchlist.length) return <Empty icon={LayoutList} text={t.profile.emptyWatchlist} />;
     return (
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        {library.map((entry) => {
-          const anime = getAnimeBySlug(entry.slug);
-          if (!anime) return null;
+        {watchlist.map((entry) => {
           const label = (t.watchlist as Record<string, string>)[entry.status] ?? entry.status;
           return (
-            <Link key={entry.slug} href={`/anime/${entry.slug}`} className="group block">
-              <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl bg-neutral-900">
-                <Image src={anime.cover} alt={anime.title[locale]} fill sizes="(max-width: 640px) 45vw, 20vw" className="object-cover transition-transform duration-300 group-hover:scale-110" />
-                <span className="absolute start-2 top-2 rounded-full bg-cyan-400/15 px-2.5 py-0.5 text-[10px] font-bold text-cyan-300 backdrop-blur">{label}</span>
-              </div>
-              <h3 className="truncate text-sm font-bold text-neutral-100 group-hover:text-cyan-300">{anime.title[locale]}</h3>
-              <p className="text-xs text-neutral-500" dir="ltr">{anime.year} · {anime.episodeCount} {t.profile.episodes}</p>
-            </Link>
+            <LibraryCard key={entry.slug} entry={entry} locale={locale} t={t} badge={label} badgeClass="bg-cyan-400/15 text-cyan-300" />
           );
         })}
       </div>
     );
   }
   if (tab === "favorites") {
-    if (!favorites.length) return <Empty text={t.profile.emptyWatchlist} />;
+    if (!favorites.length) return <Empty icon={Heart} text={t.profile.emptyFavorites} />;
     return (
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        {favorites.map((entry) => {
-          const anime = getAnimeBySlug(entry.slug);
-          if (!anime) return null;
-          return (
-            <Link key={entry.slug} href={`/anime/${entry.slug}`} className="group block">
-              <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl bg-neutral-900">
-                <Image src={anime.cover} alt={anime.title[locale]} fill sizes="(max-width: 640px) 45vw, 20vw" className="object-cover transition-transform duration-300 group-hover:scale-110" />
-                <span className="absolute start-2 top-2 rounded-full bg-red-500/15 px-2.5 py-0.5 text-[10px] font-bold text-red-400 backdrop-blur">{t.profile.favorites}</span>
-              </div>
-              <h3 className="truncate text-sm font-bold text-neutral-100 group-hover:text-cyan-300">{anime.title[locale]}</h3>
-              <p className="text-xs text-neutral-500" dir="ltr">{anime.year} · {anime.episodeCount} {t.profile.episodes}</p>
-            </Link>
-          );
-        })}
+        {favorites.map((entry) => (
+          <LibraryCard key={entry.slug} entry={entry} locale={locale} t={t} badge={t.profile.favorites} badgeClass="bg-red-500/15 text-red-400" />
+        ))}
       </div>
     );
   }
   return <HistoryRatings tab={tab} locale={locale} t={t} history={history} allRatings={allRatings} />;
+}
+
+/**
+ * Renders a watchlist/favorites card straight from the stored snapshot so
+ * AniList/Jikan-sourced titles (absent from the static catalog) still show.
+ * The catalog is consulted only to enrich legacy entries missing fields.
+ */
+function LibraryCard({ entry, locale, t, badge, badgeClass }: {
+  entry: LibraryEntry; locale: Locale; t: Dictionary;
+  badge: string; badgeClass: string;
+}) {
+  const catalog = getAnimeBySlug(entry.slug);
+  const title = (locale === "ar" ? entry.titleAr || entry.title : entry.title) || catalog?.title[locale] || entry.slug;
+  const cover = entry.cover || catalog?.cover;
+  const rating = entry.rating ?? catalog?.rating;
+  const year = entry.year ?? catalog?.year;
+  const episodes = entry.episodes ?? catalog?.episodeCount;
+  return (
+    <Link href={`/anime/${entry.slug}`} className="group block">
+      <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl bg-neutral-900">
+        {cover ? (
+          <Image src={cover} alt={title} fill sizes="(max-width: 640px) 45vw, 20vw" placeholder="blur" blurDataURL={BLUR_DATA_URL}
+            className="object-cover transition-transform duration-300 group-hover:scale-110" />
+        ) : (
+          <span className="flex h-full w-full items-center justify-center text-5xl font-black text-neutral-800">{title.slice(0, 1)}</span>
+        )}
+        <span className={cn("absolute start-2 top-2 rounded-full px-2.5 py-0.5 text-[10px] font-bold backdrop-blur", badgeClass)}>
+          {badge}
+        </span>
+        {entry.format && (
+          <span dir="ltr" className="absolute end-2 top-2 rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-cyan-300 backdrop-blur">
+            {entry.format}
+          </span>
+        )}
+        {rating != null && (
+          <span dir="ltr" className="absolute bottom-2 start-2 flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[11px] font-bold text-amber-400 backdrop-blur">
+            <Star className="h-3 w-3 fill-amber-400" aria-hidden />
+            {rating.toFixed(1)}
+          </span>
+        )}
+      </div>
+      <h3 className="truncate text-sm font-bold text-neutral-100 group-hover:text-cyan-300">{title}</h3>
+      {(year != null || episodes != null) && (
+        <p className="text-xs text-neutral-500" dir="ltr">
+          {year}{year != null && episodes != null && " · "}
+          {episodes != null && `${episodes} ${t.profile.episodes}`}
+        </p>
+      )}
+    </Link>
+  );
 }
 
 function HistoryRatings({ tab, locale, t, history, allRatings }: {
@@ -181,9 +213,14 @@ function HistoryRatings({ tab, locale, t, history, allRatings }: {
   );
 }
 
-function Empty({ text }: { text: string }) {
+function Empty({ text, icon: Icon }: { text: string; icon?: React.ElementType }) {
   return (
-    <div className="rounded-2xl border border-white/5 bg-white/[0.03] px-6 py-16 text-center">
+    <div className="flex flex-col items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.03] px-6 py-16 text-center">
+      {Icon && (
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/5">
+          <Icon className="h-6 w-6 text-neutral-500" aria-hidden />
+        </span>
+      )}
       <p className="text-sm text-neutral-400">{text}</p>
     </div>
   );

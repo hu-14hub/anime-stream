@@ -3,10 +3,8 @@
 import { useState } from "react";
 import { Check, ChevronDown, Heart, ListPlus, X } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
-import type { Anime, LibraryEntry, ListStatus } from "@/types";
-import { upsertLibrary, removeFromLibrary } from "@/lib/library";
-import { KEYS } from "@/lib/store";
-import { useStore } from "@/lib/use-store";
+import type { Anime, ListStatus } from "@/types";
+import { useLibraryEntry } from "@/lib/use-library";
 import { cn } from "@/lib/utils";
 
 const STATUSES: ListStatus[] = ["watching", "plan", "completed", "onhold", "dropped"];
@@ -22,45 +20,20 @@ const STATUS_LABEL: Record<ListStatus, keyof Dictionary["watchlist"]> = {
 
 /**
  * "Add to Watchlist" dropdown — Watching / Plan to Watch / Completed /
- * On Hold / Dropped plus a Favorites heart. Persists to the local
- * library and stays in sync through the store's pub/sub layer.
+ * On Hold / Dropped plus a Favorites heart. Persists complete snapshots to
+ * the centralized library and stays in sync through the store's pub/sub.
  */
 export function WatchlistButton({ anime, dict }: { anime: Anime; dict: Dictionary }) {
   const [open, setOpen] = useState(false);
-  const [library] = useStore<LibraryEntry[]>(KEYS.library, []);
-  const entry = library.find((e) => e.slug === anime.slug);
+  const { entry, favorited, setStatus, toggleFavorite, remove } = useLibraryEntry(anime);
 
   const applyStatus = (status: ListStatus) => {
-    upsertLibrary({
-      slug: anime.slug,
-      anilistId: anime.anilistId,
-      title: anime.title.en,
-      cover: anime.cover,
-      status,
-      progress: entry?.progress ?? 0,
-      score: entry?.score,
-      favorited: entry?.favorited ?? false,
-      updatedAt: Date.now(),
-    });
+    setStatus(status);
     setOpen(false);
   };
 
-  const toggleFavorite = () => {
-    upsertLibrary({
-      slug: anime.slug,
-      anilistId: anime.anilistId,
-      title: anime.title.en,
-      cover: anime.cover,
-      status: entry?.favorited ? entry?.status ?? "plan" : "favorite",
-      score: entry?.score,
-      progress: entry?.progress ?? 0,
-      favorited: !entry?.favorited,
-      updatedAt: Date.now(),
-    });
-  };
-
-  const remove = () => {
-    removeFromLibrary(anime.slug);
+  const removeEntry = () => {
+    remove();
     setOpen(false);
   };
 
@@ -86,17 +59,17 @@ export function WatchlistButton({ anime, dict }: { anime: Anime; dict: Dictionar
         <button
           type="button"
           onClick={toggleFavorite}
-          aria-pressed={Boolean(entry?.favorited)}
+          aria-pressed={favorited}
           aria-label={dict.watchlist.favorite}
           title={dict.watchlist.favorite}
           className={cn(
             "flex h-11 w-11 items-center justify-center rounded-full transition-all duration-300",
-            entry?.favorited
+            favorited
               ? "bg-red-500/15 text-red-400 ring-1 ring-red-500/50"
               : "bg-white/10 text-neutral-300 hover:bg-white/20 hover:text-red-400"
           )}
         >
-          <Heart className={cn("h-5 w-5", entry?.favorited && "fill-red-500")} aria-hidden />
+          <Heart className={cn("h-5 w-5", favorited && "fill-red-500")} aria-hidden />
         </button>
       </div>
 
@@ -127,7 +100,7 @@ export function WatchlistButton({ anime, dict }: { anime: Anime; dict: Dictionar
             {entry && (
               <button
                 type="button"
-                onClick={remove}
+                onClick={removeEntry}
                 className="mt-1 flex w-full items-center gap-2 rounded-xl px-3.5 py-2.5 text-start text-sm font-semibold text-red-400 transition-colors hover:bg-red-500/10"
               >
                 <X className="h-4 w-4" aria-hidden />

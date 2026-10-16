@@ -25,6 +25,15 @@ import type {
 } from "@/types";
 
 export const KEYS = {
+  /**
+   * Watchlist entries (status: watching/plan/completed/onhold/dropped).
+   * Historically combined with favorites under `library` — split on first
+   * read via the lazy migration in `lib/library.ts`.
+   */
+  watchlist: "anime_watchlist",
+  /** Favorited entries (full snapshots, independent of watchlist status). */
+  favorites: "anime_favorites",
+  /** @deprecated pre-split combined library; migrated to watchlist/favorites. */
   library: "anime-stream-library",
   progress: "anime-stream-progress",
   comments: "anime-stream-comments",

@@ -68,7 +68,14 @@ export interface LibraryEntry {
   slug: string;
   anilistId?: number;
   title: string;
+  /** Arabic title snapshot so profile cards render correctly in AR mode. */
+  titleAr?: string;
   cover: string;
+  /** Site score (0-10) snapshotted at add time. */
+  rating?: number;
+  format?: string;
+  year?: number;
+  episodes?: number;
   status: ListStatus;
   score?: number; // user score 1-10
   progress?: number; // watched episodes
