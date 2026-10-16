@@ -271,21 +271,6 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
               <RatingInput slug={anime.slug} dict={t} />
             </div>
           </div>
-          <div className="border-t border-white/10 pt-4">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">
-              {t.detail.genres}
-            </p>
-            <div className="mt-2.5 flex flex-wrap gap-2">
-              {anime.genres.map((g) => (
-                <span
-                  key={g}
-                  className="rounded-full bg-white/5 px-3 py-1 text-xs font-semibold text-neutral-300"
-                >
-                  {genres.find((x) => x.key === g)?.label[locale] ?? g}
-                </span>
-              ))}
-            </div>
-          </div>
         </aside>
       </div>
 

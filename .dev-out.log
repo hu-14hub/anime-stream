@@ -1,0 +1,14 @@
+
+> anime-stream@0.1.0 dev
+> next dev
+
+▲ Next.js 16.4.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.207:3000
+- Environments: .env.local
+✓ Ready in 381ms
+✓ Running next.config.ts took 31ms
+
+ GET /anime/attack-on-titan 200 in 1549ms (next.js: 201ms, generate-params: 366ms, application-code: 982ms)
+ GET / 200 in 951ms (next.js: 11ms, application-code: 940ms)
+✓ Compiled in 46ms
