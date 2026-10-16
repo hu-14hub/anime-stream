@@ -4,13 +4,14 @@ import Image from "next/image";
 import { BLUR_DATA_URL } from "@/lib/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { CheckCircle2, Circle, LayoutGrid, List, Play } from "lucide-react";
+import { CheckCircle2, Circle, Clock, LayoutGrid, List, Play } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import type { Anime } from "@/types";
 import { getWatchedEpisodes } from "@/lib/library";
 import { onExternalChange, KEYS } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { getAiredEpisodeCount } from "@/lib/anime-availability";
 
 type ViewMode = "grid" | "list";
 
@@ -42,6 +43,11 @@ export function EpisodeList({
     return unsub;
   }, [anime.slug]);
 
+  // Highest episode that is actually aired / available to watch. For ongoing
+  // titles this is driven by the AniList "next airing episode" (next - 1); for
+  // completed titles (or when no airing info exists) every episode is available.
+  const airedCount = getAiredEpisodeCount(anime);
+
   const toggleCls = (mode: ViewMode) =>
     cn(
       "flex h-9 w-9 items-center justify-center rounded-lg transition-colors duration-300",
@@ -59,7 +65,9 @@ export function EpisodeList({
             dir="ltr"
             className="rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-bold text-neutral-300"
           >
-            {anime.episodes.length}
+            {airedCount === anime.episodes.length
+              ? anime.episodes.length
+              : `${airedCount}/${anime.episodes.length}`}
           </span>
           {watched.length > 0 && (
             <span className="flex items-center gap-1 text-xs font-bold text-emerald-400">
@@ -99,27 +107,36 @@ export function EpisodeList({
         )}
       >
         {anime.episodes.map((ep) => {
-          const isWatched = watched.includes(ep.number);
-          const isActive = ep.number === active;
+          const released = ep.number <= airedCount;
+          const isWatched = released && watched.includes(ep.number);
+          const isActive = released && ep.number === active;
           return (
             <li key={ep.number}>
               <Link
                 href={`${baseHref}?ep=${ep.number}`}
                 aria-current={isActive ? "true" : undefined}
                 aria-label={`${dict.watch.episode} ${ep.number}${
-                  isWatched ? ` — ${dict.detail.watched}` : ""
+                  !released
+                    ? ` — ${dict.detail.comingSoon}`
+                    : isWatched
+                      ? ` — ${dict.detail.watched}`
+                      : ""
                 }`}
+                onClick={(e) => { if (!released) e.preventDefault(); }}
                 className={cn(
                   "group flex items-center gap-3.5 rounded-xl p-2.5 pe-4 transition-colors duration-300",
-                  isActive
-                    ? "bg-cyan-400/10 ring-1 ring-cyan-400/60"
-                    : "bg-white/[0.03] hover:bg-white/[0.07]"
+                  !released
+                    ? "cursor-not-allowed opacity-50"
+                    : isActive
+                      ? "bg-cyan-400/10 ring-1 ring-cyan-400/60"
+                      : "bg-white/[0.03] hover:bg-white/[0.07]"
                 )}
               >
                 <span
                   className={cn(
                     "relative shrink-0 overflow-hidden rounded-lg bg-neutral-900",
-                    view === "grid" ? "h-16 w-28" : "h-11 w-20"
+                    view === "grid" ? "h-16 w-28" : "h-11 w-20",
+                    !released && "grayscale"
                   )}
                 >
                   <Image
@@ -127,13 +144,22 @@ export function EpisodeList({
                     alt=""
                     fill
                     sizes={view === "grid" ? "112px" : "80px"}
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    className={cn(
+                      "object-cover transition-transform duration-300",
+                      released && "group-hover:scale-105"
+                    )}
                     placeholder="blur"
                     blurDataURL={BLUR_DATA_URL}
                   />
-                  <span className="absolute inset-0 flex items-center justify-center bg-neutral-950/45 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <Play className="h-5 w-5 fill-white text-white rtl-flip" aria-hidden />
-                  </span>
+                  {released ? (
+                    <span className="absolute inset-0 flex items-center justify-center bg-neutral-950/45 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <Play className="h-5 w-5 fill-white text-white rtl-flip" aria-hidden />
+                    </span>
+                  ) : (
+                    <span className="absolute inset-0 flex items-center justify-center bg-neutral-950/70">
+                      <Clock className="h-5 w-5 text-neutral-400" aria-hidden />
+                    </span>
+                  )}
                   {isWatched && (
                     <span className="absolute inset-0 flex items-center justify-center bg-emerald-500/25">
                       <CheckCircle2 className="h-6 w-6 text-emerald-300 drop-shadow" aria-hidden />
@@ -144,7 +170,10 @@ export function EpisodeList({
                 <span className="min-w-0 flex-1">
                   <span
                     dir="ltr"
-                    className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-cyan-300"
+                    className={cn(
+                      "flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest",
+                      released ? "text-cyan-300" : "text-neutral-500"
+                    )}
                   >
                     EP {ep.number}
                     <span className="text-neutral-600" aria-hidden>
@@ -154,16 +183,30 @@ export function EpisodeList({
                       {ep.duration}
                     </span>
                   </span>
-                  <span className="mt-0.5 block truncate text-sm font-bold text-neutral-100">
+                  <span
+                    className={cn(
+                      "mt-0.5 block truncate text-sm font-bold",
+                      released ? "text-neutral-100" : "text-neutral-500"
+                    )}
+                  >
                     {ep.title[locale]}
                   </span>
                   <span
                     className={cn(
                       "mt-0.5 flex items-center gap-1 text-[11px] font-semibold",
-                      isWatched ? "text-emerald-400" : "text-neutral-600"
+                      !released
+                        ? "text-cyan-300"
+                        : isWatched
+                          ? "text-emerald-400"
+                          : "text-neutral-600"
                     )}
                   >
-                    {isWatched ? (
+                    {!released ? (
+                      <>
+                        <Clock className="h-3 w-3" aria-hidden />
+                        {dict.detail.comingSoon}
+                      </>
+                    ) : isWatched ? (
                       <>
                         <CheckCircle2 className="h-3 w-3" aria-hidden />
                         {dict.detail.watched}

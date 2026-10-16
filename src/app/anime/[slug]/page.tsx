@@ -8,6 +8,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { getLocale } from "@/i18n/server";
 import { animeList, genres, getAnimeBySlug } from "@/data/anime";
 import { anilistIdFromSlug, browseAnime, getAnimeDetail } from "@/services/anilistService";
+import { getAiredEpisodeCount } from "@/lib/anime-availability";
 import { getAnimeById as getJikanById, idFromSlug as jikanIdFromSlug } from "@/services/animeService";
 import { AnimeCard } from "@/components/anime-card";
 import { CharacterGrid } from "@/components/character-grid";
@@ -81,6 +82,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
   const recommendations = anime.recommendations?.length ? anime.recommendations.slice(0, 8) : related;
   const characters = anime.characters ?? [];
   const statusLabel = anime.status === "ongoing" ? t.detail.ongoing : t.detail.completed;
+  const airedCount = getAiredEpisodeCount(anime);
 
   return (
     <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 sm:py-10">
@@ -171,7 +173,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
               )}
               <span className="flex items-center gap-1.5 text-xs font-semibold text-neutral-400">
                 <MonitorPlay className="h-3.5 w-3.5" aria-hidden />
-                <span dir="ltr">{anime.episodeCount}</span> {t.detail.episodes}
+                <span dir="ltr">{airedCount === anime.episodeCount ? anime.episodeCount : `${airedCount}/${anime.episodeCount}`}</span> {t.detail.episodes}
               </span>
             </p>
 
