@@ -19,13 +19,19 @@ const STATUS_LABEL: Record<ListStatus, keyof Dictionary["watchlist"]> = {
 };
 
 /**
- * "Add to Watchlist" dropdown — Watching / Plan to Watch / Completed /
- * On Hold / Dropped plus a Favorites heart. Persists complete snapshots to
- * the centralized library and stays in sync through the store's pub/sub.
+ * Watchlist control — a status dropdown (Watching / Plan to Watch /
+ * Completed / On Hold / Dropped) plus an independent Favorites heart.
+ *
+ * Both actions are instant and independent, so a title is removed in one
+ * tap with no ghost state:
+ *  • the heart toggles favorites on/off without touching the watchlist status;
+ *  • "Remove from Watchlist" drops only the list entry, keeping any favorite.
+ * Every change flows through `useLibraryEntry` → the store's pub/sub, so the
+ * whole page stays in sync immediately (and across tabs).
  */
 export function WatchlistButton({ anime, dict }: { anime: Anime; dict: Dictionary }) {
   const [open, setOpen] = useState(false);
-  const { entry, favorited, setStatus, toggleFavorite, remove } = useLibraryEntry(anime);
+  const { entry, favorited, setStatus, toggleFavorite, removeWatchlist } = useLibraryEntry(anime);
 
   const applyStatus = (status: ListStatus) => {
     setStatus(status);
@@ -33,7 +39,7 @@ export function WatchlistButton({ anime, dict }: { anime: Anime; dict: Dictionar
   };
 
   const removeEntry = () => {
-    remove();
+    removeWatchlist();
     setOpen(false);
   };
 
@@ -46,22 +52,29 @@ export function WatchlistButton({ anime, dict }: { anime: Anime; dict: Dictionar
           aria-expanded={open}
           aria-haspopup="menu"
           className={cn(
-            "flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold transition-all duration-300",
+            "flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold transition-all duration-300 active:scale-[0.97]",
             entry
               ? "bg-cyan-400/15 text-cyan-300 ring-1 ring-cyan-400/50"
               : "bg-white/10 text-white hover:bg-white/20"
           )}
         >
-          <ListPlus className="h-4 w-4" aria-hidden />
+          {entry ? (
+            <Check className="h-4 w-4" aria-hidden />
+          ) : (
+            <ListPlus className="h-4 w-4" aria-hidden />
+          )}
           {entry ? dict.detail.inWatchlist : dict.detail.addToWatchlist}
-          <ChevronDown className="h-4 w-4" aria-hidden />
+          <ChevronDown
+            className={cn("h-4 w-4 transition-transform duration-300", open && "rotate-180")}
+            aria-hidden
+          />
         </button>
         <button
           type="button"
           onClick={toggleFavorite}
           aria-pressed={favorited}
-          aria-label={dict.watchlist.favorite}
-          title={dict.watchlist.favorite}
+          aria-label={favorited ? dict.detail.removeFavorite : dict.detail.addFavorite}
+          title={favorited ? dict.detail.removeFavorite : dict.detail.addFavorite}
           className={cn(
             "flex h-11 w-11 items-center justify-center rounded-full transition-all duration-300",
             favorited
@@ -69,7 +82,13 @@ export function WatchlistButton({ anime, dict }: { anime: Anime; dict: Dictionar
               : "bg-white/10 text-neutral-300 hover:bg-white/20 hover:text-red-400"
           )}
         >
-          <Heart className={cn("h-5 w-5", favorited && "fill-red-500")} aria-hidden />
+          <Heart
+            className={cn(
+              "h-5 w-5 transition-all duration-300",
+              favorited ? "scale-105 fill-red-500" : "fill-transparent"
+            )}
+            aria-hidden
+          />
         </button>
       </div>
 
@@ -98,14 +117,16 @@ export function WatchlistButton({ anime, dict }: { anime: Anime; dict: Dictionar
               </button>
             ))}
             {entry && (
-              <button
-                type="button"
-                onClick={removeEntry}
-                className="mt-1 flex w-full items-center gap-2 rounded-xl px-3.5 py-2.5 text-start text-sm font-semibold text-red-400 transition-colors hover:bg-red-500/10"
-              >
-                <X className="h-4 w-4" aria-hidden />
-                {dict.detail.removeFromWatchlist}
-              </button>
+              <div className="mt-1 border-t border-white/10 pt-1">
+                <button
+                  type="button"
+                  onClick={removeEntry}
+                  className="flex w-full items-center gap-2 rounded-xl px-3.5 py-2.5 text-start text-sm font-bold text-red-400 transition-colors hover:bg-red-500/10"
+                >
+                  <X className="h-4 w-4" aria-hidden />
+                  {dict.detail.removeFromWatchlist}
+                </button>
+              </div>
             )}
           </div>
         </>

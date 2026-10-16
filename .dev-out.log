@@ -12,3 +12,5 @@
  GET /anime/attack-on-titan 200 in 1549ms (next.js: 201ms, generate-params: 366ms, application-code: 982ms)
  GET / 200 in 951ms (next.js: 11ms, application-code: 940ms)
 ✓ Compiled in 46ms
+✓ Compiled in 26ms
+✓ Compiled in 28ms
