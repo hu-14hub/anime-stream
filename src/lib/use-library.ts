@@ -6,6 +6,7 @@ import { KEYS } from "@/lib/store";
 import { useStore } from "@/lib/use-store";
 import {
   addFavorite,
+  clearWatchProgress,
   ensureMigrated,
   markAllAsWatched,
   removeFavorite,
@@ -79,11 +80,13 @@ export function useLibraryEntry(anime: Anime) {
   /** Remove from watchlist + favorites (dropdown "Remove"). */
   const remove = useCallback(() => {
     removeFromLibrary(anime.slug);
+    clearWatchProgress(anime.slug);
   }, [anime.slug]);
 
   /** Remove only from the watchlist, keeping the favorite. */
   const removeWatchlist = useCallback(() => {
     removeFromWatchlist(anime.slug);
+    clearWatchProgress(anime.slug);
   }, [anime.slug]);
 
   return { entry, favorited, watchlisted: Boolean(entry), setStatus, toggleFavorite, remove, removeWatchlist };

@@ -221,6 +221,19 @@ export function clearHistory(): void {
   setCollection<WatchProgress[]>(KEYS.progress, []);
 }
 
+/**
+ * Wipe all watch progress/history for a single title. Called when an anime is
+ * removed from the watchlist so its "Watched" episode markers disappear in
+ * sync — setCollection() notifies the store (and other tabs), so EpisodeList
+ * and the profile clear instantly without a reload.
+ */
+export function clearWatchProgress(slug: string): void {
+  if (typeof window === "undefined") return;
+  const all = read<WatchProgress[]>(KEYS.progress, []);
+  if (!all.some((p) => p.slug === slug)) return;
+  setCollection<WatchProgress[]>(KEYS.progress, all.filter((p) => p.slug !== slug));
+}
+
 /** Number of fully-watched episodes summed over the whole history. */
 export function getWatchedEpisodeCount(): number {
   if (typeof window === "undefined") return 0;
