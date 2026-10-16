@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { BLUR_DATA_URL } from "@/lib/image";
 import Link from "next/link";
 import { Play, Star } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
@@ -25,13 +26,15 @@ export function AnimeCard({
         className
       )}
     >
-      <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-neutral-900">
+      <div className="relative w-full aspect-[3/4] overflow-hidden rounded-xl bg-neutral-900">
         <Image
           src={anime.cover}
           alt={anime.title[locale]}
           fill
           sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 20vw"
           className="object-cover transition-transform duration-300 group-hover:scale-110"
+          placeholder="blur"
+          blurDataURL={BLUR_DATA_URL}
         />
         {/* Score badge */}
         <span className="absolute start-2 top-2 flex items-center gap-1 rounded-full bg-black/60 px-2 py-1 text-[11px] font-bold text-amber-400 backdrop-blur">

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { BLUR_DATA_URL } from "@/lib/image";
 import Link from "next/link";
 import { Play } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
@@ -49,6 +50,8 @@ export function EpisodeSelector({
                     fill
                     sizes="112px"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    placeholder="blur"
+                    blurDataURL={BLUR_DATA_URL}
                   />
                   <span className="absolute inset-0 flex items-center justify-center bg-neutral-950/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <Play className="h-5 w-5 fill-white text-white rtl-flip" aria-hidden />

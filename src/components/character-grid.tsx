@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import type { AnimeCharacter } from "@/types";
+import { BLUR_DATA_URL } from "@/lib/image";
 
 /** Responsive character cast grid for the details page. */
 export function CharacterGrid({
@@ -19,7 +22,7 @@ export function CharacterGrid({
           key={c.id}
           className="group flex items-center gap-3 rounded-xl bg-white/[0.03] p-3 transition-colors duration-300 hover:bg-white/[0.07]"
         >
-          <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full bg-neutral-900 ring-1 ring-white/10">
+          <span className="relative h-14 w-14 overflow-hidden rounded-full bg-neutral-900 ring-1 ring-white/10">
             {c.image && (
               <Image
                 src={c.image}
@@ -27,6 +30,8 @@ export function CharacterGrid({
                 fill
                 sizes="56px"
                 className="object-cover transition-transform duration-300 group-hover:scale-110"
+                placeholder="blur"
+                blurDataURL={BLUR_DATA_URL}
               />
             )}
           </span>

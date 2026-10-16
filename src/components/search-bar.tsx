@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { BLUR_DATA_URL } from "@/lib/image";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Search, Star } from "lucide-react";
@@ -168,7 +169,7 @@ export function SearchBar({
                   >
                     <span className="relative h-14 w-10 shrink-0 overflow-hidden rounded-lg bg-neutral-800">
                       {a.cover ? (
-                        <Image src={a.cover} alt="" fill sizes="40px" className="object-cover" />
+                        <Image src={a.cover} alt="" fill sizes="40px" className="object-cover" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
                       ) : null}
                     </span>
                     <span className="min-w-0 flex-1">

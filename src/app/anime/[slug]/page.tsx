@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { BLUR_DATA_URL } from "@/lib/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -97,15 +98,15 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
       {/* Rich metadata header: backdrop + poster + native/romaji/english titles */}
       <header className="relative mt-4 overflow-hidden rounded-3xl border border-white/5">
         <div className="relative h-52 w-full sm:h-72 lg:h-80">
-          <Image src={anime.banner} alt="" fill priority sizes="100vw" className="object-cover" />
+          <Image src={anime.banner} alt="" fill priority sizes="100vw" className="object-cover" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
           <div
             className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/75 to-neutral-950/25"
             aria-hidden
           />
         </div>
         <div className="relative -mt-28 flex flex-col gap-6 px-5 pb-7 sm:flex-row sm:gap-7 sm:px-7">
-          <div className="relative h-44 w-32 shrink-0 self-start overflow-hidden rounded-xl border-2 border-white/15 bg-neutral-900 shadow-2xl sm:h-56 sm:w-40">
-            <Image src={anime.cover} alt={anime.title[locale]} fill sizes="160px" priority className="object-cover" />
+          <div className="relative h-44 w-full sm:h-56 sm:w-40 shrink-0 self-start overflow-hidden rounded-xl border-2 border-white/15 bg-neutral-900 shadow-2xl">
+            <Image src={anime.cover} alt={anime.title[locale]} fill sizes="160px" priority className="object-cover" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
           </div>
           <div className="min-w-0 flex-1 pt-1 sm:pt-3">
             <h1 className="text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
