@@ -95,9 +95,11 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
         </span>
       </nav>
 
-      {/* Rich metadata header: backdrop + poster + native/romaji/english titles */}
-      <header className="relative mt-4 overflow-hidden rounded-3xl border border-white/5">
-        <div className="relative h-52 w-full sm:h-72 lg:h-80">
+      {/* Rich metadata header: backdrop + poster + native/romaji/english titles.
+          NOTE: no `overflow-hidden` here — it would clip the Watchlist dropdown.
+          Rounded top corners are instead clipped on the banner container below. */}
+      <header className="relative mt-4 rounded-3xl border border-white/5">
+        <div className="relative h-52 w-full overflow-hidden rounded-t-3xl sm:h-72 lg:h-80">
           <Image src={anime.banner} alt="" fill priority sizes="100vw" className="object-cover" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
           <div
             className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/75 to-neutral-950/25"

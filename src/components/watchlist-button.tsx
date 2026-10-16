@@ -122,11 +122,11 @@ export function WatchlistButton({ anime, dict }: { anime: Anime; dict: Dictionar
 
       {open && (
         <>
-          <div className="fixed inset-0 z-30" onClick={() => setOpen(false)} aria-hidden />
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} aria-hidden />
           <div
             role="menu"
             aria-label={dict.profile.watchlist}
-            className="absolute start-0 z-40 mt-2 w-60 overflow-hidden rounded-2xl border border-white/10 bg-neutral-900/95 p-1.5 shadow-2xl shadow-black/60 backdrop-blur-xl"
+            className="absolute start-0 top-full z-50 mt-2 w-60 overflow-hidden rounded-2xl border border-white/10 bg-neutral-900/95 p-1.5 shadow-2xl shadow-black/60 backdrop-blur-xl"
           >
             <p className="px-3.5 py-2 text-[11px] font-bold uppercase tracking-[0.15em] text-neutral-500">
               {dict.profile.watchlist}
