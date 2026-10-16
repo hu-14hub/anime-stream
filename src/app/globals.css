@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Cairo:wght@400;500;600;700;800;900&display=swap");
+
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -8,6 +10,8 @@
   --accent: #22d3ee;
   --accent-soft: rgba(34, 211, 238, 0.12);
   color-scheme: dark;
+  --font-poppins: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-cairo: "Cairo", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
 }
 
 .dark {

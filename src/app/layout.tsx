@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Cairo, Poppins } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -8,18 +7,6 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { getDirection } from "@/i18n/config";
 import { getLocale } from "@/i18n/server";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-poppins",
-  display: "swap",
-});
-const cairo = Cairo({
-  subsets: ["arabic", "latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-cairo",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: {
@@ -40,7 +27,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={dir} className="dark" suppressHydrationWarning>
       <body
-        className={`${poppins.variable} ${cairo.variable} min-h-screen bg-neutral-950 text-neutral-100 antialiased transition-colors duration-300 ${
+        className={`min-h-screen bg-neutral-950 text-neutral-100 antialiased transition-colors duration-300 ${
           locale === "ar" ? "font-ar" : "font-en"
         }`}
       >
