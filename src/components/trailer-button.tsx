@@ -34,7 +34,7 @@ export function TrailerButton({ label, trailerUrl }: { label: string; trailerUrl
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 transition hover:bg-white/20"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 transition-all duration-300 hover:bg-white/20"
               >
                 <X className="h-4 w-4" />
               </button>

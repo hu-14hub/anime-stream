@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import { KEYS, applyTheme, read } from "@/lib/store";
-import type { UserSettings } from "@/types";
+import { applyTheme } from "@/lib/store";
 
-/** Applies the persisted theme on first paint (dark-first default). */
+/** Locks the permanent cinematic dark theme on first paint. */
 export function ThemeInit() {
   useEffect(() => {
-    const s = read<Partial<UserSettings>>(KEYS.settings, {});
-    applyTheme(s.theme ?? "dark");
+    applyTheme();
   }, []);
   return null;
 }

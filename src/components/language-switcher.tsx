@@ -49,7 +49,7 @@ export function LanguageSwitcher({
             "rounded-full px-2.5 py-1 transition-all duration-200 disabled:opacity-50",
             current === l
               ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow"
-              : "text-slate-300 hover:bg-white/10 hover:text-white"
+              : "text-neutral-300 hover:bg-white/10 hover:text-white"
           )}
         >
           {l === "en" ? "EN" : "عربي"}

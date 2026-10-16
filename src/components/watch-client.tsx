@@ -66,7 +66,7 @@ export function WatchClient({ slug, num, anime, stream, locale, dict: t }: {
 
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-3 sm:p-4">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-slate-500">{t.player.server}</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-neutral-500">{t.player.server}</span>
           {stream.sources.map((s) => (
             <span key={s.id}
               className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${
@@ -79,7 +79,7 @@ export function WatchClient({ slug, num, anime, stream, locale, dict: t }: {
         </div>
         <div className="flex items-center gap-2">
           <button type="button" onClick={report}
-            className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold text-neutral-300 transition hover:bg-white/10 hover:text-white">
+            className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold text-neutral-300 transition-all duration-300 hover:bg-white/10 hover:text-white">
             <Flag className="h-3 w-3" aria-hidden />
             {reported ? t.admin.confirmed : t.player.reportVideo}
           </button>

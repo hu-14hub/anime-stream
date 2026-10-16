@@ -159,7 +159,8 @@ export interface ReportItem {
 /* User area: settings, ratings, profile                               */
 /* ------------------------------------------------------------------ */
 
-export type ThemePref = "dark" | "light" | "system";
+/** Permanently locked to cinematic dark. Kept as a type for stored-data compatibility. */
+export type ThemePref = "dark";
 
 export interface UserSettings {
   locale: "en" | "ar";

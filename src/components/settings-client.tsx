@@ -2,21 +2,19 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { BellRing, Check, Languages, MonitorPlay, Palette, Trash2 } from "lucide-react";
+import { BellRing, Check, Languages, MonitorPlay, Trash2 } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { setLocale } from "@/app/actions";
 import { DEFAULT_SETTINGS, KEYS, applyTheme, getSettings, saveSettings } from "@/lib/store";
 import { useStore } from "@/lib/use-store";
-import type { SourceQuality, ThemePref, UserSettings } from "@/types";
+import type { UserSettings } from "@/types";
 import { cn } from "@/lib/utils";
 
 const SUBS = [
   { id: "en", label: "English" },
   { id: "ar", label: "العربية" },
 ];
-
-const QUALITIES: SourceQuality[] = ["auto", "1080p", "720p", "480p", "360p"];
 
 export function SettingsClient({ locale, dict: t }: { locale: Locale; dict: Dictionary }) {
   const router = useRouter();
@@ -30,7 +28,7 @@ export function SettingsClient({ locale, dict: t }: { locale: Locale; dict: Dict
   const patch = (p: Partial<UserSettings>) => {
     const next = saveSettings(p);
     setSettingsState(next);
-    applyTheme(next.theme);
+    applyTheme();
     setSaved(true);
     window.setTimeout(() => setSaved(false), 1800);
   };
@@ -63,38 +61,17 @@ export function SettingsClient({ locale, dict: t }: { locale: Locale; dict: Dict
             {(["en", "ar"] as Locale[]).map((l) => (
               <button key={l} type="button" disabled={pending} onClick={() => switchLocale(l)}
                 aria-pressed={locale === l}
-                className={cn("rounded-full px-5 py-2 text-sm font-bold transition disabled:opacity-50",
+                className={cn("rounded-full px-5 py-2 text-sm font-bold transition-all duration-300 disabled:opacity-50",
                   locale === l ? "bg-cyan-400 text-neutral-950" : "border border-white/10 bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white")}>
                 {l === "en" ? "English" : "العربية"}
               </button>
             ))}
           </div>
         </Card>
-        <ThemeCard t={t} theme={settings.theme} onChange={(theme) => patch({ theme })} />
         <PlaybackCard t={t} settings={settings} onPatch={patch} />
         <DataCard t={t} />
       </div>
     </main>
-  );
-}
-
-function ThemeCard({ t, theme, onChange }: { t: Dictionary; theme: ThemePref; onChange: (v: ThemePref) => void }) {
-  const opts: { id: ThemePref; label: string }[] = [
-    { id: "dark", label: t.settings.themeDark },
-    { id: "light", label: t.settings.themeLight },
-  ];
-  return (
-    <Card icon={<Palette className="h-5 w-5 text-purple-400" />} title={t.settings.theme}>
-      <div className="flex flex-wrap gap-2">
-        {opts.map((o) => (
-          <button key={o.id} type="button" onClick={() => onChange(o.id)} aria-pressed={theme === o.id}
-            className={cn("rounded-full px-5 py-2 text-sm font-bold transition",
-              theme === o.id ? "bg-cyan-400 text-neutral-950" : "border border-white/10 bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white")}>
-            {o.label}
-          </button>
-        ))}
-      </div>
-    </Card>
   );
 }
 function PlaybackCard({ t, settings, onPatch }: { t: Dictionary; settings: UserSettings; onPatch: (p: Partial<UserSettings>) => void }) {
@@ -128,7 +105,7 @@ function DataCard({ t }: { t: Dictionary }) {
     <Card icon={<Trash2 className="h-5 w-5 text-red-400" />} title={t.settings.data} note={t.settings.clearLibraryNote}>
       <div className="flex flex-wrap gap-2">
         <button type="button" onClick={reset}
-          className="rounded-full border border-red-500/30 bg-red-500/10 px-5 py-2 text-sm font-bold text-red-300 transition hover:bg-red-500/20">
+          className="rounded-full border border-red-500/30 bg-red-500/10 px-5 py-2 text-sm font-bold text-red-300 transition-all duration-300 hover:bg-red-500/20">
           {t.settings.clearLibrary}
         </button>
       </div>

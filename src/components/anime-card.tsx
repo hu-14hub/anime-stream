@@ -38,6 +38,12 @@ export function AnimeCard({
           <Star className="h-3 w-3 fill-amber-400" aria-hidden />
           <span dir="ltr">{anime.rating.toFixed(1)}</span>
         </span>
+        {/* Format badge */}
+        {anime.format && (
+          <span dir="ltr" className="absolute end-2 top-2 rounded-full bg-black/60 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-cyan-300 backdrop-blur">
+            {anime.format}
+          </span>
+        )}
         {/* Cinematic hover overlay: play + stats */}
         <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-neutral-950/60 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-cyan-400 text-neutral-950 shadow-xl shadow-cyan-500/30 transition-transform duration-300 group-hover:scale-110">

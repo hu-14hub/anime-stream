@@ -91,7 +91,7 @@ export function MediaRow({
           onClick={() => scrollBy(-1)}
           aria-label={`${ariaLabel} — previous`}
           className={cn(
-            "absolute top-[38%] z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-neutral-950/85 text-white shadow-xl backdrop-blur transition hover:bg-cyan-400 hover:text-neutral-950 md:flex",
+            "absolute top-[38%] z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-neutral-950/85 text-white shadow-xl backdrop-blur transition-all duration-300 hover:bg-cyan-400 hover:text-neutral-950 md:flex",
             isRtl ? "-right-3" : "-left-3"
           )}
         >
@@ -104,7 +104,7 @@ export function MediaRow({
           onClick={() => scrollBy(1)}
           aria-label={`${ariaLabel} — next`}
           className={cn(
-            "absolute top-[38%] z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-neutral-950/85 text-white shadow-xl backdrop-blur transition hover:bg-cyan-400 hover:text-neutral-950 md:flex",
+            "absolute top-[38%] z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-neutral-950/85 text-white shadow-xl backdrop-blur transition-all duration-300 hover:bg-cyan-400 hover:text-neutral-950 md:flex",
             isRtl ? "-left-3" : "-right-3"
           )}
         >

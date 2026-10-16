@@ -109,11 +109,15 @@ export const DEFAULT_SETTINGS: UserSettings = {
 };
 
 export function getSettings(): UserSettings {
-  return { ...DEFAULT_SETTINGS, ...read<Partial<UserSettings>>(KEYS.settings, {}) };
+  const stored = read<Partial<UserSettings>>(KEYS.settings, {});
+  // Theme is permanently dark — discard any legacy light/system preference.
+  return { ...DEFAULT_SETTINGS, ...stored, theme: "dark" };
 }
 
 export function saveSettings(patch: Partial<UserSettings>): UserSettings {
-  const next = { ...getSettings(), ...patch };
+  const { theme: _ignored, ...rest } = patch;
+  void _ignored;
+  const next = { ...getSettings(), ...rest, theme: "dark" as const };
   write(KEYS.settings, next);
   return next;
 }
@@ -330,14 +334,13 @@ export function getViews(): Record<string, number> {
 }
 
 /* ------------------------------------------------------------------ */
-/* Theme application                                                   */
+/* Theme lock: cinematic dark is permanent. This helper only guarantees */
+/* the `dark` class + dark color-scheme on the document element.        */
 /* ------------------------------------------------------------------ */
 
-export function applyTheme(theme: ThemePref): void {
+export function applyTheme(): void {
   if (typeof document === "undefined") return;
   const root = document.documentElement;
-  const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? true;
-  const dark = theme === "system" ? prefersDark : theme === "dark";
-  root.classList.toggle("dark", dark);
-  root.style.colorScheme = dark ? "dark" : "light";
+  root.classList.add("dark");
+  root.style.colorScheme = "dark";
 }

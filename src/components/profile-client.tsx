@@ -46,7 +46,7 @@ export function ProfileClient({ locale, dict: t }: { locale: Locale; dict: Dicti
             {t.profile.signInNote}
           </p>
         </div>
-        <Link href="/settings" className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold text-neutral-200 transition hover:bg-white/10 hover:text-white">
+        <Link href="/settings" className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold text-neutral-200 transition-all duration-300 hover:bg-white/10 hover:text-white">
           {t.profile.settings}
         </Link>
       </div>
@@ -72,7 +72,7 @@ export function ProfileClient({ locale, dict: t }: { locale: Locale; dict: Dicti
         })}
         {tab === "history" && history.length > 0 && (
           <button type="button" onClick={() => { clearHistory(); window.location.reload(); }}
-            className="ms-auto mb-2 flex shrink-0 items-center gap-1.5 rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs font-bold text-red-300 transition hover:bg-red-500/20">
+            className="ms-auto mb-2 flex shrink-0 items-center gap-1.5 rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs font-bold text-red-300 transition-all duration-300 hover:bg-red-500/20">
             <Trash2 className="h-3.5 w-3.5" aria-hidden />
             {t.profile.clearHistory}
           </button>

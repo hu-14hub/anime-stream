@@ -89,10 +89,6 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
           {t.nav.home}
         </Link>
         <span aria-hidden className="text-neutral-600">/</span>
-        <Link href="/catalog" className="rounded-full transition-colors duration-300 hover:text-white">
-          {t.nav.catalog}
-        </Link>
-        <span aria-hidden className="text-neutral-600">/</span>
         <span aria-current="page" className="max-w-[40vw] truncate text-neutral-200">
           {anime.title[locale]}
         </span>
@@ -248,7 +244,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
 
         <aside className="h-fit space-y-5 rounded-2xl border border-white/5 bg-white/[0.03] p-5">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">
               {t.detail.youScored}
             </p>
             <div className="mt-3">
@@ -256,7 +252,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
             </div>
           </div>
           <div className="border-t border-white/10 pt-4">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">
               {t.detail.genres}
             </p>
             <div className="mt-2.5 flex flex-wrap gap-2">

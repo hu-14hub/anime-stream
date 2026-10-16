@@ -260,7 +260,7 @@ export function CommentsSection({
                     <button
                       type="submit"
                       disabled={!replyDraft.trim()}
-                      className="flex h-9 items-center gap-1 rounded-full bg-cyan-400 px-3.5 text-xs font-bold text-neutral-950 transition hover:bg-cyan-300 disabled:opacity-50"
+                      className="flex h-9 items-center gap-1 rounded-full bg-cyan-400 px-3.5 text-xs font-bold text-neutral-950 transition-all duration-300 hover:bg-cyan-300 disabled:opacity-50"
                     >
                       <Send className="h-3 w-3 rtl-flip" aria-hidden />
                       {dict.comments.send}

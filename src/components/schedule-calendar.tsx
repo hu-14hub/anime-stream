@@ -123,7 +123,7 @@ export function ScheduleCalendar({
         </div>
       </div>
 
-      <p className="text-xs font-bold uppercase tracking-widest text-slate-500">
+      <p className="text-xs font-bold uppercase tracking-widest text-neutral-500">
         {dict.schedule.localNote.replace("{tz}", Intl.DateTimeFormat().resolvedOptions().timeZone)}
       </p>
 

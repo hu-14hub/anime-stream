@@ -116,7 +116,7 @@ export function BrowseFilters({
     (draft.sort !== "popularity" ? 1 : 0);
 
   const selectCls =
-    "h-10 w-full appearance-none rounded-xl border border-white/10 bg-white/5 ps-3 pe-8 text-sm font-semibold text-neutral-200 outline-none transition hover:border-white/20 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20";
+    "h-10 w-full appearance-none rounded-xl border border-white/10 bg-white/5 ps-3 pe-8 text-sm font-semibold text-neutral-200 outline-none transition-all duration-300 hover:border-white/20 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20";
 
   const Select = ({
     label,
@@ -130,7 +130,7 @@ export function BrowseFilters({
     children: ReactNode;
   }) => (
     <label className="block space-y-1.5">
-      <span className="text-[11px] font-bold uppercase tracking-widest text-slate-500">
+      <span className="text-[11px] font-bold uppercase tracking-widest text-neutral-500">
         {label}
       </span>
       <span className="relative block">
@@ -188,7 +188,7 @@ export function BrowseFilters({
             <button
               type="button"
               onClick={clearAll}
-              className="flex h-11 items-center gap-1.5 rounded-full border border-white/10 px-4 text-sm font-semibold text-neutral-400 transition hover:border-red-400/40 hover:text-red-300"
+              className="flex h-11 items-center gap-1.5 rounded-full border border-white/10 px-4 text-sm font-semibold text-neutral-400 transition-all duration-300 hover:border-red-400/40 hover:text-red-300"
             >
               <RotateCcw className="h-3.5 w-3.5" aria-hidden />
               {dict.browse.clearAll}
@@ -208,7 +208,7 @@ export function BrowseFilters({
           <div className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-5">
             {/* Genres (multi-select chips) */}
             <div className="space-y-2">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-slate-500">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-neutral-500">
                 {dict.browse.genres}
               </p>
               <div className="flex flex-wrap gap-2">
@@ -308,7 +308,7 @@ export function BrowseFilters({
       {/* Active filter pills */}
       {activeCount > 0 && (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[11px] font-bold uppercase tracking-widest text-slate-500">
+          <span className="text-[11px] font-bold uppercase tracking-widest text-neutral-500">
             {dict.browse.activeFilters}
           </span>
           {draft.genres.map((g) => (
@@ -316,7 +316,7 @@ export function BrowseFilters({
               key={g}
               type="button"
               onClick={() => toggleGenre(g)}
-              className="flex items-center gap-1 rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-bold text-cyan-300 transition hover:bg-cyan-400/20"
+              className="flex items-center gap-1 rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-bold text-cyan-300 transition-all duration-300 hover:bg-cyan-400/20"
             >
               {genres.find((x) => x.key === g)?.label[locale] ?? g}
               <X className="h-3 w-3" aria-hidden />
@@ -347,7 +347,7 @@ export function BrowseFilters({
                 key={pill.k}
                 type="button"
                 onClick={() => setFacet(pill.k, undefined)}
-                className="flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-neutral-200 transition hover:bg-white/20"
+                className="flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-neutral-200 transition-all duration-300 hover:bg-white/20"
               >
                 {pill.label}
                 <X className="h-3 w-3" aria-hidden />

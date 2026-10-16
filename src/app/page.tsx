@@ -81,7 +81,7 @@ export default async function Home() {
         <Reveal as="section" aria-labelledby="genres-heading" className="space-y-4">
           <p
             id="genres-heading"
-            className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500"
+            className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500"
           >
             {t.sections.browseGenres}
           </p>

@@ -74,7 +74,7 @@ export function Navbar({ locale, dict }: NavbarProps) {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-label={open ? "Close menu" : "Open menu"}
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-200 transition duration-300 hover:bg-white/10 lg:hidden"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-neutral-200 transition-all duration-300 hover:bg-white/10 lg:hidden"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -103,8 +103,8 @@ export function Navbar({ locale, dict }: NavbarProps) {
                   onClick={() => setOpen(false)}
                   aria-current={isActive(l.href) ? "page" : undefined}
                   className={cn(
-                    "rounded-xl px-4 py-2.5 text-sm font-medium transition duration-300",
-                    isActive(l.href) ? "bg-white/10 text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"
+                    "rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-300",
+                    isActive(l.href) ? "bg-white/10 text-white" : "text-neutral-400 hover:bg-white/5 hover:text-white"
                   )}
                 >
                   {dict.nav[l.key]}

@@ -100,7 +100,7 @@ function ContentSection({ t, role }: { t: Dictionary; role: UserRole }) {
         <p className="text-sm text-neutral-400">{t.admin.anime} · <span dir="ltr">{records.length}</span></p>
         {role === "admin" && (
           <button type="button" onClick={() => setEditing(blankAnime())}
-            className="rounded-full bg-cyan-400 px-4 py-2 text-xs font-bold text-neutral-950 transition hover:bg-cyan-300">
+            className="rounded-full bg-cyan-400 px-4 py-2 text-xs font-bold text-neutral-950 transition-all duration-300 hover:bg-cyan-300">
             {t.admin.addNew}
           </button>
         )}

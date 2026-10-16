@@ -507,7 +507,7 @@ export function VideoPlayer({
                 setError(false);
                 setLoading(true);
               }}
-              className="mt-5 rounded-full bg-white/10 px-6 py-2 text-sm font-semibold text-white transition hover:bg-white/20"
+              className="mt-5 rounded-full bg-white/10 px-6 py-2 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/20"
             >
               {dict.common.retry}
             </button>

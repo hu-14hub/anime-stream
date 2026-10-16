@@ -24,7 +24,7 @@ export function RatingInput({
   return (
     <div className={cn("flex flex-wrap items-center gap-2", compact && "gap-1")}>
       {!compact && (
-        <span className="text-xs font-bold uppercase tracking-widest text-slate-500">
+        <span className="text-xs font-bold uppercase tracking-widest text-neutral-500">
           {dict.detail.rate}
         </span>
       )}
