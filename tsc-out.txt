@@ -1,6 +1,0 @@
-src/app/profile/page.tsx(10,16): error TS2305: Module '"@/lib/store"' has no exported member 'useStore'.
-src/app/profile/page.tsx(28,39): error TS7006: Parameter 'e' implicitly has an 'any' type.
-src/app/profile/page.tsx(31,30): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'string'.
-src/app/profile/page.tsx(58,9): error TS2451: Cannot redeclare block-scoped variable 'current'.
-src/app/profile/page.tsx(59,9): error TS2451: Cannot redeclare block-scoped variable 'current'.
-src/app/profile/page.tsx(133,43): error TS7006: Parameter 'e' implicitly has an 'any' type.

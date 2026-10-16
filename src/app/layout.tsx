@@ -3,6 +3,7 @@ import { Cairo, Poppins } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { ThemeInit } from "@/components/theme-init";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getDirection } from "@/i18n/config";
 import { getLocale } from "@/i18n/server";
@@ -44,6 +45,7 @@ export default async function RootLayout({
         }`}
       >
         <div className="flex min-h-screen flex-col">
+          <ThemeInit />
           <Navbar locale={locale} dict={dict} />
           <div className="flex flex-1 flex-col">{children}</div>
           <Footer locale={locale} dict={dict} />

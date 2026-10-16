@@ -54,6 +54,10 @@ export function Footer({ locale, dict }: FooterProps) {
               { href: "/", label: dict.nav.home },
               { href: "/catalog", label: dict.nav.catalog },
               { href: "/genres", label: dict.nav.genres },
+              { href: "/schedule", label: dict.nav.schedule },
+              { href: "/profile", label: dict.nav.profile },
+              { href: "/settings", label: dict.nav.settings },
+              { href: "/admin", label: dict.nav.admin },
             ].map((l) => (
               <li key={l.href + l.label}>
                 <Link href={l.href} className="text-neutral-400 transition-colors duration-300 hover:text-white">

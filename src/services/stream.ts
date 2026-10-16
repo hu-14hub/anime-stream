@@ -1,5 +1,3 @@
-"use server";
-
 /**
  * Resolves playable sources + subtitle tracks for an episode.
  *

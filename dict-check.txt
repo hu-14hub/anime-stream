@@ -1,4 +1,0 @@
-en sections: admin,browse,card,catalog,comments,common,detail,footer,hero,nav,player,profile,schedule,sections,settings,watch,watchlist
-missing sections in ar: []
-extra sections in ar: []
-JSON OK

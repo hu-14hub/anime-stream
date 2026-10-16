@@ -22,6 +22,8 @@ const links = [
   { href: "/genres", key: "genres" },
   { href: "/schedule", key: "schedule" },
   { href: "/profile", key: "profile" },
+  { href: "/settings", key: "settings" },
+  { href: "/admin", key: "admin" },
 ] as const;
 
 export function Navbar({ locale, dict }: NavbarProps) {
