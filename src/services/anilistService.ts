@@ -35,10 +35,24 @@ const mapAniList = (m: AniListMedia): Anime => {
   const cover = m.coverImage?.extraLarge || m.coverImage?.large || "";
   const banner = m.bannerImage || cover;
   // Build the full episode list so long-running titles (One Piece, Naruto,
-  // Black Clover, ...) list every aired episode. No hard cap — `episode-count`
-  // drives length; the UI paginates via the 24-episode range tabs.
+  // Black Clover, ...) list every aired episode. No hard cap.
+  //
+  // Resolution order:
+  //   1. `m.episodes` — total fixed episode count (completed titles, known totals)
+  //   2. `m.nextAiringEpisode.episode - 1` — actual aired count for ongoing
+  //      titles where AniList hasn't set a fixed total (e.g. One Piece:
+  //      nextAiringEpisode=1144 → 1143 episodes aired). This is the dynamic
+  //      fallback that replaces the old hardcoded `|| 12`.
+  //   3. 12 — last-resort default for brand-new shows with no airing data yet.
   const epCount = m.episodes ?? 0;
-  const n = Math.max(epCount || 12, 1);
+  const isReleasing = m.status === "RELEASING";
+  const nextEp = m.nextAiringEpisode?.episode ?? 0;
+  const n =
+    epCount > 0
+      ? epCount
+      : isReleasing && nextEp >= 2
+        ? nextEp - 1
+        : 12;
   const studio = m.studios?.nodes?.[0]?.name ?? "Unknown";
   return attachImdbAndAwards({
     id: `al-${m.id}`,
