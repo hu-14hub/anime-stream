@@ -42,7 +42,7 @@ export function ImageCard({
     <Link
       href={`/anime/${anime.slug}`}
       className={cn(
-        "group relative block transition-all duration-300 ease-out hover:-translate-y-1.5 hover:ring-1 hover:ring-cyan-500/50 hover:shadow-[0_20px_40px_-15px_rgba(6,182,212,0.35)]",
+        "group block transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(6,182,212,0.18)]",
         className
       )}
     >
@@ -63,7 +63,7 @@ export function ImageCard({
           className={cn(
             "anim-poster-img object-cover transform-gpu transition-all duration-500 ease-in-out",
             imgLoaded
-              ? "scale-100 opacity-100 group-hover:scale-110"
+              ? "scale-100 opacity-100 group-hover:scale-105"
               : "scale-95 opacity-0",
           )}
           onLoad={() => setImgLoaded(true)}
