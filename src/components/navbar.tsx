@@ -43,6 +43,9 @@ export function Navbar({ locale, dict }: NavbarProps) {
               aria-current={isActive(l.href) ? "page" : undefined}
               className={cn(
                 "relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300",
+                // Brand serif — mirrors the "Shinkai" logo wordmark (font-amagro),
+                // EN only so the Arabic interface keeps its Cairo typography.
+                locale === "en" && "font-amagro",
                 isActive(l.href)
                   ? "text-white"
                   : "text-neutral-400 hover:text-white"
@@ -103,6 +106,8 @@ export function Navbar({ locale, dict }: NavbarProps) {
                   aria-current={isActive(l.href) ? "page" : undefined}
                   className={cn(
                     "rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-300",
+                    // Brand serif — mirrors the "Shinkai" logo wordmark (font-amagro), EN only.
+                    locale === "en" && "font-amagro",
                     isActive(l.href) ? "bg-white/10 text-white" : "text-neutral-400 hover:bg-white/5 hover:text-white"
                   )}
                 >
