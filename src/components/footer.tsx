@@ -27,7 +27,7 @@ export function Footer({ locale, dict }: FooterProps) {
                 {dict.common.logo}
               </span>
               <span className="mt-1.5 block max-w-full truncate font-medium leading-tight text-[0.65rem] tracking-wide text-muted-foreground/70">
-                Experience anime like never before. Stream your favorite series and movie in high quality.
+                Your ultimate destination for watching anime with English & Arabic subtitles.
               </span>
             </span>
           </Link>

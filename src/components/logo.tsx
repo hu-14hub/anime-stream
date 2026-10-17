@@ -4,7 +4,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { ToriiGate } from "./torii-gate";
 
-const TAGLINE = "Experience anime like never before. Stream your favorite series and movie in high quality.";
+const TAGLINE = "Your ultimate destination for watching anime with English & Arabic subtitles.";
 
 interface LogoProps {
   name: string;
