@@ -6,9 +6,9 @@ import { ToriiGate } from "./torii-gate";
 
 const SEEN_KEY = "shinkai-has-seen-intro";
 const PLAY_MS = 1600; // how long the intro stays fully visible
-const LEAVE_MS = 650; // fade + scale-out duration
+const LEAVE_MS = 700; // fade-out duration (kept in sync with `duration-700`)
 
-type Phase = "idle" | "playing" | "leaving" | "done";
+type Phase = "playing" | "leaving" | "done";
 
 // Subtle light motes floating around the torii (position % within the gate box).
 const PARTICLES = [
@@ -23,15 +23,21 @@ const PARTICLES = [
 /**
  * Full-screen intro splash that plays once per browser session on first load.
  *
- * - Rendered as a `fixed` overlay (out of flow) so it never triggers CLS on the
- *   page below. It mounts invisibly and only animates in after hydration.
+ * - Rendered as a `fixed` overlay (out of flow) so it never triggers CLS, with a
+ *   synchronous opaque initial state so it covers the page from the very first
+ *   paint (before any hero image/content) and fades out on hydration.
  * - Uses `sessionStorage` so it does not replay on in-app navigation.
  * - Respects `prefers-reduced-motion` by skipping the effect entirely.
  */
 export function IntroAnimation() {
-  const [phase, setPhase] = useState<Phase>("idle");
-  // Decided once per component instance (survives StrictMode double-invoke) so
-  // the splash logic only runs a single time and timers are never restarted.
+  // Synchronous initial state: the overlay is `playing` (opaque, full-screen)
+  // on the very first server render, so it covers the page before any hero
+  // image or content is painted. This is what removes the "main UI flashes
+  // first" bug. Because the markup is deterministic there is no hydration
+  // mismatch between server HTML and the first client paint.
+  const [phase, setPhase] = useState<Phase>("playing");
+  // Locked once per component instance (survives StrictMode double-invoke) so
+  // the show/skip decision and timers are applied exactly once.
   const decided = useRef<boolean | null>(null);
 
   useEffect(() => {
@@ -48,12 +54,16 @@ export function IntroAnimation() {
       decided.current = show && !reduced;
     }
 
+    // Already seen this session (or reduced motion): the splash is still
+    // rendered for the hydration frame (see synchronous initial state above) so
+    // the page never flashes, but we skip the animation and fade out fast.
     if (!decided.current) {
-      setPhase("done");
-      return;
+      setPhase("leaving");
+      const doneTimer = window.setTimeout(() => setPhase("done"), LEAVE_MS + 60);
+      return () => window.clearTimeout(doneTimer);
     }
 
-    setPhase("playing");
+    // First time: the initial render is already `playing`; run the intro timers.
     const leaveTimer = window.setTimeout(() => setPhase("leaving"), PLAY_MS);
     const doneTimer = window.setTimeout(
       () => setPhase("done"),
@@ -67,16 +77,13 @@ export function IntroAnimation() {
 
   if (phase === "done") return null;
 
-  const started = phase !== "idle";
-
   return (
     <div
       aria-hidden
       className={cn(
-        "fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-neutral-950 transition-[opacity,transform] duration-500 ease-out",
-        phase === "idle" && "pointer-events-none opacity-0",
+        "fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-neutral-950 transition-opacity duration-700 ease-in",
         phase === "playing" && "opacity-100",
-        phase === "leaving" && "scale-105 opacity-0 duration-700 ease-in"
+        phase === "leaving" && "pointer-events-none opacity-0"
       )}
     >
       {/* soft radial cyan backdrop */}
@@ -109,43 +116,29 @@ export function IntroAnimation() {
               aria-hidden
             />
           ))}
-          <ToriiGate
-            className={cn(
-              "intro-torii neon absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 text-brand",
-              started && "is-drawing"
-            )}
-          />
+          <ToriiGate className="intro-torii neon absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 text-brand is-drawing" />
         </div>
 
         {/* Brand name */}
         <h1
-          className={cn(
-            "intro-text font-amagro text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl",
-            started && "is-in"
-          )}
-          style={started ? { animationDelay: "0.55s" } : undefined}
+          className="intro-text is-in font-amagro text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl"
+          style={{ animationDelay: "0.55s" }}
         >
           Shinkai
         </h1>
 
         {/* Japanese tagline */}
         <p
-          className={cn(
-            "intro-text mt-3 text-center font-jp text-base tracking-[0.35em] text-brand-300/85 sm:text-lg",
-            started && "is-in"
-          )}
-          style={started ? { animationDelay: "0.8s" } : undefined}
+          className="intro-text is-in mt-3 text-center font-jp text-base tracking-[0.35em] text-brand-300/85 sm:text-lg"
+          style={{ animationDelay: "0.8s" }}
         >
           アニメの世界へ
         </p>
 
         {/* thin shimmering progress hint */}
         <div
-          className={cn(
-            "intro-text mt-8 h-px w-40 overflow-hidden rounded-full bg-white/5",
-            started && "is-in"
-          )}
-          style={started ? { animationDelay: "1s" } : undefined}
+          className="intro-text is-in mt-8 h-px w-40 overflow-hidden rounded-full bg-white/5"
+          style={{ animationDelay: "1s" }}
         >
           <span className="block h-full w-1/3 animate-pulse rounded-full bg-brand/80 shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
         </div>
