@@ -71,7 +71,7 @@ export function ContinueWatchingRow({
               href={`/anime/${p.slug}/watch?ep=${p.ep}`}
               className="group w-56 shrink-0 snap-start sm:w-64"
             >
-              <div className="relative aspect-video overflow-hidden rounded-xl bg-neutral-900">
+              <div className="relative aspect-video overflow-hidden rounded-xl">
                 <Image
                   src={p.cover}
                   alt={p.title}
@@ -82,11 +82,6 @@ export function ContinueWatchingRow({
                   placeholder="blur"
                   blurDataURL={BLUR_DATA_URL}
                 />
-                <span className="absolute inset-0 flex items-center justify-center bg-neutral-950/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand text-neutral-950 shadow-xl shadow-brand/30">
-                    <Play className="h-5 w-5 fill-neutral-950 rtl-flip" aria-hidden />
-                  </span>
-                </span>
                 {/* progress bar */}
                 <span className="absolute inset-x-0 bottom-0 h-1.5 bg-black/60">
                   <span className="block h-full bg-brand" style={{ width: `${pct}%` }} />

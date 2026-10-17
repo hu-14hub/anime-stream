@@ -152,7 +152,7 @@ export function EpisodeList({
               >
                 <span
                   className={cn(
-                    "relative shrink-0 overflow-hidden rounded-lg bg-neutral-900",
+                    "relative shrink-0 overflow-hidden rounded-lg",
                     view === "grid" ? "h-16 w-28" : "h-11 w-20",
                     !released && "grayscale"
                   )}
@@ -170,13 +170,9 @@ export function EpisodeList({
                     blurDataURL={BLUR_DATA_URL}
                   />
                   {released ? (
-                    <span className="absolute inset-0 flex items-center justify-center bg-neutral-950/45 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <Play className="h-5 w-5 fill-white text-white rtl-flip" aria-hidden />
-                    </span>
+                    <Play className="absolute inset-0 flex items-center justify-center text-white rtl-flip" aria-hidden />
                   ) : (
-                    <span className="absolute inset-0 flex items-center justify-center bg-neutral-950/70">
-                      <Clock className="h-5 w-5 text-neutral-400" aria-hidden />
-                    </span>
+                    <Clock className="absolute inset-0 flex items-center justify-center text-neutral-400" aria-hidden />
                   )}
                   {isWatched && (
                     <span className="absolute inset-0 flex items-center justify-center bg-emerald-500/25">

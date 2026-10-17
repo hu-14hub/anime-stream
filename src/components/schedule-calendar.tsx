@@ -191,7 +191,7 @@ export function ScheduleCalendar({
                           className="group flex h-full min-w-[180px] max-w-[200px] cursor-pointer items-stretch gap-2.5 overflow-hidden rounded-lg border border-zinc-800/50 bg-zinc-900/60 p-2 transition-colors hover:border-brand/40 hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand/60"
                         >
                           {/* Poster thumbnail 64x88 */}
-                          <span className="relative h-22 w-16 shrink-0 self-start overflow-hidden rounded-md border border-white/10 bg-neutral-900">
+                          <span className="relative h-22 w-16 shrink-0 self-start overflow-hidden rounded-md border border-white/10">
                             <Image
                               src={e.anime.cover}
                               alt=""

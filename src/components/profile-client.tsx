@@ -132,7 +132,7 @@ function LibraryCard({ entry, locale, t, badge, badgeClass }: {
   const episodes = entry.episodes ?? catalog?.episodeCount;
   return (
     <Link href={`/anime/${entry.slug}`} className="group block">
-      <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl bg-neutral-900">
+      <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl">
         {cover ? (
           <Image src={cover} alt={title} fill sizes="(max-width: 640px) 45vw, 20vw" loading="lazy" placeholder="blur" blurDataURL={BLUR_DATA_URL}
             className="object-cover transition-transform duration-300 group-hover:scale-110" />
@@ -178,7 +178,7 @@ function HistoryRatings({ tab, locale, t, history, allRatings }: {
           if (!anime) return null;
           return (
             <Link key={`${h.slug}-${h.ep}-${i}`} href={`/anime/${h.slug}/watch?ep=${h.ep}`} className="group block">
-              <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl bg-neutral-900">
+              <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl">
                 <Image src={anime.cover} alt={anime.title[locale]} fill sizes="(max-width: 640px) 45vw, 20vw" loading="lazy" className="object-cover transition-transform duration-300 group-hover:scale-110" />
                 <span dir="ltr" className="absolute bottom-1 end-1 rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-bold text-white">EP {h.ep}</span>
               </div>
@@ -198,7 +198,7 @@ function HistoryRatings({ tab, locale, t, history, allRatings }: {
         if (!anime) return null;
         return (
           <Link key={r.slug} href={`/anime/${r.slug}`} className="group block">
-            <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl bg-neutral-900">
+            <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl">
               <Image src={anime.cover} alt={anime.title[locale]} fill sizes="(max-width: 640px) 45vw, 20vw" loading="lazy" className="object-cover transition-transform duration-300 group-hover:scale-110" />
             </div>
             <h3 className="truncate text-sm font-bold text-neutral-100 group-hover:text-brand-300">{anime.title[locale]}</h3>
@@ -237,4 +237,5 @@ function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string
     </div>
   );
 }
+
 

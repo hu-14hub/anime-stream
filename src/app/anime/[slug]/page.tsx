@@ -110,7 +110,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
           />
         </div>
         <div className="relative -mt-28 flex flex-col gap-6 px-5 pb-7 sm:flex-row sm:gap-7 sm:px-7">
-          <div className="relative h-44 w-full sm:h-56 sm:w-40 shrink-0 self-start overflow-hidden rounded-xl border-2 border-white/15 bg-neutral-900 shadow-2xl">
+          <div className="relative h-44 w-full sm:h-56 sm:w-40 shrink-0 self-start overflow-hidden rounded-xl border-2 border-white/15 shadow-2xl">
             <Image src={anime.cover} alt={anime.title[locale]} fill sizes="160px" priority className="object-cover" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
           </div>
           <div className="min-w-0 flex-1 pt-1 sm:pt-3">
@@ -348,3 +348,4 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
     </main>
   );
 }
+

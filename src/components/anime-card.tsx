@@ -47,11 +47,11 @@ export function ImageCard({
         className
       )}
     >
-      <div className="relative w-full aspect-[3/4] overflow-hidden rounded-xl bg-neutral-900">
+      <div className="relative w-full aspect-[3/4] overflow-hidden rounded-xl">
         {/* Shimmer placeholder — hidden once image has loaded */}
         {!imgLoaded && (
           <div
-            className="absolute inset-0 animate-pulse rounded-xl bg-zinc-800/80"
+            className="absolute inset-0 animate-pulse rounded-xl bg-zinc-800/20"
             aria-hidden
           />
         )}
@@ -80,27 +80,7 @@ export function ImageCard({
             {anime.format}
           </span>
         )}
-        {/* Cinematic hover overlay: play + stats */}
-        <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-neutral-950/60 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand text-neutral-950 shadow-xl shadow-brand/30 transition-transform duration-300 group-hover:scale-110">
-            <Play className="h-5 w-5 fill-neutral-950 rtl-flip" aria-hidden />
-          </span>
-          <span dir="ltr" className="text-xs font-bold text-white">
-            {epLabel}
-          </span>
-          {anime.imdbRating != null && (
-            <span
-              dir="ltr"
-              className="flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[11px] font-bold text-yellow-400 backdrop-blur"
-              aria-label={dict.detail.imdbRating}
-            >
-              <span aria-hidden className="rounded bg-yellow-400 px-1 text-[9px] font-black text-neutral-950">
-                IMDb
-              </span>
-              {typeof anime.imdbRating === "number" ? anime.imdbRating.toFixed(1) : anime.imdbRating}
-            </span>
-          )}
-        </span>
+
       </div>
       <div className="mt-3 space-y-1 px-0.5">
         <h3 className={cn("truncate text-sm font-bold text-neutral-100 transition-colors duration-300 group-hover:text-brand-300", locale === "en" && "font-amagro")}>
