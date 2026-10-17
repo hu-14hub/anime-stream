@@ -14,6 +14,7 @@ import { useFavorites, useWatchlist } from "@/lib/use-library";
 import { BLUR_DATA_URL } from "@/lib/image";
 import type { LibraryEntry, UserRating, WatchProgress } from "@/types";
 import { cn } from "@/lib/utils";
+import { statusColorClasses, statusLabel } from "@/lib/status-colors";
 
 export type ProfileTab = "watchlist" | "favorites" | "history" | "ratings";
 
@@ -94,9 +95,8 @@ function TabGrid({ tab, locale, t, watchlist, favorites, history, allRatings }: 
     return (
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {watchlist.map((entry) => {
-          const label = (t.watchlist as Record<string, string>)[entry.status] ?? entry.status;
           return (
-            <LibraryCard key={entry.slug} entry={entry} locale={locale} t={t} badge={label} badgeClass="bg-brand/15 text-brand-300" />
+            <LibraryCard key={entry.slug} entry={entry} locale={locale} t={t} badge={statusLabel(t, entry.status)} badgeClass={statusColorClasses(entry.status)} />
           );
         })}
       </div>
@@ -107,7 +107,7 @@ function TabGrid({ tab, locale, t, watchlist, favorites, history, allRatings }: 
     return (
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {favorites.map((entry) => (
-          <LibraryCard key={entry.slug} entry={entry} locale={locale} t={t} badge={t.profile.favorites} badgeClass="bg-red-500/15 text-red-400" />
+          <LibraryCard key={entry.slug} entry={entry} locale={locale} t={t} badge={t.profile.favorites} badgeClass={statusColorClasses("favorite")} />
         ))}
       </div>
     );

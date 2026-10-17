@@ -18,19 +18,24 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Anime, ListStatus } from "@/types";
 import { useLibraryEntry } from "@/lib/use-library";
 import { cn } from "@/lib/utils";
+import { STATUS_COLORS } from "@/lib/status-colors";
 
 const STATUSES: ListStatus[] = ["watching", "plan", "completed", "onhold", "dropped"];
 
 type StatusMeta = { icon: LucideIcon; accent: string };
 
-/** Distinct icon + accent per status so the saved state reads at a glance. */
+/**
+ * Distinct icon per status; the accent (bg / text / border) comes from the
+ * SHARED `STATUS_COLORS` map so the status button on this detail page is the
+ * exact same color as the status pill on the profile watchlist cards.
+ */
 const STATUS_META: Record<ListStatus, StatusMeta> = {
-  watching: { icon: Play, accent: "bg-brand/15 text-brand-300 ring-1 ring-brand/50" },
-  plan: { icon: Clock, accent: "bg-sky-400/15 text-sky-300 ring-1 ring-sky-400/40" },
-  completed: { icon: CircleCheck, accent: "bg-emerald-400/15 text-emerald-300 ring-1 ring-emerald-400/50" },
-  onhold: { icon: Pause, accent: "bg-amber-400/15 text-amber-300 ring-1 ring-amber-400/40" },
-  dropped: { icon: CircleAlert, accent: "bg-rose-400/15 text-rose-300 ring-1 ring-rose-400/40" },
-  favorite: { icon: CircleCheck, accent: "bg-brand/15 text-brand-300 ring-1 ring-brand/50" },
+  watching: { icon: Play, accent: STATUS_COLORS.watching },
+  plan: { icon: Clock, accent: STATUS_COLORS.plan },
+  completed: { icon: CircleCheck, accent: STATUS_COLORS.completed },
+  onhold: { icon: Pause, accent: STATUS_COLORS.onhold },
+  dropped: { icon: CircleAlert, accent: STATUS_COLORS.dropped },
+  favorite: { icon: CircleCheck, accent: STATUS_COLORS.favorite },
 };
 
 /**
@@ -84,8 +89,8 @@ export function WatchlistButton({ anime, dict }: { anime: Anime; dict: Dictionar
             entry ? `${dict.detail.inWatchlist}: ${dict.watchlist[entry.status]}` : dict.detail.addToWatchlist
           }
           className={cn(
-            "flex items-center gap-2 rounded-full px-5 py-3.5 text-sm font-bold transition-all duration-300 active:scale-[0.97]",
-            entry ? accent : "bg-white/10 text-white hover:bg-white/20"
+            "flex items-center gap-2 rounded-full border px-5 py-3.5 text-sm font-bold transition-all duration-300 active:scale-[0.97]",
+            entry ? accent : "border-white/10 bg-white/10 text-white hover:bg-white/20"
           )}
         >
           <MainIcon className="h-4 w-4 shrink-0" aria-hidden />
