@@ -11,8 +11,8 @@ import { getLocale } from "@/i18n/server";
 
 export const metadata: Metadata = {
   title: {
-    default: "AnimeStream | Watch Anime EN & AR",
-    template: "%s | AnimeStream",
+    default: "Shinkai | Watch Anime EN & AR",
+    template: "%s | Shinkai",
   },
   description:
     "Modern anime streaming website with English & Arabic support, dark mode, trending anime, catalog, details and watch pages.",

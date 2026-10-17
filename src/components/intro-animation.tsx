@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ToriiGate } from "./torii-gate";
 
-const SEEN_KEY = "animestream-has-seen-intro";
+const SEEN_KEY = "shinkai-has-seen-intro";
 const PLAY_MS = 1600; // how long the intro stays fully visible
 const LEAVE_MS = 650; // fade + scale-out duration
 
@@ -125,7 +125,7 @@ export function IntroAnimation() {
           )}
           style={started ? { animationDelay: "0.55s" } : undefined}
         >
-          AnimeStream
+          Shinkai
         </h1>
 
         {/* Japanese tagline */}
