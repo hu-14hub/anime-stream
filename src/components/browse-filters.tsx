@@ -8,8 +8,10 @@ import {
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type ReactNode,
 } from "react";
+import { createPortal } from "react-dom";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Check, ChevronDown, Filter, RotateCcw, Search, X } from "lucide-react";
 import type { Locale } from "@/i18n/config";
@@ -137,6 +139,38 @@ export function BrowseFilters({
   }) => {
     const [open, setOpen] = useState(false);
     const rootRef = useRef<HTMLDivElement>(null);
+    const popupRef = useRef<HTMLDivElement>(null);
+    const [popupStyle, setPopupStyle] = useState<CSSProperties | null>(null);
+
+    // Measure the trigger and position the (portaled) fixed popup directly under it,
+    // flipping above when there is not enough room below.
+    const updatePos = useCallback(() => {
+      const el = rootRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const GAP = 8;
+      const MARGIN = 8;
+      const vh = window.innerHeight;
+      const spaceBelow = vh - r.bottom - GAP - MARGIN;
+      const spaceAbove = r.top - GAP - MARGIN;
+      const up = spaceBelow < 160 && spaceAbove > spaceBelow;
+      const style: CSSProperties = {
+        left: r.left,
+        width: r.width,
+        maxWidth: "calc(100vw - 16px)",
+      };
+      if (up) style.bottom = vh - (r.top - GAP);
+      else style.top = r.bottom + GAP;
+      setPopupStyle(style);
+    }, []);
+
+    const toggleOpen = () => {
+      if (open) setOpen(false);
+      else {
+        updatePos();
+        setOpen(true);
+      }
+    };
 
     // Flatten the rendered <option> children into simple { value, label } pairs so the
     // filter call sites can keep passing plain <option> elements unchanged.
@@ -154,22 +188,32 @@ export function BrowseFilters({
     );
     const selected = options.find((o) => o.value === value);
 
-    // Dismiss on outside click or Escape while the menu is open.
+    // Dismiss on outside click / Escape, and keep the portaled popup glued to the
+    // trigger while the page or window scrolls or resizes.
     useEffect(() => {
       if (!open) return;
       const onDown = (e: MouseEvent) => {
-        if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
+        const t = e.target as Node;
+        if (rootRef.current?.contains(t)) return;
+        if (popupRef.current?.contains(t)) return;
+        setOpen(false);
       };
       const onKey = (e: KeyboardEvent) => {
         if (e.key === "Escape") setOpen(false);
       };
+      const onScroll = () => updatePos();
+      const onResize = () => updatePos();
       document.addEventListener("mousedown", onDown);
       document.addEventListener("keydown", onKey);
+      window.addEventListener("scroll", onScroll, true);
+      window.addEventListener("resize", onResize);
       return () => {
         document.removeEventListener("mousedown", onDown);
         document.removeEventListener("keydown", onKey);
+        window.removeEventListener("scroll", onScroll, true);
+        window.removeEventListener("resize", onResize);
       };
-    }, [open]);
+    }, [open, updatePos]);
 
     const choose = (v: string) => {
       onChange(v);
@@ -188,7 +232,7 @@ export function BrowseFilters({
             role="combobox"
             aria-haspopup="listbox"
             aria-expanded={open}
-            onClick={() => setOpen((o) => !o)}
+            onClick={toggleOpen}
             className="flex h-10 w-full items-center justify-between gap-2 rounded-xl border border-zinc-800 bg-zinc-900/60 px-3 text-start text-sm font-semibold text-zinc-100 outline-none transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20"
           >
             <span className="truncate">{selected ? selected.label : value}</span>
@@ -202,37 +246,41 @@ export function BrowseFilters({
           </button>
 
           {/* Custom popup — a single seamless dark unit beneath the trigger. */}
-          {open && (
-            <div
-              role="listbox"
-              className="animate-select-pop absolute inset-x-0 top-full z-30 mt-2 max-h-64 overflow-auto rounded-xl border border-zinc-800 bg-zinc-900 p-1.5 shadow-xl shadow-black/50"
-            >
-              {options.length === 0 && (
-                <p className="px-3 py-2 text-sm text-neutral-500">—</p>
-              )}
-              {options.map((o) => {
-                const isSelected = o.value === value;
-                return (
-                  <button
-                    key={o.value || "empty"}
-                    type="button"
-                    role="option"
-                    aria-selected={isSelected}
-                    onClick={() => choose(o.value)}
-                    className={cn(
-                      "flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-start text-sm font-semibold transition-colors duration-150",
-                      isSelected
-                        ? "bg-cyan-500/15 text-cyan-200"
-                        : "text-zinc-200 hover:bg-cyan-500/10 hover:text-white focus:bg-cyan-500/20 focus:text-white"
-                    )}
-                  >
-                    <span className="truncate">{o.label}</span>
-                    {isSelected && <Check className="h-4 w-4 shrink-0 text-cyan-300" aria-hidden />}
-                  </button>
-                );
-              })}
-            </div>
-          )}
+          {open &&
+            createPortal(
+              <div
+                ref={popupRef}
+                role="listbox"
+                style={popupStyle ?? undefined}
+                className="animate-select-pop fixed z-[9999] max-h-64 overflow-auto rounded-xl border border-zinc-800 bg-zinc-900 p-1.5 shadow-2xl shadow-black/60"
+              >
+                {options.length === 0 && (
+                  <p className="px-3 py-2 text-sm text-neutral-500">—</p>
+                )}
+                {options.map((o) => {
+                  const isSelected = o.value === value;
+                  return (
+                    <button
+                      key={o.value || "empty"}
+                      type="button"
+                      role="option"
+                      aria-selected={isSelected}
+                      onClick={() => choose(o.value)}
+                      className={cn(
+                        "flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-start text-sm font-semibold transition-colors duration-150",
+                        isSelected
+                          ? "bg-cyan-500/15 text-cyan-200"
+                          : "text-zinc-200 hover:bg-cyan-500/10 hover:text-white focus:bg-cyan-500/20 focus:text-white"
+                      )}
+                    >
+                      <span className="truncate">{o.label}</span>
+                      {isSelected && <Check className="h-4 w-4 shrink-0 text-cyan-300" aria-hidden />}
+                    </button>
+                  );
+                })}
+              </div>,
+              document.body
+            )}
         </div>
       </label>
     );
@@ -293,7 +341,7 @@ export function BrowseFilters({
       {/* Facet panel */}
       <div
         className={cn(
-          "grid overflow-hidden transition-all duration-300",
+          "grid transition-all duration-300",
           open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         )}
       >
