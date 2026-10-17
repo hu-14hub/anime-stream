@@ -41,6 +41,7 @@ export function WatchClient({ slug, num, anime, stream, locale, dict: t }: {
           dict={t}
           hasNext={hasNext}
           hasPrev={hasPrev}
+          fillerEpisodes={anime.episodes.filter((e) => e.isFiller).map((e) => e.number)}
           onNext={() => router.push(`/anime/${slug}/watch?ep=${num + 1}`)}
           onPrev={() => router.push(`/anime/${slug}/watch?ep=${num - 1}`)}
         />

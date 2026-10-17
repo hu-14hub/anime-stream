@@ -54,6 +54,8 @@ export interface VideoPlayerProps {
   dict: Dictionary;
   hasNext: boolean;
   hasPrev: boolean;
+  /** Set of episode numbers marked as filler (drives badge/notice in the player). */
+  fillerEpisodes?: number[];
   /** Client-side navigation handlers (optional). */
   onNext?: () => void;
   onPrev?: () => void;
@@ -76,6 +78,7 @@ export function VideoPlayer({
   dict,
   hasNext,
   hasPrev,
+  fillerEpisodes = [],
   onNext,
   onPrev,
 }: VideoPlayerProps) {
@@ -547,6 +550,22 @@ export function VideoPlayer({
           </div>
         )}
 
+        {/* Filler indicator for the currently playing episode */}
+        {fillerEpisodes.includes(episode) && (
+          <div
+            className="absolute top-4 left-4 z-20 flex items-center gap-2 rounded-full border border-amber-500/20 bg-black/60 px-3 py-1.5 backdrop-blur-sm"
+            role="status"
+            aria-label={dict.detail.fillerBadge}
+          >
+            <span className="rounded-full bg-amber-500/15 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-amber-400 ring-1 ring-amber-500/30">
+              {dict.detail.fillerBadge}
+            </span>
+            <span className="hidden text-[11px] font-semibold text-amber-100/90 sm:inline">
+              {dict.watch.fillerNote}
+            </span>
+          </div>
+        )}
+
         {/* Autoplay next countdown */}
         {nextCountdown && (
           <div className="absolute top-4 right-4 z-20 rounded-full bg-black/70 px-4 py-2 backdrop-blur-sm flex items-center gap-2">
@@ -554,6 +573,11 @@ export function VideoPlayer({
             <span className="text-sm text-white">
               {dict.player.autoplayNext} <span dir="ltr">{nextCountdown}s</span>
             </span>
+            {fillerEpisodes.includes(episode + 1) && (
+              <span className="rounded-full bg-amber-500/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest text-amber-400 ring-1 ring-amber-500/30">
+                {dict.detail.fillerBadge}
+              </span>
+            )}
             <button
               type="button"
               onClick={() => {

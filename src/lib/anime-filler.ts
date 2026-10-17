@@ -34,9 +34,14 @@ const range = (from: number, to: number): number[] =>
 /** Curated filler episode numbers per title. Values are 1-based episode numbers. */
 const FILLER_MAP: Record<string, number[]> = {
   /* ── Local demo titles (seeded so the feature is visible immediately) ── */
-  "naruto-shippuden": [4, 6],
-  "one-piece": [3, 7],
+  "attack-on-titan": [5],
   "demon-slayer": [6],
+  "naruto-shippuden": [4, 6, 8],
+  "one-piece": [3, 7, 10],
+  "jujutsu-kaisen": [6, 9],
+  "my-hero-academia": [5, 8],
+  "death-note": [6],
+  "spy-x-family": [4, 7],
 
   /* ── Representative real-world filler (keyed by canonical title) ── */
   "Naruto Shippuden": [
