@@ -34,7 +34,8 @@
   "card": {
     "episodes": "EP",
     "sub": "SUB",
-    "dub": "DUB"
+    "dub": "DUB",
+    "ongoing": "Ongoing"
   },
   "detail": {
     "synopsis": "Synopsis",

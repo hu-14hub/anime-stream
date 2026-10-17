@@ -43,7 +43,9 @@ const mapAniList = (m: AniListMedia): Anime => {
   //      titles where AniList hasn't set a fixed total (e.g. One Piece:
   //      nextAiringEpisode=1144 → 1143 episodes aired). This is the dynamic
   //      fallback that replaces the old hardcoded `|| 12`.
-  //   3. 12 — last-resort default for brand-new shows with no airing data yet.
+  //   3. 0  — exact count unknown (brand-new show with no airing data yet).
+  //           The UI renders a localized "Ongoing" label for these instead of a
+  //           fake number, so we never emit a misleading default like "12 EP".
   const epCount = m.episodes ?? 0;
   const isReleasing = m.status === "RELEASING";
   const nextEp = m.nextAiringEpisode?.episode ?? 0;
@@ -52,7 +54,7 @@ const mapAniList = (m: AniListMedia): Anime => {
       ? epCount
       : isReleasing && nextEp >= 2
         ? nextEp - 1
-        : 12;
+        : 0;
   const studio = m.studios?.nodes?.[0]?.name ?? "Unknown";
   return attachImdbAndAwards({
     id: `al-${m.id}`,

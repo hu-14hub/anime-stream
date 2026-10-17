@@ -68,6 +68,7 @@ export const MEDIA_FIELDS = `
   status
   studios { nodes { name } }
   trailer { id site }
+  nextAiringEpisode { airingAt episode }
 `;
 
 export const TRENDING_QUERY = `query ($page: Int, $perPage: Int) {
@@ -93,7 +94,6 @@ export const DETAIL_QUERY = `query ($id: Int) {
     ${MEDIA_FIELDS}
     studios { nodes { name isAnimationStudio } }
     tags { name rank }
-    nextAiringEpisode { airingAt episode }
     characters(sort: [ROLE, RELEVANCE], perPage: 12) { edges { role node { id name { full } image { large } } } }
     relations { edges { relationType node { ${MEDIA_FIELDS} } } }
     recommendations(sort: [RATING_DESC]) { nodes { id rating mediaRecommendation { ${MEDIA_FIELDS} } } }

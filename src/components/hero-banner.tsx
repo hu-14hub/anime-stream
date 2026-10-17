@@ -10,6 +10,7 @@ import type { Locale } from "@/i18n/config";
 import type { Anime } from "@/types";
 import { genres } from "@/data/anime";
 import { cn } from "@/lib/utils";
+import { getAiredEpisodeCount } from "@/lib/anime-availability";
 import { TrailerButton } from "./trailer-button";
 
 export function HeroBanner({
@@ -38,6 +39,13 @@ export function HeroBanner({
 
   if (!active) return null;
   const isRtl = locale === "ar";
+  const activeAired = getAiredEpisodeCount(active);
+  const activeEpLabel =
+    activeAired > 0
+      ? `${activeAired} ${dict.hero.episodes}`
+      : active.status === "ongoing"
+        ? dict.card.ongoing
+        : "0";
 
   return (
     <section
@@ -103,7 +111,7 @@ export function HeroBanner({
               <span dir="ltr">{active.year}</span>
             </span>
             <span className="font-medium text-neutral-300">
-              <span dir="ltr">{active.episodeCount}</span> {dict.hero.episodes}
+              <span dir="ltr">{activeEpLabel}</span>
             </span>
             <span className="flex flex-wrap gap-2">
               {active.genres.slice(0, 3).map((g) => (

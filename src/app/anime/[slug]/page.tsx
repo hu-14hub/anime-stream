@@ -173,7 +173,13 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
               )}
               <span className="flex items-center gap-1.5 text-xs font-semibold text-neutral-400">
                 <MonitorPlay className="h-3.5 w-3.5" aria-hidden />
-                <span dir="ltr">{airedCount === anime.episodeCount ? anime.episodeCount : `${airedCount}/${anime.episodeCount}`}</span> {t.detail.episodes}
+                {anime.episodeCount > 0 ? (
+                  <>
+                    <span dir="ltr">{airedCount === anime.episodeCount ? anime.episodeCount : `${airedCount}/${anime.episodeCount}`}</span> {t.detail.episodes}
+                  </>
+                ) : (
+                  <span dir="ltr">{anime.status === "ongoing" ? t.detail.ongoing : "0"}</span>
+                )}
               </span>
             </p>
 

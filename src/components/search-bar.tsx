@@ -14,6 +14,7 @@ export interface Suggestion {
   rating: number;
   year: number;
   episodeCount: number;
+  status?: "ongoing" | "completed";
 }
 
 export function SearchBar({
@@ -183,7 +184,13 @@ export function SearchBar({
                         </span>
                         <span dir="ltr">{a.year}</span>
                         <span aria-hidden>·</span>
-                        <span dir="ltr">{a.episodeCount} EP</span>
+                        <span dir="ltr">
+                        {a.episodeCount > 0
+                          ? `${a.episodeCount} EP`
+                          : a.status === "ongoing"
+                            ? locale === "ar" ? "مستمر" : "Ongoing"
+                            : "0 EP"}
+                      </span>
                       </span>
                     </span>
                   </button>

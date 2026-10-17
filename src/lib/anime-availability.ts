@@ -21,11 +21,15 @@ export function getAiredEpisodeCount(anime: Anime): number {
   const total = anime.episodes.length;
   if (anime.status !== "ongoing") return total;
   const next = anime.nextAiringEpisode;
-  // next must be in range [2, total+1] to be meaningful:
-  //   2    → 1 episode has aired
-  //   total+1 → all episodes have aired (title is effectively done)
-  if (next != null && next >= 2 && next <= total + 1) {
-    return Math.max(1, next - 1);
+  // For a title still airing, the latest watchable episode is the model's total
+  // (every entry built into `episodes` is available). When AniList knows which
+  // episode is up next (`next`), it can be *smaller* than the model total if a
+  // stale cache or sync gap inflated the count — clamp to `total` so the badge,
+  // the episode list, and the "x/y" detail meta all agree. A value of
+  // `next ≥ total + 1` means the series is effectively caught up (done), which
+  // is also clamped to `total`.
+  if (next != null && next >= 2) {
+    return Math.min(total, Math.max(1, next - 1));
   }
   return total;
 }

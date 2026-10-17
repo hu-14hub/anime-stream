@@ -61,9 +61,11 @@ export function mapJikan(a: JikanAnime): Anime {
   const cover = a.images.webp?.large_image_url || a.images.webp?.image_url || a.images.jpg.large_image_url;
   const banner = a.trailer?.images?.maximum_image_url || cover;
   // Build the full episode list (no hard cap) so long-running titles list every
-  // episode; the UI paginates via the 24-episode range tabs.
+  // episode; the UI paginates via the 24-episode range tabs. When Jikan has not
+  // set an episode count yet (brand-new / unknown ongoing shows), `n` is 0 and
+  // the UI renders a localized "Ongoing" label rather than a fake number.
   const epCount = a.episodes ?? 0;
-  const n = Math.max(epCount || 12, 1);
+  const n = Math.max(epCount, 0);
   const titleEn = a.title_english || a.title;
   return {
     id: String(a.mal_id), slug: toSlug(a.mal_id, titleEn),

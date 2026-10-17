@@ -15,6 +15,7 @@ export async function GET(req: Request) {
         rating: a.rating,
         year: a.year,
         episodeCount: a.episodeCount,
+        status: a.status,
       })),
     });
   } catch {

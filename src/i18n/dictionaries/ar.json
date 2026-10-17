@@ -34,7 +34,8 @@
   "card": {
     "episodes": "حلقة",
     "sub": "مترجم",
-    "dub": "مدبلج"
+    "dub": "مدبلج",
+    "ongoing": "مستمر"
   },
   "detail": {
     "synopsis": "القصة",
