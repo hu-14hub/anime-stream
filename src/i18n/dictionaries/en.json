@@ -78,7 +78,10 @@
     "comingSoon": "Coming Soon",
     "watchEpisode": "Watch",
     "imdbRating": "IMDb Rating",
-    "animeAwards": "Anime Awards"
+    "animeAwards": "Anime Awards",
+    "hideFiller": "Hide Filler Episodes",
+    "fillerBadge": "Filler",
+    "fillerOnly": "No canon episodes in this range."
   },
   "watchlist": {
     "watching": "Watching",
@@ -100,7 +103,8 @@
     "writeComment": "Write a comment...",
     "postComment": "Post",
     "backToDetails": "Back to Details",
-    "nowPlaying": "Now Playing"
+    "nowPlaying": "Now Playing",
+    "fillerNote": "Note: this episode is filler."
   },
   "browse": {
     "title": "Browse Anime",

@@ -1,4 +1,5 @@
 import type { Anime } from "@/types";
+import { applyFillerFlags } from "@/lib/anime-filler";
 
 const BASE = "https://api.jikan.moe/v4";
 
@@ -67,7 +68,7 @@ export function mapJikan(a: JikanAnime): Anime {
   const epCount = a.episodes ?? 0;
   const n = Math.max(epCount, 0);
   const titleEn = a.title_english || a.title;
-  return {
+  return applyFillerFlags({
     id: String(a.mal_id), slug: toSlug(a.mal_id, titleEn),
     title: { en: titleEn, ar: arTitle(titleEn) },
     synopsis: { en: a.synopsis ?? "", ar: arSynopsis(a.synopsis ?? "") },
@@ -80,7 +81,7 @@ export function mapJikan(a: JikanAnime): Anime {
       number: i + 1, title: { en: `Episode ${i + 1}`, ar: `الحلقة ${i + 1}` },
       duration: "23:40", thumbnail: cover, airedAt: new Date().toISOString(),
     })),
-  };
+  });
 }
 
 export const getTopAnime = (page = 1, limit = 25) => cached(`top-${page}-${limit}`, async () => {

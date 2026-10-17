@@ -11,6 +11,12 @@ export interface Episode {
   duration: string; // e.g. "23:40"
   thumbnail: string;
   airedAt: string; // ISO date
+  /**
+   * True when the episode is filler (not part of the main / source-matter story).
+   * Populated from the curated registry in `@/lib/anime-filler` — the public
+   * AniList/Jikan/MAL APIs do NOT expose a per-episode filler flag.
+   */
+  isFiller?: boolean;
 }
 
 export type AnimeFormat = "TV" | "MOVIE" | "OVA" | "ONA" | "SPECIAL" | "MUSIC" | string;

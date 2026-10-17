@@ -1,5 +1,6 @@
 import type { Anime, AnimeStatus, Episode } from "@/types";
 import { attachImdbAndAwards } from "@/lib/anime-metadata";
+import { applyFillerFlags } from "@/lib/anime-filler";
 
 /** Flat bilingual shape (as requested): titleEn/titleAr, synopsisEn/synopsisAr, ... */
 export interface AnimeDataItem {
@@ -39,7 +40,7 @@ function toEpisodes(item: AnimeDataItem): Episode[] {
 
 /** Adapter: flat bilingual item -> internal Anime model used by all pages. */
 export function toAnime(item: AnimeDataItem): Anime {
-  return attachImdbAndAwards({
+  return applyFillerFlags(attachImdbAndAwards({
     id: item.id,
     slug: item.slug,
     title: { en: item.titleEn, ar: item.titleAr },
@@ -55,7 +56,7 @@ export function toAnime(item: AnimeDataItem): Anime {
     trailerUrl: item.trailerUrl,
     trending: item.trending,
     episodes: toEpisodes(item),
-  });
+  }));
 }
 
 export const animeData: AnimeDataItem[] = [

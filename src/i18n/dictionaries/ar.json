@@ -78,7 +78,10 @@
     "comingSoon": "قريباً",
     "watchEpisode": "شاهد",
     "imdbRating": "تقييم IMDb",
-    "animeAwards": "جوائز الأنمي"
+    "animeAwards": "جوائز الأنمي",
+    "hideFiller": "إخفاء حلقات الفلر",
+    "fillerBadge": "فلر",
+    "fillerOnly": "لا توجد حلقات أصلية في هذا المدى."
   },
   "watchlist": {
     "watching": "أشاهده حالياً",
@@ -100,7 +103,8 @@
     "writeComment": "اكتب تعليقاً...",
     "postComment": "نشر",
     "backToDetails": "عودة إلى التفاصيل",
-    "nowPlaying": "يُعرض الآن"
+    "nowPlaying": "يُعرض الآن",
+    "fillerNote": "ملاحظة: هذه الحلقة عبارة عن فلر."
   },
   "browse": {
     "title": "تصفّح الأنمي",

@@ -1,5 +1,6 @@
 import type { Anime } from "@/types";
 import { attachImdbAndAwards } from "@/lib/anime-metadata";
+import { applyFillerFlags } from "@/lib/anime-filler";
 import {
   AIRING_QUERY,
   BROWSE_QUERY,
@@ -56,7 +57,7 @@ const mapAniList = (m: AniListMedia): Anime => {
         ? nextEp - 1
         : 0;
   const studio = m.studios?.nodes?.[0]?.name ?? "Unknown";
-  return attachImdbAndAwards({
+  return applyFillerFlags(attachImdbAndAwards({
     id: `al-${m.id}`,
     slug: toAnilistSlug(m.id, titleEn),
     anilistId: m.id,
@@ -109,7 +110,7 @@ const mapAniList = (m: AniListMedia): Anime => {
       thumbnail: cover,
       airedAt: new Date().toISOString(),
     })),
-  });
+  }));
 }
 
 function mapAniListLite(m: AniListMedia): Anime {

@@ -46,6 +46,18 @@ export function WatchClient({ slug, num, anime, stream, locale, dict: t }: {
         />
       </section>
 
+      {current.isFiller && (
+        <div
+          role="note"
+          className="flex flex-wrap items-center gap-3 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm"
+        >
+          <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-amber-400 ring-1 ring-amber-500/30">
+            {t.detail.fillerBadge}
+          </span>
+          <p className="text-amber-100/90">{t.watch.fillerNote}</p>
+        </div>
+      )}
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         {hasPrev ? (
           <Link href={`/anime/${anime.slug}/watch?ep=${num - 1}`}
