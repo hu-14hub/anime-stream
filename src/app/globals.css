@@ -14,6 +14,22 @@
   --font-poppins: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-cairo: "Cairo", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
   --font-noto-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", ui-sans-serif, sans-serif;
+  /* Amagro — primary EN display/branding serif (matches the "PALISADES" spec).
+     "Amagro" is resolved by the @font-face below; the remaining entries are a
+     graceful fallback stack so the build stays green even without the file. */
+  --font-amagro: "Amagro", "Palisadoes", ui-serif, Georgia, "Times New Roman", serif;
+}
+
+/* Amagro @font-face — build-safe (no external asset required). Resolves to the
+   licensed Amagro the moment the real file is available. To activate it, add a
+   `src: url("./fonts/Amagro.woff2") format("woff2")` line to this face (place
+   Amagro.woff2 in src/app/fonts) and keep `local()` as a harmless fallback. */
+@font-face {
+  font-family: "Amagro";
+  src: local("Amagro"), local("Amagro-Bold"), local("Amagro Bold");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 .dark {
@@ -30,6 +46,7 @@
   --font-en: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --font-ar: var(--font-cairo), "Segoe UI", ui-sans-serif, system-ui, sans-serif;
   --font-jp: var(--font-noto-jp);
+  --font-amagro: var(--font-amagro);
 }
 
 html {

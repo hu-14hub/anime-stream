@@ -34,7 +34,7 @@ export function Navbar({ locale, dict }: NavbarProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-white/5 bg-neutral-950/70 backdrop-blur-xl">
       <div className="mx-auto flex h-[72px] w-full max-w-7xl items-center gap-3 px-4 sm:px-6">
-        <Logo name={dict.common.logo} />
+        <Logo name={dict.common.logo} locale={locale} />
         <nav className="ms-4 hidden items-center gap-1 lg:flex" aria-label="Primary">
           {links.map((l) => (
             <Link

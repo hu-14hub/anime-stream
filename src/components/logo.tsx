@@ -8,6 +8,7 @@ const TAGLINE = "アニメの世界へ";
 
 interface LogoProps {
   name: string;
+  locale?: "en" | "ar";
   className?: string;
 }
 
@@ -16,7 +17,7 @@ interface LogoProps {
  * paired with the brand name and a subtle Japanese tagline. Reused by the
  * navbar header — also mirrored in the footer for brand consistency.
  */
-export function Logo({ name, className }: LogoProps) {
+export function Logo({ name, locale = "en", className }: LogoProps) {
   return (
     <Link
       href="/"
@@ -27,7 +28,7 @@ export function Logo({ name, className }: LogoProps) {
         <ToriiGate className="h-6 w-6 text-cyan-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.5)] transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(6,182,212,0.8)]" />
       </span>
       <span className="flex flex-col leading-none">
-        <span className="text-lg font-extrabold tracking-tight text-white">
+        <span className={cn("text-lg font-extrabold tracking-tight text-white", locale === "en" && "font-amagro")}>
           {name}
         </span>
         <span className="mt-1.5 whitespace-nowrap font-jp text-[0.7rem] font-medium leading-none tracking-[0.3em] text-muted-foreground/80">

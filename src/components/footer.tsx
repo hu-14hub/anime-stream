@@ -3,13 +3,14 @@ import { Globe, MessageCircle, Send } from "lucide-react";
 import { ToriiGate } from "./torii-gate";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
+import { cn } from "@/lib/utils";
 
 interface FooterProps {
   locale: Locale;
   dict: Dictionary;
 }
 
-export function Footer({ dict }: FooterProps) {
+export function Footer({ locale, dict }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
@@ -22,7 +23,7 @@ export function Footer({ dict }: FooterProps) {
               <ToriiGate className="h-6 w-6 text-cyan-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.5)] transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(6,182,212,0.8)]" aria-hidden />
             </span>
             <span className="flex flex-col leading-none">
-              <span className="text-lg font-extrabold tracking-tight text-white">
+              <span className={cn("text-lg font-extrabold tracking-tight text-white", locale === "en" && "font-amagro")}>
                 {dict.common.logo}
               </span>
               <span className="mt-1.5 whitespace-nowrap font-jp text-[0.7rem] font-medium leading-none tracking-[0.3em] text-muted-foreground/80">

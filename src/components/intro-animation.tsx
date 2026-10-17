@@ -120,7 +120,7 @@ export function IntroAnimation() {
         {/* Brand name */}
         <h1
           className={cn(
-            "intro-text text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl",
+            "intro-text font-amagro text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl",
             started && "is-in"
           )}
           style={started ? { animationDelay: "0.55s" } : undefined}
