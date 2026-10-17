@@ -69,6 +69,15 @@ export function ImageCard({
           )}
           onLoad={() => setImgLoaded(true)}
         />
+        {/* Hover play overlay: dark backdrop + centered cyan play + episode badge */}
+        <span className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-cyan-500 text-neutral-950 shadow-xl shadow-black/40">
+            <Play className="h-5 w-5 fill-neutral-950 rtl-flip" aria-hidden />
+          </span>
+          <span dir="ltr" className="text-xs font-bold text-white">
+            {epLabel}
+          </span>
+        </span>
         {/* Score badge */}
         <span className="absolute start-2 top-2 flex items-center gap-1 rounded-full bg-black/60 px-2 py-1 text-[11px] font-bold text-amber-400 backdrop-blur">
           <Star className="h-3 w-3 fill-amber-400" aria-hidden />

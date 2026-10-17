@@ -169,11 +169,21 @@ export function EpisodeList({
                     placeholder="blur"
                     blurDataURL={BLUR_DATA_URL}
                   />
-                  {released ? (
-                    <Play className="absolute inset-0 flex items-center justify-center text-white rtl-flip" aria-hidden />
-                  ) : (
-                    <Clock className="absolute inset-0 flex items-center justify-center text-neutral-400" aria-hidden />
-                  )}
+                  {/* Hover play overlay: dark backdrop + centered cyan play + episode badge */}
+                  <span className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    {released ? (
+                      <>
+                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-cyan-500 text-neutral-950 shadow-xl shadow-black/40">
+                          <Play className="h-5 w-5 fill-neutral-950 rtl-flip" aria-hidden />
+                        </span>
+                        <span dir="ltr" className="text-[10px] font-bold text-white">
+                          EP {ep.number}
+                        </span>
+                      </>
+                    ) : (
+                      <Clock className="h-5 w-5 text-neutral-400" aria-hidden />
+                    )}
+                  </span>
                   {isWatched && (
                     <span className="absolute inset-0 flex items-center justify-center bg-emerald-500/25">
                       <CheckCircle2 className="h-6 w-6 text-emerald-300 drop-shadow" aria-hidden />
