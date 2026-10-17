@@ -171,7 +171,7 @@ export function ScheduleCalendar({
                     {dict.schedule.noEntries}
                   </p>
                 ) : (
-                  <ul className="flex flex-1 flex-row items-stretch gap-3 overflow-x-auto scroll-smooth py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <ul className="flex flex-1 flex-row items-stretch gap-3 overflow-x-auto pl-4 pr-8 py-2 sm:pr-12 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     {dayEntries.map((e) => (
                       <li key={e.id} className="flex-shrink-0">
                         <Link
