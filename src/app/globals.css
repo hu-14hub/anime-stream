@@ -286,6 +286,45 @@ select option:checked {
   animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* ===== Torii Aura (welcome glow) =====
+   Ambient cyan "energy" wash rendered behind the hero title and the navbar
+   logo. The element is purely decorative: `pointer-events-none` keeps it from
+   ever intercepting clicks, and `will-change: transform, opacity` promotes it
+   to its own compositor layer so the 5s breathing pulse holds 60fps with zero
+   layout shift. */
+@keyframes torii-aura-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+.animate-torii-aura {
+  animation: torii-aura-pulse 5s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* ===== Welcome reveal =====
+   Smooth fade-in + scale-up (95% -> 100%) for the primary hero content on
+   initial load and every slide change. Runs once per keyed remount. */
+@keyframes hero-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.animate-hero-reveal {
+  animation: hero-reveal 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;
@@ -299,6 +338,12 @@ select option:checked {
     animation: none;
   }
   .animate-page-in {
+    animation: none;
+  }
+  .animate-torii-aura {
+    animation: none;
+  }
+  .animate-hero-reveal {
     animation: none;
   }
 }

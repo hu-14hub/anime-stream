@@ -90,11 +90,17 @@ export function HeroBanner({
           className={cn("absolute inset-y-0 z-20 w-3/4", isRtl ? "right-0 bg-gradient-to-l" : "left-0 bg-gradient-to-r", "from-neutral-950/85 to-transparent")}
           aria-hidden
         />
+        {/* Torii Aura — soft cyan energy glow pulsing behind the hero title.
+            Decorative only: pointer-events-none + GPU layer (see globals.css). */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute bottom-0 start-6 z-[25] h-[75%] w-[85%] animate-torii-aura bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan-500/15 via-cyan-900/5 to-transparent blur-3xl sm:w-[56%]"
+        />
       </div>
 
       <div className="absolute inset-x-0 bottom-0 z-30">
         <div className="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 sm:pb-14">
-          <div key={active.id} className="animate-fade-up max-w-2xl">
+          <div key={active.id} className="animate-hero-reveal max-w-2xl">
             <h1 className={cn("text-4xl font-black leading-[1.1] tracking-tight text-white drop-shadow-2xl sm:text-6xl sm:leading-[1.05]", !isRtl && "font-amagro")}>
               {active.title[locale]}
             </h1>
