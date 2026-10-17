@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   },
   description:
     "Modern anime streaming website with English & Arabic support, dark mode, trending anime, catalog, details and watch pages.",
+  icons: {
+    icon: "/icon.svg",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default async function RootLayout({
