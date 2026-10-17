@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | Shinkai",
   },
   description:
-    "Modern anime streaming website with English & Arabic support, dark mode, trending anime, catalog, details and watch pages.",
+    "Experience anime like never before. Stream your favorite series and movie in high quality",
   icons: {
     icon: "/icon.svg",
     apple: "/apple-touch-icon.png",

@@ -26,8 +26,8 @@ export function Footer({ locale, dict }: FooterProps) {
               <span className={cn("text-lg font-extrabold tracking-tight text-white", locale === "en" && "font-amagro")}>
                 {dict.common.logo}
               </span>
-              <span className="mt-1.5 whitespace-nowrap font-jp text-[0.7rem] font-medium leading-none tracking-[0.3em] text-muted-foreground/80">
-                アニメの世界へ
+              <span className="mt-1.5 block max-w-full truncate font-medium leading-tight text-[0.65rem] tracking-wide text-muted-foreground/70">
+                Experience anime like never before. Stream your favorite series and movie in high quality.
               </span>
             </span>
           </Link>
