@@ -60,8 +60,10 @@ export function mapJikan(a: JikanAnime): Anime {
   const year = a.year ?? (a.aired?.from ? new Date(a.aired.from).getFullYear() : 0) ?? 0;
   const cover = a.images.webp?.large_image_url || a.images.webp?.image_url || a.images.jpg.large_image_url;
   const banner = a.trailer?.images?.maximum_image_url || cover;
+  // Build the full episode list (no hard cap) so long-running titles list every
+  // episode; the UI paginates via the 24-episode range tabs.
   const epCount = a.episodes ?? 0;
-  const n = Math.min(Math.max(epCount || 12, 1), 24);
+  const n = Math.max(epCount || 12, 1);
   const titleEn = a.title_english || a.title;
   return {
     id: String(a.mal_id), slug: toSlug(a.mal_id, titleEn),

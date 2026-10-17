@@ -34,8 +34,11 @@ const mapAniList = (m: AniListMedia): Anime => {
   const rawDesc = m.description ? stripHtml(m.description) : "";
   const cover = m.coverImage?.extraLarge || m.coverImage?.large || "";
   const banner = m.bannerImage || cover;
+  // Build the full episode list so long-running titles (One Piece, Naruto,
+  // Black Clover, ...) list every aired episode. No hard cap — `episode-count`
+  // drives length; the UI paginates via the 24-episode range tabs.
   const epCount = m.episodes ?? 0;
-  const n = Math.min(Math.max(epCount || 12, 1), 24);
+  const n = Math.max(epCount || 12, 1);
   const studio = m.studios?.nodes?.[0]?.name ?? "Unknown";
   return attachImdbAndAwards({
     id: `al-${m.id}`,

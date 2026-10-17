@@ -20,6 +20,8 @@ type ViewMode = "grid" | "list";
  * Watched state comes from local playback progress and updates live
  * whenever the watch page saves a new position (cross-component sync).
  */
+import { EpisodeSelector, EPISODE_CHUNK_SIZE, rangeStartForEpisode } from "./episode-selector";
+
 export function EpisodeList({
   anime,
   locale,
@@ -35,7 +37,14 @@ export function EpisodeList({
 }) {
   const [view, setView] = useState<ViewMode>("grid");
   const [watched, setWatched] = useState<number[]>([]);
-
+  // 0-based start of the visible episode chunk ("1-24", "25-48", ...).
+  // Driven by <EpisodeSelector/> so only ONE chunk renders at a time — this is
+  // what keeps long-running titles (One Piece ~1100+, Naruto, Black Clover,
+  // ...) fast: the full episode array is huge but we only mount 24 cards.
+  const [rangeStart, setRangeStart] = useState(() => rangeStartForEpisode(active));
+  const totalEpisodes = anime.episodes.length;
+  const episodesSlice = anime.episodes.slice(rangeStart, rangeStart + EPISODE_CHUNK_SIZE);
+  
   useEffect(() => {
     const load = () => setWatched(getWatchedEpisodes(anime.slug));
     load();
@@ -100,13 +109,22 @@ export function EpisodeList({
         </div>
       </div>
 
+      <div className="mt-4">
+        <EpisodeSelector
+          total={totalEpisodes}
+          activeEpisode={active}
+          initialStart={rangeStartForEpisode(active)}
+          onSelect={setRangeStart}
+        />
+      </div>
+
       <ol
         className={cn(
           "mt-4 gap-3",
           view === "grid" ? "grid sm:grid-cols-2 lg:grid-cols-3" : "flex flex-col"
         )}
       >
-        {anime.episodes.map((ep) => {
+        {episodesSlice.map((ep) => {
           const released = ep.number <= airedCount;
           const isWatched = released && watched.includes(ep.number);
           const isActive = released && ep.number === active;
