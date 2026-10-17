@@ -1,6 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import {
+  Children,
+  cloneElement,
+  isValidElement,
+  useCallback,
+  useEffect,
+  useState,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Check, ChevronDown, Filter, RotateCcw, Search, X } from "lucide-react";
 import type { Locale } from "@/i18n/config";
@@ -135,7 +144,16 @@ export function BrowseFilters({
       </span>
       <span className="relative block">
         <select value={value} onChange={(e) => onChange(e.target.value)} className={selectCls}>
-          {children}
+          {/* Force a dark, readable background on native <option> rows — the OS
+              popup can ignore the page theme (white-on-white). Backed up by the
+              global `select option` rule in globals.css. */}
+          {Children.map(children, (child) =>
+            isValidElement(child)
+              ? cloneElement(child as ReactElement<{ className?: string }>, {
+                  className: "bg-zinc-900 text-white",
+                })
+              : child
+          )}
         </select>
         <ChevronDown
           className="pointer-events-none absolute end-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500"

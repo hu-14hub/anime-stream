@@ -72,6 +72,24 @@ body {
   min-height: 100vh;
 }
 
+/* Native <select> option popups are drawn by the OS and do NOT inherit the page's
+   dark theme, so light option text (text-neutral-200) on the OS's light background
+   becomes unreadable (white-on-white). Tell the browser to render the native control
+   in dark mode and pin the option rows to our dark palette. Applied unlayered so it
+   beats any generic utility and fixes every <select> on the site (catalog filters,
+   admin role picker, etc.). */
+select {
+  color-scheme: dark;
+}
+select option {
+  background-color: #18181b; /* zinc-900 */
+  color: #fafafa; /* readable near-white */
+}
+select option:checked {
+  background-color: #27272a; /* zinc-800 — subtle highlight for the active row */
+  color: #fafafa;
+}
+
 /* Subtle custom scrollbar for the dark cinematic look */
 ::-webkit-scrollbar {
   width: 10px;
