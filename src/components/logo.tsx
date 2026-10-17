@@ -4,7 +4,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { ToriiGate } from "./torii-gate";
 
-const TAGLINE = "Your ultimate destination for watching anime with English & Arabic subtitles.";
+const TAGLINE = "アニメの世界へ";
 
 interface LogoProps {
   name: string;
@@ -31,7 +31,7 @@ export function Logo({ name, locale = "en", className }: LogoProps) {
         <span className={cn("text-lg font-extrabold tracking-tight text-white", locale === "en" && "font-amagro")}>
           {name}
         </span>
-        <span className="mt-1.5 block max-w-full truncate font-medium leading-tight text-[0.65rem] tracking-wide text-muted-foreground/70">
+        <span className="mt-1.5 whitespace-nowrap font-jp text-[10px] font-medium leading-none tracking-widest text-muted-foreground/70">
           {TAGLINE}
         </span>
       </span>
