@@ -171,51 +171,45 @@ export function ScheduleCalendar({
                 ) : (
                   <ul className="flex flex-col">
                     {dayEntries.map((e) => (
-                      <li
-                        key={e.id}
-                        className="group flex items-center gap-2.5 rounded-lg p-2 transition-colors hover:bg-white/[0.04]"
-                      >
-                        {/* Poster */}
+                      <li key={e.id}>
                         <Link
                           href={`/anime/${e.anime.slug}/watch?ep=${e.episode}`}
-                          aria-hidden
-                          tabIndex={-1}
-                          className="relative h-[52px] w-11 shrink-0 overflow-hidden rounded-md border border-white/10 bg-neutral-900"
+                          className="group flex cursor-pointer items-center gap-2.5 rounded-lg border border-transparent p-2 transition-colors hover:border-white/10 hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400/60"
                         >
-                          <Image
-                            src={e.anime.cover}
-                            alt=""
-                            fill
-                            sizes="44px"
-                            className="object-cover transition-transform duration-300 group-hover:scale-110"
-                            placeholder="blur"
-                            blurDataURL={BLUR_DATA_URL}
-                          />
-                        </Link>
-                        {/* Details */}
-                        <div className="min-w-0 flex-1">
-                          <Link
-                            href={`/anime/${e.anime.slug}/watch?ep=${e.episode}`}
-                            className="line-clamp-2 text-sm font-medium leading-snug text-neutral-200 transition-colors hover:text-cyan-300"
-                          >
-                            {e.anime.title[locale]}
-                          </Link>
-                          <p
-                            className="mt-1 flex items-center gap-1 text-[11px] font-medium text-cyan-400/80"
-                            dir="ltr"
-                          >
-                            <span dir="auto" className="font-bold text-cyan-300">
-                              {dict.schedule.ep}
+                          {/* Poster */}
+                          <span className="relative h-[52px] w-11 shrink-0 overflow-hidden rounded-md border border-white/10 bg-neutral-900">
+                            <Image
+                              src={e.anime.cover}
+                              alt=""
+                              fill
+                              sizes="44px"
+                              className="object-cover transition-transform duration-300 group-hover:scale-110"
+                              placeholder="blur"
+                              blurDataURL={BLUR_DATA_URL}
+                            />
+                          </span>
+                          {/* Details */}
+                          <div className="min-w-0 flex-1">
+                            <span className="line-clamp-2 break-words text-sm font-medium leading-snug text-neutral-100">
+                              {e.anime.title[locale]}
                             </span>
-                            <span dir="ltr">{e.episode}</span>
-                            <span className="text-neutral-600">·</span>
-                            <span dir="ltr">{fmtTime(e.airingAt)}</span>
-                          </p>
-                        </div>
-                        {/* Countdown */}
-                        <div className="shrink-0">
-                          <Countdown airingAt={e.airingAt} />
-                        </div>
+                            <p
+                              className="mt-1 flex items-center gap-1 text-[11px] font-medium text-cyan-400/80"
+                              dir="ltr"
+                            >
+                              <span dir="auto" className="font-bold text-cyan-300">
+                                {dict.schedule.ep}
+                              </span>
+                              <span dir="ltr">{e.episode}</span>
+                              <span className="text-neutral-600">·</span>
+                              <span dir="ltr">{fmtTime(e.airingAt)}</span>
+                            </p>
+                          </div>
+                          {/* Countdown */}
+                          <div className="shrink-0">
+                            <Countdown airingAt={e.airingAt} />
+                          </div>
+                        </Link>
                       </li>
                     ))}
                   </ul>
