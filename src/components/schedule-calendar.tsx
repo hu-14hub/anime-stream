@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Anime } from "@/types";
+import { BLUR_DATA_URL } from "@/lib/image";
 import { cn } from "@/lib/utils";
 
 const DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const;
@@ -127,87 +129,102 @@ export function ScheduleCalendar({
         {dict.schedule.localNote.replace("{tz}", Intl.DateTimeFormat().resolvedOptions().timeZone)}
       </p>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-7">
-        {DAYS.map((dayKey, dayIdx) => {
-          const dayEntries = byDay.get(dayIdx) ?? [];
-          const dayDate = new Date(start.getTime() + dayIdx * 86400000);
-          const today =
-            dayIdx === new Date().getDay() && startOfWeek(new Date()).getTime() === start.getTime();
-          return (
-            <div
-              key={dayKey}
-              className={cn(
-                "rounded-xl border border-white/5 bg-white/[0.02] p-3 transition-colors hover:bg-white/[0.05]",
-                today && "border-cyan-400/50 bg-cyan-400/5"
-              )}
-            >
-              <div className="flex items-center justify-between gap-2 mb-2">
-                <div className="flex flex-col items-center">
-                  <span
-                    className={cn(
-                      "text-[10px] font-bold uppercase tracking-wider",
-                      today ? "text-cyan-400" : "text-neutral-500"
-                    )}
-                  >
-                    {dict.schedule[dayKey]}
-                  </span>
-                  {today && (
-                    <span className="mt-0.5 rounded-full bg-cyan-400 px-1.5 py-0 text-[10px] font-bold text-neutral-950">
-                      {dict.schedule.today}
-                    </span>
-                  )}
-                </div>
-                <span dir="ltr" className="text-[11px] font-medium text-neutral-400">
-                  {dayDate.getDate()}
-                </span>
-              </div>
-              {dayEntries.length === 0 ? (
-                <p className="text-xs text-neutral-500 text-center py-2">
-                  {dict.schedule.noEntries}
-                </p>
-              ) : (
-                <ul className="space-y-1.5">
-                  {dayEntries.map((e) => (
-                    <li
-                      key={e.id}
-                      className="group flex items-center justify-between gap-2 rounded-lg p-2 hover:bg-white/[0.03] transition"
+      <div className="overflow-x-auto pb-3">
+        <div className="grid min-w-[1180px] gap-3 [grid-template-columns:repeat(7,minmax(160px,1fr))]">
+          {DAYS.map((dayKey, dayIdx) => {
+            const dayEntries = byDay.get(dayIdx) ?? [];
+            const dayDate = new Date(start.getTime() + dayIdx * 86400000);
+            const today =
+              dayIdx === new Date().getDay() && startOfWeek(new Date()).getTime() === start.getTime();
+            return (
+              <div
+                key={dayKey}
+                className={cn(
+                  "flex min-w-0 flex-col rounded-xl border border-white/5 bg-white/[0.02] p-3 transition-colors hover:bg-white/[0.05]",
+                  today && "border-cyan-400/50 bg-cyan-400/5"
+                )}
+              >
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <div className="flex flex-col items-center gap-0.5">
+                    <span
+                      className={cn(
+                        "text-[10px] font-bold uppercase tracking-wider",
+                        today ? "text-cyan-400" : "text-neutral-500"
+                      )}
                     >
-                      <div className="min-w-0 flex-1">
-                        <LinkEntry anime={e.anime} episode={e.episode} locale={locale} dict={dict} />
-                        <p className="mt-0.5 text-[10px] text-neutral-500" dir="ltr">
-                          {fmtTime(e.airingAt)}
-                        </p>
-                      </div>
-                      <Countdown airingAt={e.airingAt} />
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          );
-        })}
+                      {dict.schedule[dayKey]}
+                    </span>
+                    {today && (
+                      <span className="rounded-full bg-cyan-400 px-1.5 py-0 text-[10px] font-bold text-neutral-950">
+                        {dict.schedule.today}
+                      </span>
+                    )}
+                  </div>
+                  <span dir="ltr" className="text-[11px] font-medium text-neutral-400">
+                    {dayDate.getDate()}
+                  </span>
+                </div>
+                {dayEntries.length === 0 ? (
+                  <p className="text-xs text-neutral-500 text-center py-2">
+                    {dict.schedule.noEntries}
+                  </p>
+                ) : (
+                  <ul className="flex flex-col">
+                    {dayEntries.map((e) => (
+                      <li
+                        key={e.id}
+                        className="group flex items-center gap-2.5 rounded-lg p-2 transition-colors hover:bg-white/[0.04]"
+                      >
+                        {/* Poster */}
+                        <Link
+                          href={`/anime/${e.anime.slug}/watch?ep=${e.episode}`}
+                          aria-hidden
+                          tabIndex={-1}
+                          className="relative h-[52px] w-11 shrink-0 overflow-hidden rounded-md border border-white/10 bg-neutral-900"
+                        >
+                          <Image
+                            src={e.anime.cover}
+                            alt=""
+                            fill
+                            sizes="44px"
+                            className="object-cover transition-transform duration-300 group-hover:scale-110"
+                            placeholder="blur"
+                            blurDataURL={BLUR_DATA_URL}
+                          />
+                        </Link>
+                        {/* Details */}
+                        <div className="min-w-0 flex-1">
+                          <Link
+                            href={`/anime/${e.anime.slug}/watch?ep=${e.episode}`}
+                            className="line-clamp-2 text-sm font-medium leading-snug text-neutral-200 transition-colors hover:text-cyan-300"
+                          >
+                            {e.anime.title[locale]}
+                          </Link>
+                          <p
+                            className="mt-1 flex items-center gap-1 text-[11px] font-medium text-cyan-400/80"
+                            dir="ltr"
+                          >
+                            <span dir="auto" className="font-bold text-cyan-300">
+                              {dict.schedule.ep}
+                            </span>
+                            <span dir="ltr">{e.episode}</span>
+                            <span className="text-neutral-600">·</span>
+                            <span dir="ltr">{fmtTime(e.airingAt)}</span>
+                          </p>
+                        </div>
+                        {/* Countdown */}
+                        <div className="shrink-0">
+                          <Countdown airingAt={e.airingAt} />
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
-  );
-}
-
-function LinkEntry({
-  anime,
-  episode,
-  locale,
-  dict,
-}: {
-  anime: Anime;
-  episode: number;
-  locale: Locale;
-  dict: Dictionary;
-}) {
-  return (
-    <Link
-      href={`/anime/${anime.slug}/watch?ep=${episode}`}
-      className="block truncate text-sm font-bold text-neutral-200 hover:text-cyan-300 transition"
-    >
-      {anime.title[locale]} <span className="text-cyan-400/70">· EP {episode}</span>
-    </Link>
   );
 }
