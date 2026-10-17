@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { memo, useState } from "react";
-import { Play, Star } from "lucide-react";
+import { memo, useState, useRef, useEffect, useCallback } from "react";
+import { Play, Pause, Volume2, VolumeX, Star } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import type { Anime } from "@/types";
@@ -38,9 +38,50 @@ export function ImageCard({
         ? dict.card.ongoing
         : "0";
 
+  const cardRef = useRef<HTMLAnchorElement>(null);
+  const [popoverShown, setPopoverShown] = useState(false);
+  const [popoverRect, setPopoverRect] = useState<DOMRect | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isTouch = useRef(
+    typeof window !== "undefined" && window.matchMedia("(hover: none)").matches,
+  );
+
+  const backdrop = anime.banner || anime.cover;
+
+  const openPopover = useCallback(() => {
+    if (isTouch.current) return;
+    hoverTimer.current = setTimeout(() => {
+      const rect = cardRef.current?.getBoundingClientRect();
+      if (rect) setPopoverRect(rect);
+      setPopoverShown(true);
+    }, 300);
+  }, []);
+
+  const closePopover = useCallback(() => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    setPopoverShown(false);
+    setPopoverRect(null);
+  }, []);
+
+  // Dismiss popover on scroll so it doesn't drift away from its card.
+  useEffect(() => {
+    const onScroll = () => closePopover();
+    if (popoverShown) window.addEventListener("scroll", onScroll, true);
+    return () => {
+      window.removeEventListener("scroll", onScroll, true);
+      if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    };
+  }, [popoverShown, closePopover]);
+
   return (
-    <Link
+    <>
+      <Link
+        ref={cardRef}
       href={`/anime/${anime.slug}`}
+      onMouseEnter={openPopover}
+      onMouseLeave={closePopover}
       className={cn(
         "group block transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(6,182,212,0.18)]",
         className
@@ -114,6 +155,82 @@ export function ImageCard({
         </p>
       </div>
     </Link>
+
+    {popoverShown && popoverRect && (
+      <div
+        className="fixed z-[60] pointer-events-none"
+        style={{
+          left: popoverRect.left,
+          top: popoverRect.top,
+        }}
+      >
+        <div className="popover-enter pointer-events-auto transform-gpu absolute w-80 rounded-2xl bg-neutral-900 border border-white/10 backdrop-blur-md shadow-2xl shadow-black/80 overflow-hidden">
+          {/* Top media: backdrop / trailer thumbnail */}
+          <div className="relative h-36 bg-neutral-800 overflow-hidden">
+            <Image
+              src={backdrop}
+              alt={anime.title[locale]}
+              fill
+              sizes="320px"
+              className="object-cover transform-gpu"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-black/40" />
+            {/* Play / pause toggle */}
+            <button
+              onClick={() => setIsPlaying((p) => !p)}
+              className="absolute left-2 top-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white/20 transition-colors"
+              aria-label={isPlaying ? "Pause" : "Play"}
+            >
+              {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5 rtl-flip" />}
+            </button>
+            {/* Mute / unmute toggle */}
+            <button
+              onClick={() => setIsMuted((m) => !m)}
+              className="absolute right-2 top-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white/20 transition-colors"
+              aria-label={isMuted ? "Unmute" : "Mute"}
+            >
+              {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+            </button>
+          </div>
+
+          <div className="p-4 space-y-3">
+            {/* Title + primary action button */}
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+              <h3 className="text-sm font-bold text-white leading-tight truncate sm:truncate">
+                {anime.title[locale]}
+              </h3>
+              <Link
+                href={`/anime/${anime.slug}`}
+                className="flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[11px] font-bold text-neutral-950 hover:bg-brand-300 transition-colors"
+              >
+                {dict.hero.watchNow}
+              </Link>
+            </div>
+
+            {/* Metadata row: format · episodes · year · rating */}
+            <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-400">
+              <span dir="ltr">{anime.format}</span>
+              <span aria-hidden>·</span>
+              <span dir="ltr">{epLabel}</span>
+              <span aria-hidden>·</span>
+              <span dir="ltr">{anime.year}</span>
+              <span aria-hidden>·</span>
+              <span dir="ltr" className="flex items-center gap-1">
+                <Star className="h-3 w-3 fill-amber-400" aria-hidden />
+                {anime.rating.toFixed(1)}
+              </span>
+            </div>
+
+            {/* Synopsis snippet — 2-line clamp */}
+            <p className="line-clamp-2 text-xs text-neutral-300 leading-relaxed">
+              {anime.synopsis[locale] || ""}
+            </p>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
 
