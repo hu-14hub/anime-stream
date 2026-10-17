@@ -156,15 +156,18 @@ export default async function Home() {
               locale={locale}
             />
           </div>
-          {/* pt-3 creates a top gutter inside the scroll container so the rank badge
-              ("-top-2") can poke above each card without being clipped by the
-              container's overflow. */}
-          <MediaRow locale={locale} ariaLabel={t.sections.topRated} className="pt-3">
+          {/* Rank badge straddles the top edge of each card. The scroll container must
+              provide a top gutter (MediaRow className="pt-5" below) so the badge's
+              negative "-top-3" offset stays inside its visible area and is never
+              clipped — overflow-x:auto implies overflow-y:auto, so the row clips
+              vertically. The card's top-left is already occupied by the amber score
+              badge, so the rank badge floats just above it rather than inside the card. */}
+          <MediaRow locale={locale} ariaLabel={t.sections.topRated} className="pt-5">
             {topRated.map((a, i) => (
               <div key={a.id} className="relative w-36 shrink-0 snap-start sm:w-44 lg:w-48">
                 <span
                   dir="ltr"
-                  className="absolute -top-2 start-2 z-10 rounded-full bg-cyan-400 px-2.5 py-0.5 text-xs font-black text-neutral-950 shadow-lg"
+                  className="absolute -top-3 start-2 z-20 rounded-full bg-cyan-400 px-2.5 py-0.5 text-xs font-black text-neutral-950 shadow-lg"
                 >
                   #{i + 1}
                 </span>
