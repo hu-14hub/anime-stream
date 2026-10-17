@@ -84,6 +84,15 @@ export function ScheduleCalendar({
     byDay.set(dayIdx, arr);
   });
 
+  // Resolve "today" ONCE per render from the client's LOCAL calendar clock.
+  // We compare calendar dates (year/month/day integers) instead of week-index
+  // math or UTC offsets, which previously skewed the "Today" badge by a day
+  // (e.g. on Saturday it matched getDay()=6 -> the Sunday row).
+  const now = new Date();
+  const todayY = now.getFullYear();
+  const todayMonth = now.getMonth();
+  const todayDay = now.getDate();
+
   return (
     <section className="space-y-6">
       <div className="flex items-center justify-between">
@@ -134,7 +143,10 @@ export function ScheduleCalendar({
             const dayEntries = byDay.get(dayIdx) ?? [];
             const dayDate = new Date(start.getTime() + dayIdx * 86400000);
             const today =
-              dayIdx === new Date().getDay() && startOfWeek(new Date()).getTime() === start.getTime();
+              dayDate.getFullYear() === todayY &&
+              dayDate.getMonth() === todayMonth &&
+              dayDate.getDate() === todayDay &&
+              startOfWeek(new Date()).getTime() === start.getTime();
             return (
               <div
                 key={dayKey}
