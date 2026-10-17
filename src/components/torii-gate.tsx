@@ -20,19 +20,19 @@ export function ToriiGate(props: SVGProps<SVGSVGElement>) {
       {...props}
     >
       {/* Central finial above the roof (kasagi cap) */}
-      <path d="M12 3v2" />
+      <path d="M12 3v2" pathLength={1} />
       {/* Top beam — kasagi (roof with overhang) */}
-      <path d="M3 6h18" />
+      <path d="M3 6h18" pathLength={1} />
       {/* Central strut between the top and tie beams (gakuzuka) */}
-      <path d="M12 6v4" />
+      <path d="M12 6v4" pathLength={1} />
       {/* Cross tie beam — nuki */}
-      <path d="M5.5 10h13" />
+      <path d="M5.5 10h13" pathLength={1} />
       {/* Pillars — hashira */}
-      <path d="M7 7.5v14" />
-      <path d="M17 7.5v14" />
+      <path d="M7 7.5v14" pathLength={1} />
+      <path d="M17 7.5v14" pathLength={1} />
       {/* Base feet */}
-      <path d="M5 21.5h4" />
-      <path d="M15 21.5h4" />
+      <path d="M5 21.5h4" pathLength={1} />
+      <path d="M15 21.5h4" pathLength={1} />
     </svg>
   );
 }

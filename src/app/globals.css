@@ -74,6 +74,83 @@ body {
   animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* ===== Intro splash (Torii gate) ===== */
+@keyframes intro-torii-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes intro-aura-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.6;
+  }
+}
+@keyframes intro-neon-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 7px rgba(6, 182, 212, 0.55));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(6, 182, 212, 0.9));
+  }
+}
+@keyframes intro-text-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes intro-particle-float {
+  0% {
+    transform: translateY(8px) scale(0.5);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-50px) scale(0.2);
+    opacity: 0;
+  }
+}
+
+.intro-text {
+  opacity: 0;
+}
+.intro-text.is-in {
+  animation: intro-text-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.intro-aura {
+  animation: intro-aura-pulse 2.6s ease-in-out infinite;
+}
+.intro-torii path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.intro-torii.is-drawing path {
+  animation: intro-torii-draw 0.95s ease-out forwards;
+}
+.intro-torii.neon {
+  animation: intro-neon-pulse 2.4s ease-in-out infinite;
+}
+.intro-particle {
+  opacity: 0;
+  animation: intro-particle-float 2.4s ease-in-out infinite;
+}
+
 /* Scroll-triggered reveal (IntersectionObserver adds .is-visible) */
 .reveal {
   opacity: 0;
