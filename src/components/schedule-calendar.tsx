@@ -129,8 +129,8 @@ export function ScheduleCalendar({
         {dict.schedule.localNote.replace("{tz}", Intl.DateTimeFormat().resolvedOptions().timeZone)}
       </p>
 
-      <div className="overflow-x-auto pb-3">
-        <div className="grid min-w-[1180px] gap-3 [grid-template-columns:repeat(7,minmax(160px,1fr))]">
+      <div className="overflow-x-auto w-full pb-4">
+        <div className="grid min-w-[1200px] gap-3 [grid-template-columns:repeat(7,minmax(170px,1fr))]">
           {DAYS.map((dayKey, dayIdx) => {
             const dayEntries = byDay.get(dayIdx) ?? [];
             const dayDate = new Date(start.getTime() + dayIdx * 86400000);
@@ -140,7 +140,7 @@ export function ScheduleCalendar({
               <div
                 key={dayKey}
                 className={cn(
-                  "flex min-w-0 flex-col rounded-xl border border-white/5 bg-white/[0.02] p-3 transition-colors hover:bg-white/[0.05]",
+                  "flex flex-col rounded-xl border border-white/5 bg-white/[0.02] p-3 transition-colors hover:bg-white/[0.05]",
                   today && "border-cyan-400/50 bg-cyan-400/5"
                 )}
               >
@@ -174,15 +174,15 @@ export function ScheduleCalendar({
                       <li key={e.id}>
                         <Link
                           href={`/anime/${e.anime.slug}/watch?ep=${e.episode}`}
-                          className="group flex cursor-pointer items-center gap-2.5 rounded-lg border border-transparent p-2 transition-colors hover:border-white/10 hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400/60"
+                          className="group flex cursor-pointer items-center gap-2 rounded-lg border border-zinc-800/50 bg-zinc-900/60 p-2 transition-colors hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400/60"
                         >
                           {/* Poster */}
-                          <span className="relative h-[52px] w-11 shrink-0 overflow-hidden rounded-md border border-white/10 bg-neutral-900">
+                          <span className="relative h-14 w-10 shrink-0 overflow-hidden rounded-md border border-white/10 bg-neutral-900">
                             <Image
                               src={e.anime.cover}
                               alt=""
                               fill
-                              sizes="44px"
+                              sizes="40px"
                               className="object-cover transition-transform duration-300 group-hover:scale-110"
                               placeholder="blur"
                               blurDataURL={BLUR_DATA_URL}
@@ -190,7 +190,7 @@ export function ScheduleCalendar({
                           </span>
                           {/* Details */}
                           <div className="min-w-0 flex-1">
-                            <span className="line-clamp-2 break-words text-sm font-medium leading-snug text-neutral-100">
+                            <span className="line-clamp-2 break-words text-xs font-semibold leading-snug text-zinc-100">
                               {e.anime.title[locale]}
                             </span>
                             <p
