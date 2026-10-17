@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
-import { BLUR_DATA_URL } from "@/lib/image";
 import Link from "next/link";
+import { useState } from "react";
 import { Play, Star } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
@@ -19,6 +21,8 @@ export function AnimeCard({
   dict: Dictionary;
   className?: string;
 }) {
+  const [imgLoaded, setImgLoaded] = useState(false);
+
   // Resolve a sensible episode count for the badge. `getAiredEpisodeCount`
   // falls back through the episode array, then `nextAiringEpisode - 1`, so
   // long-running ongoing titles (Conan, Doraemon, Shin Chan, One Piece) —
@@ -43,14 +47,25 @@ export function AnimeCard({
       )}
     >
       <div className="relative w-full aspect-[3/4] overflow-hidden rounded-xl bg-neutral-900">
+        {/* Shimmer placeholder — hidden once image has loaded */}
+        {!imgLoaded && (
+          <div
+            className="absolute inset-0 animate-pulse rounded-xl bg-zinc-800/80"
+            aria-hidden
+          />
+        )}
         <Image
           src={anime.cover}
           alt={anime.title[locale]}
           fill
           sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 20vw"
-          className="object-cover transition-transform duration-300 group-hover:scale-110"
-          placeholder="blur"
-          blurDataURL={BLUR_DATA_URL}
+          className={cn(
+            "object-cover transition-all duration-500 ease-in-out",
+            imgLoaded
+              ? "scale-100 opacity-100 group-hover:scale-110"
+              : "scale-95 opacity-0",
+          )}
+          onLoad={() => setImgLoaded(true)}
         />
         {/* Score badge */}
         <span className="absolute start-2 top-2 flex items-center gap-1 rounded-full bg-black/60 px-2 py-1 text-[11px] font-bold text-amber-400 backdrop-blur">
