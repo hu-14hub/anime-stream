@@ -197,6 +197,7 @@ export function ScheduleCalendar({
                               alt=""
                               fill
                               sizes="64px"
+                              loading="lazy"
                               className="object-cover transition-transform duration-300 group-hover:scale-105"
                               placeholder="blur"
                               blurDataURL={BLUR_DATA_URL}

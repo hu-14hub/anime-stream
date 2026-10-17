@@ -4,6 +4,7 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { ThemeInit } from "@/components/theme-init";
 import { IntroAnimation } from "@/components/intro-animation";
+import { PageTransition } from "@/components/page-transition";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getDirection } from "@/i18n/config";
 import { getLocale } from "@/i18n/server";
@@ -40,7 +41,9 @@ export default async function RootLayout({
           <ThemeInit />
           <IntroAnimation />
           <Navbar locale={locale} dict={dict} />
-          <div className="flex flex-1 flex-col">{children}</div>
+          <div className="flex flex-1 flex-col">
+            <PageTransition>{children}</PageTransition>
+          </div>
           <Footer locale={locale} dict={dict} />
         </div>
       </body>

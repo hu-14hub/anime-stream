@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { BLUR_DATA_URL } from "@/lib/image";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Search, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -78,16 +78,21 @@ export function SearchBar({
   // Close + clear the dropdown, then navigate imperatively.
   // We use router.push (not <Link>) so cleanup always runs first —
   // this avoids the stale "redirect to /catalog" behaviour.
-  const go = (href: string) => {
-    setOpen(false);
-    setActive(-1);
-    onNavigate?.();
-    router.push(href);
-    // Clear the text after navigation starts so the dropdown is gone
-    // when the user comes back / on the next page.
-    setQuery("");
-    setItems([]);
-  };
+  // useCallback so memoized suggestion rows stay referentially stable across
+  // keystrokes (only `onNavigate` changes identity, which comes from React state).
+  const go = useCallback(
+    (href: string) => {
+      setOpen(false);
+      setActive(-1);
+      onNavigate?.();
+      router.push(href);
+      // Clear the text after navigation starts so the dropdown is gone
+      // when the user comes back / on the next page.
+      setQuery("");
+      setItems([]);
+    },
+    [router, onNavigate]
+  );
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -170,7 +175,7 @@ export function SearchBar({
                   >
                     <span className="relative h-14 w-10 shrink-0 overflow-hidden rounded-lg bg-neutral-800">
                       {a.cover ? (
-                        <Image src={a.cover} alt="" fill sizes="40px" className="object-cover" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
+                        <Image src={a.cover} alt="" fill sizes="40px" loading="lazy" className="object-cover" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
                       ) : null}
                     </span>
                     <span className="min-w-0 flex-1">

@@ -40,6 +40,7 @@ export function Navbar({ locale, dict }: NavbarProps) {
             <Link
               key={l.key}
               href={l.href}
+              prefetch={true}
               aria-current={isActive(l.href) ? "page" : undefined}
               className={cn(
                 "relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300",
@@ -102,6 +103,7 @@ export function Navbar({ locale, dict }: NavbarProps) {
                 <Link
                   key={l.key}
                   href={l.href}
+                  prefetch={true}
                   onClick={() => setOpen(false)}
                   aria-current={isActive(l.href) ? "page" : undefined}
                   className={cn(

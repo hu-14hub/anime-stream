@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Play, Star } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
@@ -10,7 +10,7 @@ import type { Anime } from "@/types";
 import { cn } from "@/lib/utils";
 import { getAiredEpisodeCount } from "@/lib/anime-availability";
 
-export function AnimeCard({
+export function ImageCard({
   anime,
   locale,
   dict,
@@ -59,8 +59,9 @@ export function AnimeCard({
           alt={anime.title[locale]}
           fill
           sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 20vw"
+          loading="lazy"
           className={cn(
-            "object-cover transition-all duration-500 ease-in-out",
+            "anim-poster-img object-cover transition-all duration-500 ease-in-out",
             imgLoaded
               ? "scale-100 opacity-100 group-hover:scale-110"
               : "scale-95 opacity-0",
@@ -115,3 +116,9 @@ export function AnimeCard({
     </Link>
   );
 }
+
+/**
+ * Memoized card so infinite-scroll batches don't re-render every poster when a
+ * neighbour is appended — `anime`/`dict`/`locale` are stable references.
+ */
+export const AnimeCard = memo(ImageCard);

@@ -77,6 +77,7 @@ export function ContinueWatchingRow({
                   alt={p.title}
                   fill
                   sizes="(max-width: 640px) 240px, 256px"
+                  loading="lazy"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                   placeholder="blur"
                   blurDataURL={BLUR_DATA_URL}

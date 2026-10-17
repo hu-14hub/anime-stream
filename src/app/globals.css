@@ -258,6 +258,34 @@ select option:checked {
   transform: translateY(0);
 }
 
+/* ===== GPU acceleration for the poster-card zoom =====
+   Promotes animated images to their own compositor layer so hover-zoom,
+   scale-in and the hero Ken-Burns drift run on the GPU (60fps, no reflow).
+   Scoped (not a blanket utility) so we don't multiply layers across the whole
+   grid — only the element that actually animates its transform. */
+.anim-poster-img {
+  will-change: transform, opacity;
+}
+
+/* ===== Route-in transition =====
+   A subtle fade + slide-up re-run whenever the route changes (the layout keys
+   <main> by pathname). This is the "smooth page switch" layer on top of
+   already-prefetched routes — the next page is fetched before this plays, so
+   the transition never stalls navigation. */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-page-in {
+  animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;
@@ -268,6 +296,9 @@ select option:checked {
     animation: none;
   }
   .animate-select-pop {
+    animation: none;
+  }
+  .animate-page-in {
     animation: none;
   }
 }
