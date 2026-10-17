@@ -129,8 +129,7 @@ export function ScheduleCalendar({
         {dict.schedule.localNote.replace("{tz}", Intl.DateTimeFormat().resolvedOptions().timeZone)}
       </p>
 
-      <div className="overflow-x-auto w-full pb-4">
-        <div className="grid min-w-[1200px] gap-3 [grid-template-columns:repeat(7,minmax(170px,1fr))]">
+      <div className="flex flex-col gap-4">
           {DAYS.map((dayKey, dayIdx) => {
             const dayEntries = byDay.get(dayIdx) ?? [];
             const dayDate = new Date(start.getTime() + dayIdx * 86400000);
@@ -140,74 +139,74 @@ export function ScheduleCalendar({
               <div
                 key={dayKey}
                 className={cn(
-                  "flex flex-col rounded-xl border border-white/5 bg-white/[0.02] p-3 transition-colors hover:bg-white/[0.05]",
+                  "flex flex-col gap-3 rounded-xl border border-white/5 bg-white/[0.02] p-3 transition-colors md:flex-row md:items-start md:gap-5",
                   today && "border-cyan-400/50 bg-cyan-400/5"
                 )}
               >
-                <div className="mb-2 flex items-center justify-between gap-2">
-                  <div className="flex flex-col items-center gap-0.5">
-                    <span
-                      className={cn(
-                        "text-[10px] font-bold uppercase tracking-wider",
-                        today ? "text-cyan-400" : "text-neutral-500"
-                      )}
-                    >
-                      {dict.schedule[dayKey]}
-                    </span>
-                    {today && (
-                      <span className="rounded-full bg-cyan-400 px-1.5 py-0 text-[10px] font-bold text-neutral-950">
-                        {dict.schedule.today}
+                {/* Day header: left on desktop, stacked on top for mobile */}
+                <div className="shrink-0 md:w-[132px] md:pt-1">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={cn(
+                          "text-base font-extrabold tracking-tight",
+                          today ? "text-cyan-400" : "text-white"
+                        )}
+                      >
+                        {dict.schedule[dayKey]}
                       </span>
-                    )}
+                      {today && (
+                        <span className="rounded-full bg-cyan-400 px-2 py-0.5 text-[10px] font-bold text-neutral-950">
+                          {dict.schedule.today}
+                        </span>
+                      )}
+                    </div>
+                    <span dir="ltr" className="text-xs font-medium text-neutral-400">
+                      {dayDate.toLocaleDateString(locale, { month: "short", day: "numeric" })}
+                    </span>
                   </div>
-                  <span dir="ltr" className="text-[11px] font-medium text-neutral-400">
-                    {dayDate.getDate()}
-                  </span>
                 </div>
                 {dayEntries.length === 0 ? (
-                  <p className="text-xs text-neutral-500 text-center py-2">
+                  <p className="flex-1 self-center py-6 text-center text-xs text-neutral-500">
                     {dict.schedule.noEntries}
                   </p>
                 ) : (
-                  <ul className="flex flex-col">
+                  <ul className="flex flex-1 flex-row items-stretch gap-3 overflow-x-auto scroll-smooth py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     {dayEntries.map((e) => (
-                      <li key={e.id}>
+                      <li key={e.id} className="flex-shrink-0">
                         <Link
                           href={`/anime/${e.anime.slug}/watch?ep=${e.episode}`}
-                          className="group flex cursor-pointer items-center gap-2 rounded-lg border border-zinc-800/50 bg-zinc-900/60 p-2 transition-colors hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400/60"
+                          className="group flex h-full min-w-[180px] max-w-[200px] cursor-pointer items-stretch gap-2.5 overflow-hidden rounded-lg border border-zinc-800/50 bg-zinc-900/60 p-2 transition-colors hover:border-cyan-400/40 hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400/60"
                         >
-                          {/* Poster */}
-                          <span className="relative h-14 w-10 shrink-0 overflow-hidden rounded-md border border-white/10 bg-neutral-900">
+                          {/* Poster thumbnail 64x88 */}
+                          <span className="relative h-22 w-16 shrink-0 self-start overflow-hidden rounded-md border border-white/10 bg-neutral-900">
                             <Image
                               src={e.anime.cover}
                               alt=""
                               fill
-                              sizes="40px"
-                              className="object-cover transition-transform duration-300 group-hover:scale-110"
+                              sizes="64px"
+                              className="object-cover transition-transform duration-300 group-hover:scale-105"
                               placeholder="blur"
                               blurDataURL={BLUR_DATA_URL}
                             />
                           </span>
-                          {/* Details */}
-                          <div className="min-w-0 flex-1">
+                          {/* Details column */}
+                          <div className="flex min-w-0 flex-1 flex-col gap-1.5 py-0.5">
                             <span className="line-clamp-2 break-words text-xs font-semibold leading-snug text-zinc-100">
                               {e.anime.title[locale]}
                             </span>
-                            <p
-                              className="mt-1 flex items-center gap-1 text-[11px] font-medium text-cyan-400/80"
-                              dir="ltr"
+                            <span
+                              dir="auto"
+                              className="w-fit rounded bg-cyan-400/10 px-1.5 py-0.5 text-[10px] font-bold text-cyan-300"
                             >
-                              <span dir="auto" className="font-bold text-cyan-300">
-                                {dict.schedule.ep}
+                              {dict.schedule.ep} {e.episode}
+                            </span>
+                            <div className="mt-auto flex items-center justify-between gap-1">
+                              <span dir="ltr" className="text-[11px] font-medium text-neutral-400">
+                                {fmtTime(e.airingAt)}
                               </span>
-                              <span dir="ltr">{e.episode}</span>
-                              <span className="text-neutral-600">·</span>
-                              <span dir="ltr">{fmtTime(e.airingAt)}</span>
-                            </p>
-                          </div>
-                          {/* Countdown */}
-                          <div className="shrink-0">
-                            <Countdown airingAt={e.airingAt} />
+                              <Countdown airingAt={e.airingAt} />
+                            </div>
                           </div>
                         </Link>
                       </li>
@@ -217,7 +216,6 @@ export function ScheduleCalendar({
               </div>
             );
           })}
-        </div>
       </div>
     </section>
   );
