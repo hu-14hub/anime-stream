@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import type { Anime, LibraryEntry, ListStatus } from "@/types";
 import { KEYS } from "@/lib/store";
 import { useStore } from "@/lib/use-store";
+import { getAiredEpisodeCount } from "@/lib/anime-availability";
 import {
   addFavorite,
   clearWatchProgress,
@@ -59,9 +60,14 @@ export function useLibraryEntry(anime: Anime) {
         })
       );
       if (status === "completed") {
-        // Completing a title marks every episode as watched so the episode
-        // list, watch history, and profile all update instantly (no reload).
-        const epochs = anime.episodes.map((e) => e.number);
+        // Completing a title marks every AIRED episode as watched so the
+        // episode list, watch history, and profile all update instantly
+        // (no reload). Unreleased / "coming soon" episodes are excluded so
+        // they are never falsely counted toward completion.
+        const airedCount = getAiredEpisodeCount(anime);
+        const epochs = anime.episodes
+          .filter((e) => e.number <= airedCount)
+          .map((e) => e.number);
         if (epochs.length) markAllAsWatched(anime.slug, epochs);
       }
     },
