@@ -90,6 +90,22 @@ select option:checked {
   color: #fafafa;
 }
 
+/* Custom select dropdown (browse filters) — pop in smoothly beneath the trigger. */
+@keyframes select-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.animate-select-pop {
+  transform-origin: top;
+  animation: select-pop 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 /* Subtle custom scrollbar for the dark cinematic look */
 ::-webkit-scrollbar {
   width: 10px;
@@ -218,6 +234,9 @@ select option:checked {
     transition: none;
   }
   .animate-fade-up {
+    animation: none;
+  }
+  .animate-select-pop {
     animation: none;
   }
 }

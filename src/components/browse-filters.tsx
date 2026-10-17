@@ -2,12 +2,12 @@
 
 import {
   Children,
-  cloneElement,
   isValidElement,
   useCallback,
   useEffect,
+  useMemo,
+  useRef,
   useState,
-  type ReactElement,
   type ReactNode,
 } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -124,9 +124,6 @@ export function BrowseFilters({
     (draft.status ? 1 : 0) +
     (draft.sort !== "popularity" ? 1 : 0);
 
-  const selectCls =
-    "h-10 w-full appearance-none rounded-xl border border-white/10 bg-white/5 ps-3 pe-8 text-sm font-semibold text-neutral-200 outline-none transition-all duration-300 hover:border-white/20 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20";
-
   const Select = ({
     label,
     value,
@@ -137,31 +134,109 @@ export function BrowseFilters({
     value: string;
     onChange: (v: string) => void;
     children: ReactNode;
-  }) => (
-    <label className="block space-y-1.5">
-      <span className="text-[11px] font-bold uppercase tracking-widest text-neutral-500">
-        {label}
-      </span>
-      <span className="relative block">
-        <select value={value} onChange={(e) => onChange(e.target.value)} className={selectCls}>
-          {/* Force a dark, readable background on native <option> rows — the OS
-              popup can ignore the page theme (white-on-white). Backed up by the
-              global `select option` rule in globals.css. */}
-          {Children.map(children, (child) =>
-            isValidElement(child)
-              ? cloneElement(child as ReactElement<{ className?: string }>, {
-                  className: "bg-zinc-900 text-white",
-                })
-              : child
+  }) => {
+    const [open, setOpen] = useState(false);
+    const rootRef = useRef<HTMLDivElement>(null);
+
+    // Flatten the rendered <option> children into simple { value, label } pairs so the
+    // filter call sites can keep passing plain <option> elements unchanged.
+    const options = useMemo(
+      () =>
+        Children.toArray(children).flatMap((child): { value: string; label: string }[] => {
+          if (!isValidElement(child)) return [];
+          const { value: v, children: c } = child.props as {
+            value?: string | number;
+            children?: ReactNode;
+          };
+          return [{ value: String(v ?? ""), label: typeof c === "string" ? c : String(c) }];
+        }),
+      [children]
+    );
+    const selected = options.find((o) => o.value === value);
+
+    // Dismiss on outside click or Escape while the menu is open.
+    useEffect(() => {
+      if (!open) return;
+      const onDown = (e: MouseEvent) => {
+        if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
+      };
+      const onKey = (e: KeyboardEvent) => {
+        if (e.key === "Escape") setOpen(false);
+      };
+      document.addEventListener("mousedown", onDown);
+      document.addEventListener("keydown", onKey);
+      return () => {
+        document.removeEventListener("mousedown", onDown);
+        document.removeEventListener("keydown", onKey);
+      };
+    }, [open]);
+
+    const choose = (v: string) => {
+      onChange(v);
+      setOpen(false);
+    };
+
+    return (
+      <label className="block space-y-1.5">
+        <span className="text-[11px] font-bold uppercase tracking-widest text-neutral-500">
+          {label}
+        </span>
+        <div className="relative" ref={rootRef}>
+          {/* Trigger button — replaces the native <select> control. */}
+          <button
+            type="button"
+            role="combobox"
+            aria-haspopup="listbox"
+            aria-expanded={open}
+            onClick={() => setOpen((o) => !o)}
+            className="flex h-10 w-full items-center justify-between gap-2 rounded-xl border border-zinc-800 bg-zinc-900/60 px-3 text-start text-sm font-semibold text-zinc-100 outline-none transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20"
+          >
+            <span className="truncate">{selected ? selected.label : value}</span>
+            <ChevronDown
+              className={cn(
+                "h-4 w-4 shrink-0 text-neutral-500 transition-transform duration-300",
+                open && "rotate-180"
+              )}
+              aria-hidden
+            />
+          </button>
+
+          {/* Custom popup — a single seamless dark unit beneath the trigger. */}
+          {open && (
+            <div
+              role="listbox"
+              className="animate-select-pop absolute inset-x-0 top-full z-30 mt-2 max-h-64 overflow-auto rounded-xl border border-zinc-800 bg-zinc-900 p-1.5 shadow-xl shadow-black/50"
+            >
+              {options.length === 0 && (
+                <p className="px-3 py-2 text-sm text-neutral-500">—</p>
+              )}
+              {options.map((o) => {
+                const isSelected = o.value === value;
+                return (
+                  <button
+                    key={o.value || "empty"}
+                    type="button"
+                    role="option"
+                    aria-selected={isSelected}
+                    onClick={() => choose(o.value)}
+                    className={cn(
+                      "flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-start text-sm font-semibold transition-colors duration-150",
+                      isSelected
+                        ? "bg-cyan-500/15 text-cyan-200"
+                        : "text-zinc-200 hover:bg-cyan-500/10 hover:text-white focus:bg-cyan-500/20 focus:text-white"
+                    )}
+                  >
+                    <span className="truncate">{o.label}</span>
+                    {isSelected && <Check className="h-4 w-4 shrink-0 text-cyan-300" aria-hidden />}
+                  </button>
+                );
+              })}
+            </div>
           )}
-        </select>
-        <ChevronDown
-          className="pointer-events-none absolute end-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500"
-          aria-hidden
-        />
-      </span>
-    </label>
-  );
+        </div>
+      </label>
+    );
+  };
 
   return (
     <div className="space-y-4">
