@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 
 /**
  * Size of each range shown by the episode range selector. Mirrors the
@@ -40,12 +39,17 @@ export function rangeStartForEpisode(active?: number, chunkSize = EPISODE_CHUNK_
 }
 
 /**
- * Compact episode range selector.
+ * Compact episode range selector — rendered as a single clean dropdown.
  *
  * Only meaningful for long-running titles (more than one `EPISODE_CHUNK_SIZE`
- * episodes). Renders lightweight number tabs like "1-24", "25-48", ... so users
- * can jump between chunks without rendering hundreds of episode cards at once.
- * The active range is highlighted automatically based on `activeEpisode`.
+ * episodes). Instead of a cluster of "1-24 / 25-48 / ..." range pills (which
+ * crowdes the layout on huge catalogs like One Piece ~1100+), we surface ONE
+ * minimal dropdown so the episode grid/list stays uncluttered while still
+ * letting users jump between chunks without mounting hundreds of cards at once.
+ *
+ * State & props are unchanged from the previous pill implementation — the
+ * active chunk is always derived from `initialStart` (synced to the current
+ * episode), and `onSelect` reports the newly chosen 0-based chunk start.
  */
 export function EpisodeSelector({
   total,
@@ -55,7 +59,7 @@ export function EpisodeSelector({
 }: {
   /** Total number of episodes. */
   total: number;
-  /** 1-based active episode (used to auto-highlight its range). */
+  /** 1-based active episode (kept for API parity with the callers). */
   activeEpisode?: number;
   /** Initial 0-based range start index (e.g. synced from the current episode). */
   initialStart?: number;
@@ -65,6 +69,7 @@ export function EpisodeSelector({
   const ranges = buildEpisodeRanges(total, EPISODE_CHUNK_SIZE);
   // Nothing to paginate for a single page — render nothing.
   if (ranges.length <= 1) return null;
+  void activeEpisode; // reserved for API parity with the two callers
 
   const max = Math.floor((total - 1) / EPISODE_CHUNK_SIZE) * EPISODE_CHUNK_SIZE;
   const initial = Math.min(Math.max(initialStart, 0), max);
@@ -75,37 +80,30 @@ export function EpisodeSelector({
     onSelect?.(s);
   };
 
-  // `suppressHydrationWarning` guards against the single expected SSR/CSR
-  // mismatch: `initialStart` may differ from the server-default range shown
-  // during static generation when mounting on a deep watch page.
   return (
-    <div
-      role="tablist"
-      aria-label="Episode range"
-      suppressHydrationWarning
-      className="mb-4 flex flex-wrap items-center gap-1.5"
-    >
-      {ranges.map((r) => {
-        const isActive = start === r.start;
-        const label = `${r.start + 1}-${r.end}`;
-        return (
-          <button
+    <div className="mb-4 flex items-center gap-2" suppressHydrationWarning>
+      <label
+        htmlFor="episode-range-select"
+        className="text-[10px] font-bold uppercase tracking-widest text-neutral-500"
+      >
+        Episodes
+      </label>
+      <select
+        id="episode-range-select"
+        value={start}
+        onChange={(e) => select(Number(e.target.value))}
+        className="h-9 max-w-[11rem] cursor-pointer rounded-lg border border-white/10 bg-white/5 px-3 text-xs font-bold tabular-nums text-neutral-200 outline-none transition-colors duration-300 hover:bg-white/10 focus:border-brand/40 focus:ring-1 focus:ring-brand/30"
+      >
+        {ranges.map((r) => (
+          <option
             key={r.start}
-            type="button"
-            role="tab"
-            aria-selected={isActive}
-            onClick={() => select(r.start)}
-            className={cn(
-              "rounded-lg px-3 py-1.5 text-xs font-bold tabular-nums transition-colors duration-300",
-              isActive
-                ? "bg-brand text-neutral-950"
-                : "bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white"
-            )}
+            value={r.start}
+            className="bg-neutral-900 text-neutral-100"
           >
-            <span dir="ltr">{label}</span>
-          </button>
-        );
-      })}
+            <span dir="ltr">{`${r.start + 1}–${r.end}`}</span>
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

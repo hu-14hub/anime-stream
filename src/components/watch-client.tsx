@@ -10,7 +10,6 @@ import type { Locale } from "@/i18n/config";
 import type { Anime, EpisodeStream } from "@/types";
 import { VideoPlayer } from "@/components/video-player";
 import { CommentsSection } from "@/components/comments-section";
-import { EpisodeSelector, rangeStartForEpisode } from "@/components/episode-selector";
 
 export function WatchClient({ slug, num, anime, stream, locale, dict: t }: {
   slug: string; num: number; anime: Anime; stream: EpisodeStream; locale: Locale; dict: Dictionary;
@@ -101,7 +100,6 @@ export function WatchClient({ slug, num, anime, stream, locale, dict: t }: {
           </span>
         </div>
       </div>
-      <EpisodeSelector total={anime.episodes.length} activeEpisode={num} initialStart={rangeStartForEpisode(num)} />
       <CommentsSection target={`watch:${anime.slug}:${num}`} dict={t} title={t.player.commentsHere} />
     </>
   );
