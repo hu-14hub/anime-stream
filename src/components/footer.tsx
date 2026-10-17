@@ -26,12 +26,11 @@ export function Footer({ locale, dict }: FooterProps) {
               <span className={cn("text-lg font-extrabold tracking-tight text-white", locale === "en" && "font-amagro")}>
                 {dict.common.logo}
               </span>
-              <span className="mt-1.5 block max-w-full truncate font-medium leading-tight text-[0.65rem] tracking-wide text-muted-foreground/70">
-                Your ultimate destination for watching anime with English & Arabic subtitles.
+              <span className="mt-1.5 whitespace-nowrap font-jp text-[11px] font-medium leading-none tracking-widest text-muted-foreground/70">
+                アニメの世界へ
               </span>
             </span>
           </Link>
-          <p className="mt-4 max-w-sm text-sm leading-7 text-neutral-400">{dict.footer.description}</p>
         </div>
 
         {/* Social */}
