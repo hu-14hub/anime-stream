@@ -86,7 +86,7 @@ export function AnimeCard({
         </span>
       </div>
       <div className="mt-3 space-y-1 px-0.5">
-        <h3 className="truncate text-sm font-bold text-neutral-100 transition-colors duration-300 group-hover:text-cyan-300">
+        <h3 className={cn("truncate text-sm font-bold text-neutral-100 transition-colors duration-300 group-hover:text-cyan-300", locale === "en" && "font-amagro")}>
           {anime.title[locale]}
         </h3>
         <p className="flex items-center gap-2 text-xs text-neutral-500">

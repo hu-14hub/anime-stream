@@ -11,6 +11,7 @@ import { anilistIdFromSlug, browseAnime, getAnimeDetail } from "@/services/anili
 import { getAiredEpisodeCount } from "@/lib/anime-availability";
 import { getAnimeById as getJikanById, idFromSlug as jikanIdFromSlug } from "@/services/animeService";
 import { AnimeCard } from "@/components/anime-card";
+import { cn } from "@/lib/utils";
 import { CharacterGrid } from "@/components/character-grid";
 import { DetailTabs } from "@/components/detail-tabs";
 import { EpisodeList } from "@/components/episode-list";
@@ -113,7 +114,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
             <Image src={anime.cover} alt={anime.title[locale]} fill sizes="160px" priority className="object-cover" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
           </div>
           <div className="min-w-0 flex-1 pt-1 sm:pt-3">
-            <h1 className="text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+            <h1 className={cn("text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl", locale === "en" && "font-amagro")}>
               {anime.title[locale]}
             </h1>
             {(anime.romajiTitle || anime.nativeTitle) && (

@@ -4,6 +4,19 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* English display type: Amagro is inherited by every h1–h3 (and any .section-title
+   / .anime-title) UNLESS a utility overrides font-family. Scoped to lang="en" and
+   NOT-RTL so the Arabic interface keeps its Cairo typography untouched. This unlayered
+   rule intentionally sits above Tailwind's base layer so English headings always use
+   Amagro. */
+html[lang="en"]:not([dir="rtl"]) h1,
+html[lang="en"]:not([dir="rtl"]) h2,
+html[lang="en"]:not([dir="rtl"]) h3,
+html[lang="en"]:not([dir="rtl"]) .section-title,
+html[lang="en"]:not([dir="rtl"]) .anime-title {
+  font-family: var(--font-amagro);
+}
+
 :root {
   --background: #09090b;
   --foreground: #fafafa;
