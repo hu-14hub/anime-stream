@@ -75,7 +75,10 @@ const mapAniList = (m: AniListMedia): Anime => {
     genres: (m.genres ?? []).map(normGenre),
     tags: (m.tags ?? []).slice(0, 12).map((t) => t.name),
     studio: { en: studio, ar: studio },
-    episodeCount: epCount,
+    // Use `n` (the same resolution as the episode array) so ongoing titles
+    // where AniList returns `episodes: null` (Conan, Doraemon, Shin Chan,
+    // One Piece, ...) show their actual aired count instead of a misleading 0.
+    episodeCount: n,
     trailerUrl: m.trailer?.site === "youtube" && m.trailer.id ? `https://www.youtube.com/embed/${m.trailer.id}` : undefined,
     trending: (m.averageScore ?? 0) >= 80,
     nextAiringAt: m.nextAiringEpisode?.airingAt ?? null,

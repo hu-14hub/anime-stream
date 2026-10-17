@@ -72,7 +72,7 @@ export function mapJikan(a: JikanAnime): Anime {
     cover, banner, rating: a.score ?? 0, year,
     status: a.status === "Currently Airing" ? "ongoing" : "completed",
     genres, studio: { en: a.studios?.[0]?.name ?? "Unknown", ar: a.studios?.[0]?.name ?? "Unknown" },
-    episodeCount: epCount, trailerUrl: a.trailer?.youtube_id ? `https://www.youtube.com/embed/${a.trailer.youtube_id}` : (a.trailer?.url ?? undefined),
+    episodeCount: epCount || n, trailerUrl: a.trailer?.youtube_id ? `https://www.youtube.com/embed/${a.trailer.youtube_id}` : (a.trailer?.url ?? undefined),
     trending: (a.score ?? 0) >= 8.4,
     episodes: Array.from({ length: n }, (_, i) => ({
       number: i + 1, title: { en: `Episode ${i + 1}`, ar: `الحلقة ${i + 1}` },

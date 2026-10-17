@@ -6,6 +6,7 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import type { Anime } from "@/types";
 import { cn } from "@/lib/utils";
+import { getAiredEpisodeCount } from "@/lib/anime-availability";
 
 export function AnimeCard({
   anime,
@@ -18,6 +19,15 @@ export function AnimeCard({
   dict: Dictionary;
   className?: string;
 }) {
+  // Resolve a sensible episode count for the badge. `getAiredEpisodeCount`
+  // falls back through the episode array, then `nextAiringEpisode - 1`, so
+  // long-running ongoing titles (Conan, Doraemon, Shin Chan, One Piece) —
+  // where the API returns `episodes: null` — never show a misleading "0 EP".
+  // If it's still 0 we show a localized "Ongoing" label for airing titles.
+  const aired = getAiredEpisodeCount(anime);
+  const epDisplay: string | number =
+    aired > 0 ? aired : anime.status === "ongoing" ? dict.detail.ongoing : 0;
+
   return (
     <Link
       href={`/anime/${anime.slug}`}
@@ -53,7 +63,7 @@ export function AnimeCard({
             <Play className="h-5 w-5 fill-neutral-950 rtl-flip" aria-hidden />
           </span>
           <span dir="ltr" className="text-xs font-bold text-white">
-            {anime.episodeCount} {dict.card.episodes}
+            {epDisplay} {dict.card.episodes}
           </span>
           {anime.imdbRating != null && (
             <span
@@ -77,7 +87,7 @@ export function AnimeCard({
           <span dir="ltr">{anime.year}</span>
           <span aria-hidden>·</span>
           <span dir="ltr">
-            {anime.episodeCount} {dict.card.episodes}
+            {epDisplay} {dict.card.episodes}
           </span>
         </p>
       </div>
