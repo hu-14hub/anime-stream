@@ -156,7 +156,10 @@ export default async function Home() {
               locale={locale}
             />
           </div>
-          <MediaRow locale={locale} ariaLabel={t.sections.topRated}>
+          {/* pt-3 creates a top gutter inside the scroll container so the rank badge
+              ("-top-2") can poke above each card without being clipped by the
+              container's overflow. */}
+          <MediaRow locale={locale} ariaLabel={t.sections.topRated} className="pt-3">
             {topRated.map((a, i) => (
               <div key={a.id} className="relative w-36 shrink-0 snap-start sm:w-44 lg:w-48">
                 <span
@@ -165,7 +168,7 @@ export default async function Home() {
                 >
                   #{i + 1}
                 </span>
-                <AnimeCard anime={a} locale={locale} dict={t} className="pt-1" />
+                <AnimeCard anime={a} locale={locale} dict={t} />
               </div>
             ))}
           </MediaRow>
