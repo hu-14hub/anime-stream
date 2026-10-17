@@ -98,7 +98,7 @@ export function EpisodeSelector({
             className={cn(
               "rounded-lg px-3 py-1.5 text-xs font-bold tabular-nums transition-colors duration-300",
               isActive
-                ? "bg-cyan-400 text-neutral-950"
+                ? "bg-brand text-neutral-950"
                 : "bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white"
             )}
           >

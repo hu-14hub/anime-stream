@@ -95,7 +95,7 @@ export function HeroBanner({
       <div className="absolute inset-x-0 bottom-0 z-30">
         <div className="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 sm:pb-14">
           <div key={active.id} className="animate-fade-up max-w-2xl">
-            <p className="inline-flex items-center gap-2 rounded-full bg-cyan-400/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest text-cyan-300 backdrop-blur">
+            <p className="inline-flex items-center gap-2 rounded-full bg-brand/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest text-brand-300 backdrop-blur">
               {dict.hero.trendingBadge}
             </p>
             <h1 className={cn("mt-4 text-4xl font-black leading-[1.1] tracking-tight text-white drop-shadow-2xl sm:text-6xl sm:leading-[1.05]", !isRtl && "font-amagro")}>
@@ -127,7 +127,7 @@ export function HeroBanner({
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               href={`/anime/${active.slug}/watch?ep=1`}
-              className="group flex items-center gap-2 rounded-full bg-cyan-400 px-7 py-3.5 text-sm font-bold text-neutral-950 shadow-xl shadow-cyan-500/25 transition-all duration-300 hover:scale-105 hover:bg-cyan-300"
+              className="group flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 text-sm font-bold text-neutral-950 shadow-xl shadow-brand/25 transition-all duration-300 hover:scale-105 hover:bg-brand-300"
             >
               <Play className="h-4 w-4 fill-neutral-950 rtl-flip transition-transform duration-300 group-hover:scale-110" aria-hidden />
               {dict.hero.watchNow}
@@ -156,7 +156,7 @@ export function HeroBanner({
                     onClick={() => setIndex(i)}
                     className={cn(
                       "h-1.5 rounded-full transition-all duration-300",
-                      i === index ? "w-10 bg-cyan-400" : "w-3 bg-white/25 hover:bg-white/50"
+                      i === index ? "w-10 bg-brand" : "w-3 bg-white/25 hover:bg-white/50"
                     )}
                   />
                 ))}

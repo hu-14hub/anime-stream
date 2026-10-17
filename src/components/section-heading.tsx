@@ -18,7 +18,7 @@ export function SectionHeading({
   return (
     <div className="flex items-end justify-between gap-4">
       <div>
-        <div className="h-1 w-10 rounded-full bg-cyan-400" aria-hidden />
+        <div className="h-1 w-10 rounded-full bg-brand" aria-hidden />
         <h2 className={cn("mt-3 text-2xl font-extrabold tracking-tight text-white sm:text-3xl", locale === "en" && "font-amagro")}>{title}</h2>
       </div>
       {actionLabel && actionHref && (

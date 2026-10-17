@@ -40,7 +40,7 @@ export function CharacterGrid({
               {c.name}
             </span>
             {c.role && (
-              <span className="mt-0.5 block truncate text-[11px] font-semibold uppercase tracking-wider text-cyan-400/80" dir="ltr">
+              <span className="mt-0.5 block truncate text-[11px] font-semibold uppercase tracking-wider text-brand/80" dir="ltr">
                 {c.role}
               </span>
             )}

@@ -24,8 +24,8 @@ export function Logo({ name, locale = "en", className }: LogoProps) {
       className={cn("group flex shrink-0 items-center gap-3", className)}
       aria-label={name}
     >
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan-500/10 ring-1 ring-inset ring-cyan-400/25 shadow-lg shadow-cyan-500/20 transition-shadow duration-300 group-hover:shadow-cyan-400/40">
-        <ToriiGate className="h-6 w-6 text-cyan-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.5)] transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(6,182,212,0.8)]" />
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand/10 ring-1 ring-inset ring-brand/25 shadow-lg shadow-brand/20 transition-shadow duration-300 group-hover:shadow-brand/40">
+        <ToriiGate className="h-6 w-6 text-brand drop-shadow-[0_0_8px_rgba(6,182,212,0.5)] transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(6,182,212,0.8)]" />
       </span>
       <span className="flex flex-col leading-none">
         <span className={cn("text-lg font-extrabold tracking-tight text-white", locale === "en" && "font-amagro")}>

@@ -53,8 +53,8 @@ export function ProfileClient({ locale, dict: t }: { locale: Locale; dict: Dicti
         </Link>
       </div>
       <div className="mb-10 grid gap-4 sm:grid-cols-4">
-        <StatCard icon={<LayoutList className="h-5 w-5 text-cyan-400" />} label={t.profile.totalWatched} value={watchedCount} />
-        <StatCard icon={<LayoutList className="h-5 w-5 text-cyan-400" />} label={t.profile.listSize} value={watchlist.length} />
+        <StatCard icon={<LayoutList className="h-5 w-5 text-brand" />} label={t.profile.totalWatched} value={watchedCount} />
+        <StatCard icon={<LayoutList className="h-5 w-5 text-brand" />} label={t.profile.listSize} value={watchlist.length} />
         <StatCard icon={<Heart className="h-5 w-5 text-red-400" />} label={t.profile.favorites} value={favorites.length} />
         <StatCard icon={<Star className="h-5 w-5 text-amber-400" />} label={t.profile.avgScore} value={avg} />
       </div>
@@ -66,7 +66,7 @@ export function ProfileClient({ locale, dict: t }: { locale: Locale; dict: Dicti
           return (
             <button key={key} role="tab" aria-selected={active} onClick={() => setTab(key)}
               className={cn("flex shrink-0 items-center gap-2 border-b-2 px-4 py-3 text-sm font-bold transition",
-                active ? "border-cyan-400 text-white" : "border-transparent text-neutral-500 hover:text-neutral-200")}>
+                active ? "border-brand text-white" : "border-transparent text-neutral-500 hover:text-neutral-200")}>
               <Icon className="h-4 w-4" aria-hidden />
               {def.label}
             </button>
@@ -96,7 +96,7 @@ function TabGrid({ tab, locale, t, watchlist, favorites, history, allRatings }: 
         {watchlist.map((entry) => {
           const label = (t.watchlist as Record<string, string>)[entry.status] ?? entry.status;
           return (
-            <LibraryCard key={entry.slug} entry={entry} locale={locale} t={t} badge={label} badgeClass="bg-cyan-400/15 text-cyan-300" />
+            <LibraryCard key={entry.slug} entry={entry} locale={locale} t={t} badge={label} badgeClass="bg-brand/15 text-brand-300" />
           );
         })}
       </div>
@@ -143,7 +143,7 @@ function LibraryCard({ entry, locale, t, badge, badgeClass }: {
           {badge}
         </span>
         {entry.format && (
-          <span dir="ltr" className="absolute end-2 top-2 rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-cyan-300 backdrop-blur">
+          <span dir="ltr" className="absolute end-2 top-2 rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-brand-300 backdrop-blur">
             {entry.format}
           </span>
         )}
@@ -154,7 +154,7 @@ function LibraryCard({ entry, locale, t, badge, badgeClass }: {
           </span>
         )}
       </div>
-      <h3 className="truncate text-sm font-bold text-neutral-100 group-hover:text-cyan-300">{title}</h3>
+      <h3 className="truncate text-sm font-bold text-neutral-100 group-hover:text-brand-300">{title}</h3>
       {(year != null || episodes != null) && (
         <p className="text-xs text-neutral-500" dir="ltr">
           {year}{year != null && episodes != null && " · "}
@@ -182,7 +182,7 @@ function HistoryRatings({ tab, locale, t, history, allRatings }: {
                 <Image src={anime.cover} alt={anime.title[locale]} fill sizes="(max-width: 640px) 45vw, 20vw" className="object-cover transition-transform duration-300 group-hover:scale-110" />
                 <span dir="ltr" className="absolute bottom-1 end-1 rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-bold text-white">EP {h.ep}</span>
               </div>
-              <h3 className="truncate text-sm font-bold text-neutral-100 group-hover:text-cyan-300">{anime.title[locale]}</h3>
+              <h3 className="truncate text-sm font-bold text-neutral-100 group-hover:text-brand-300">{anime.title[locale]}</h3>
               <p className="text-xs text-neutral-500">{t.profile.lastWatched}: <span dir="ltr">{new Date(h.updatedAt).toLocaleDateString()}</span></p>
             </Link>
           );
@@ -201,7 +201,7 @@ function HistoryRatings({ tab, locale, t, history, allRatings }: {
             <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl bg-neutral-900">
               <Image src={anime.cover} alt={anime.title[locale]} fill sizes="(max-width: 640px) 45vw, 20vw" className="object-cover transition-transform duration-300 group-hover:scale-110" />
             </div>
-            <h3 className="truncate text-sm font-bold text-neutral-100 group-hover:text-cyan-300">{anime.title[locale]}</h3>
+            <h3 className="truncate text-sm font-bold text-neutral-100 group-hover:text-brand-300">{anime.title[locale]}</h3>
             <div dir="ltr" className="mt-1 flex items-center gap-1 text-xs font-bold text-amber-400">
               <Star className="h-3.5 w-3.5 fill-amber-400" aria-hidden />
               {r.score}/10

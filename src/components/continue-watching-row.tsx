@@ -82,13 +82,13 @@ export function ContinueWatchingRow({
                   blurDataURL={BLUR_DATA_URL}
                 />
                 <span className="absolute inset-0 flex items-center justify-center bg-neutral-950/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-cyan-400 text-neutral-950 shadow-xl shadow-cyan-500/30">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand text-neutral-950 shadow-xl shadow-brand/30">
                     <Play className="h-5 w-5 fill-neutral-950 rtl-flip" aria-hidden />
                   </span>
                 </span>
                 {/* progress bar */}
                 <span className="absolute inset-x-0 bottom-0 h-1.5 bg-black/60">
-                  <span className="block h-full bg-cyan-400" style={{ width: `${pct}%` }} />
+                  <span className="block h-full bg-brand" style={{ width: `${pct}%` }} />
                 </span>
                 <span
                   dir="ltr"
@@ -97,7 +97,7 @@ export function ContinueWatchingRow({
                   {pct}%
                 </span>
               </div>
-              <p className="mt-2.5 truncate text-sm font-bold text-neutral-100 transition-colors group-hover:text-cyan-300">
+              <p className="mt-2.5 truncate text-sm font-bold text-neutral-100 transition-colors group-hover:text-brand-300">
                 {p.title}
               </p>
               <p className="mt-0.5 text-xs text-neutral-500">

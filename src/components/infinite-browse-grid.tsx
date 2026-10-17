@@ -111,7 +111,7 @@ export function InfiniteBrowseGrid({
             className="flex items-center gap-2 rounded-full bg-white/5 px-7 py-3 text-sm font-bold text-neutral-200 transition-all duration-300 hover:bg-white/10 hover:text-white disabled:opacity-60"
           >
             {loading ? (
-              <Loader2 className="h-4 w-4 animate-spin text-cyan-400" aria-hidden />
+              <Loader2 className="h-4 w-4 animate-spin text-brand" aria-hidden />
             ) : (
               <Plus className="h-4 w-4" aria-hidden />
             )}

@@ -167,7 +167,7 @@ export default async function Home() {
               <div key={a.id} className="relative w-36 shrink-0 snap-start sm:w-44 lg:w-48">
                 <span
                   dir="ltr"
-                  className="absolute -top-3 start-2 z-20 rounded-full bg-cyan-400 px-2.5 py-0.5 text-xs font-black text-neutral-950 shadow-lg"
+                  className="absolute -top-3 start-2 z-20 rounded-full bg-brand px-2.5 py-0.5 text-xs font-black text-neutral-950 shadow-lg"
                 >
                   #{i + 1}
                 </span>

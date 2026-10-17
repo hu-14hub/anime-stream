@@ -52,7 +52,7 @@ export function Navbar({ locale, dict }: NavbarProps) {
               <span
                 aria-hidden
                 className={cn(
-                  "absolute inset-x-4 -bottom-px h-0.5 rounded-full bg-cyan-400 transition-all duration-300",
+                  "absolute inset-x-4 -bottom-px h-0.5 rounded-full bg-brand transition-all duration-300",
                   isActive(l.href) ? "opacity-100" : "opacity-0"
                 )}
               />

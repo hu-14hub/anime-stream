@@ -491,7 +491,7 @@ export function VideoPlayer({
         {/* Loading overlay */}
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/60 z-10">
-            <Loader2 className="h-8 w-8 animate-spin text-cyan-400" />
+            <Loader2 className="h-8 w-8 animate-spin text-brand" />
           </div>
         )}
 
@@ -529,7 +529,7 @@ export function VideoPlayer({
         {/* Resume prompt */}
         {resumeAt && resumeAt > 0 && (
           <div className="absolute bottom-4 left-4 z-20 flex items-center gap-2 rounded-full bg-black/70 px-4 py-2 backdrop-blur-sm">
-            <Clock className="h-4 w-4 text-cyan-400" aria-hidden />
+            <Clock className="h-4 w-4 text-brand" aria-hidden />
             <span className="text-sm text-white">
               {dict.player.resumeFrom} {fmt(resumeAt)}
             </span>
@@ -540,7 +540,7 @@ export function VideoPlayer({
                 if (video) video.currentTime = resumeAt;
                 setResumeAt(null);
               }}
-              className="px-2 py-1 text-xs font-bold text-cyan-400 hover:underline"
+              className="px-2 py-1 text-xs font-bold text-brand hover:underline"
             >
               {dict.player.restart}
             </button>
@@ -550,7 +550,7 @@ export function VideoPlayer({
         {/* Autoplay next countdown */}
         {nextCountdown && (
           <div className="absolute top-4 right-4 z-20 rounded-full bg-black/70 px-4 py-2 backdrop-blur-sm flex items-center gap-2">
-            <SkipForward className="h-4 w-4 text-cyan-400" aria-hidden />
+            <SkipForward className="h-4 w-4 text-brand" aria-hidden />
             <span className="text-sm text-white">
               {dict.player.autoplayNext} <span dir="ltr">{nextCountdown}s</span>
             </span>
@@ -560,7 +560,7 @@ export function VideoPlayer({
                 setNextCountdown(null);
                 onNext?.();
               }}
-              className="px-2 py-1 text-xs font-bold text-cyan-400 hover:underline"
+              className="px-2 py-1 text-xs font-bold text-brand hover:underline"
             >
               {dict.watch.nextEpisode}
             </button>
@@ -626,10 +626,10 @@ export function VideoPlayer({
                 if (video && video.duration) video.currentTime = pct * video.duration;
               }}
             >
-              <div className="h-full bg-cyan-400" style={{ width: `${progressPct}%` }} />
+              <div className="h-full bg-brand" style={{ width: `${progressPct}%` }} />
               <div className="absolute left-0 top-0 h-full bg-white/20" style={{ width: `${bufferedPct}%` }} />
               <div
-                className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-cyan-400 ring-2 ring-black/60"
+                className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-brand ring-2 ring-black/60"
                 style={{ left: `${progressPct}%` }}
               />
             </div>
@@ -667,7 +667,7 @@ export function VideoPlayer({
                   video.muted = v === 0;
                 }
               }}
-              className="h-1.5 w-20 bg-white/30 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+              className="h-1.5 w-20 bg-white/30 rounded-lg appearance-none cursor-pointer accent-brand"
             />
           </div>
 
@@ -677,7 +677,7 @@ export function VideoPlayer({
               onClick={() => togglePanel("speed")}
               className={cn(
                 "flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition",
-                panel === "speed" && "bg-cyan-400 text-neutral-950"
+                panel === "speed" && "bg-brand text-neutral-950"
               )}
               aria-label={dict.player.speed}
               aria-expanded={panel === "speed"}
@@ -691,7 +691,7 @@ export function VideoPlayer({
               onClick={() => togglePanel("quality")}
               className={cn(
                 "flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition",
-                panel === "quality" && "bg-cyan-400 text-neutral-950"
+                panel === "quality" && "bg-brand text-neutral-950"
               )}
               aria-label={dict.player.quality}
               aria-expanded={panel === "quality"}
@@ -705,7 +705,7 @@ export function VideoPlayer({
               onClick={() => togglePanel("subs")}
               className={cn(
                 "flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition",
-                panel === "subs" && "bg-cyan-400 text-neutral-950"
+                panel === "subs" && "bg-brand text-neutral-950"
               )}
               aria-label={dict.player.subtitles}
               aria-expanded={panel === "subs"}
@@ -771,7 +771,7 @@ export function VideoPlayer({
                 className={cn(
                   "flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm font-medium transition",
                   speed === s
-                    ? "bg-cyan-400 text-neutral-950"
+                    ? "bg-brand text-neutral-950"
                     : "text-neutral-600 hover:bg-neutral-200"
                 )}
               >
@@ -797,7 +797,7 @@ export function VideoPlayer({
               }}
               className={cn(
                 "flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm font-medium transition",
-                level === -1 ? "bg-cyan-400 text-neutral-950" : "text-neutral-600 hover:bg-neutral-200"
+                level === -1 ? "bg-brand text-neutral-950" : "text-neutral-600 hover:bg-neutral-200"
               )}
             >
               <span>Auto</span>
@@ -813,7 +813,7 @@ export function VideoPlayer({
                 }}
                 className={cn(
                   "flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm font-medium transition",
-                  level === l.i ? "bg-cyan-400 text-neutral-950" : "text-neutral-600 hover:bg-neutral-200"
+                  level === l.i ? "bg-brand text-neutral-950" : "text-neutral-600 hover:bg-neutral-200"
                 )}
               >
                 <span dir="ltr">{l.label}</span>
@@ -836,7 +836,7 @@ export function VideoPlayer({
               }}
               className={cn(
                 "flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm font-medium transition",
-                selectedSub === "off" ? "bg-cyan-400 text-neutral-950" : "text-neutral-600 hover:bg-neutral-200"
+                selectedSub === "off" ? "bg-brand text-neutral-950" : "text-neutral-600 hover:bg-neutral-200"
               )}
             >
               <span>{dict.player.subtitlesOff}</span>
@@ -852,7 +852,7 @@ export function VideoPlayer({
                 }}
                 className={cn(
                   "flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm font-medium transition",
-                  selectedSub === t.id ? "bg-cyan-400 text-neutral-950" : "text-neutral-600 hover:bg-neutral-200"
+                  selectedSub === t.id ? "bg-brand text-neutral-950" : "text-neutral-600 hover:bg-neutral-200"
                 )}
               >
                 <span>{t.label}</span>

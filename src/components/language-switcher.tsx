@@ -48,7 +48,7 @@ export function LanguageSwitcher({
           className={cn(
             "rounded-full px-2.5 py-1 transition-all duration-200 disabled:opacity-50",
             current === l
-              ? "bg-cyan-400 text-neutral-950 shadow-sm"
+              ? "bg-brand text-neutral-950 shadow-sm"
               : "text-neutral-300 hover:bg-white/10 hover:text-white"
           )}
         >

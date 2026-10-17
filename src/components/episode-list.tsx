@@ -61,7 +61,7 @@ export function EpisodeList({
     cn(
       "flex h-9 w-9 items-center justify-center rounded-lg transition-colors duration-300",
       view === mode
-        ? "bg-cyan-400 text-neutral-950"
+        ? "bg-brand text-neutral-950"
         : "bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white"
     );
 
@@ -146,7 +146,7 @@ export function EpisodeList({
                   !released
                     ? "cursor-not-allowed opacity-50"
                     : isActive
-                      ? "bg-cyan-400/10 ring-1 ring-cyan-400/60"
+                      ? "bg-brand/10 ring-1 ring-brand/60"
                       : "bg-white/[0.03] hover:bg-white/[0.07]"
                 )}
               >
@@ -190,7 +190,7 @@ export function EpisodeList({
                     dir="ltr"
                     className={cn(
                       "flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest",
-                      released ? "text-cyan-300" : "text-neutral-500"
+                      released ? "text-brand-300" : "text-neutral-500"
                     )}
                   >
                     EP {ep.number}
@@ -213,7 +213,7 @@ export function EpisodeList({
                     className={cn(
                       "mt-0.5 flex items-center gap-1 text-[11px] font-semibold",
                       !released
-                        ? "text-cyan-300"
+                        ? "text-brand-300"
                         : isWatched
                           ? "text-emerald-400"
                           : "text-neutral-600"

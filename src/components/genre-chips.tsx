@@ -31,7 +31,7 @@ export function GenreChips({
           href={`/catalog?genres=${g.key}`}
           className={cn(
             "shrink-0 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold text-neutral-300 sm:text-sm",
-            "transition-all duration-300 hover:scale-105 hover:border-cyan-400/50 hover:bg-cyan-400/10 hover:text-cyan-300"
+            "transition-all duration-300 hover:scale-105 hover:border-brand/50 hover:bg-brand/10 hover:text-brand-300"
           )}
         >
           {g.label[locale]}

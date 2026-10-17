@@ -20,8 +20,8 @@ html[lang="en"]:not([dir="rtl"]) .anime-title {
 :root {
   --background: #09090b;
   --foreground: #fafafa;
-  --accent: #22d3ee;
-  --accent-soft: rgba(34, 211, 238, 0.12);
+  --accent: #06b6d4;
+  --accent-soft: rgba(6, 182, 212, 0.12);
   --muted-foreground: #a1a1aa;
   color-scheme: dark;
   --font-poppins: "Poppins", ui-sans-serif, system-ui, sans-serif;
@@ -56,6 +56,15 @@ html[lang="en"]:not([dir="rtl"]) .anime-title {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted-foreground: var(--muted-foreground);
+  /* Brand palette — pinned to the exact Shinkai Torii logo color (#06b6d4).
+     Every interactive accent (active nav, buttons, badges, underlines) uses
+     these tokens so the whole UI inherits the logo's hue automatically. */
+  --color-brand: #06b6d4;
+  --color-brand-200: #a5f3fc;
+  --color-brand-300: #67e8f9;
+  --color-brand-400: #22d3ee;
+  --color-brand-500: #06b6d4;
+  --color-brand-600: #0891b2;
   --font-en: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --font-ar: var(--font-cairo), "Segoe UI", ui-sans-serif, system-ui, sans-serif;
   --font-jp: var(--font-noto-jp);
@@ -119,7 +128,7 @@ select option:checked {
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #22d3ee;
+  background: #06b6d4;
 }
 
 /* Custom thin horizontal scrollbar for the weekly schedule day-row tracks

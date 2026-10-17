@@ -119,7 +119,7 @@ export function CommentsSection({
         id={headingId ?? "comments-heading"}
         className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-white"
       >
-        <MessageCircle className="h-5 w-5 text-cyan-300" aria-hidden />
+        <MessageCircle className="h-5 w-5 text-brand-300" aria-hidden />
         {title ?? dict.comments.title}
         <span
           dir="ltr"
@@ -141,11 +141,11 @@ export function CommentsSection({
           placeholder={dict.comments.placeholder}
           aria-label={dict.comments.placeholder}
           maxLength={800}
-          className="h-11 flex-1 rounded-full bg-white/5 px-4 text-sm text-neutral-100 placeholder:text-neutral-500 outline-none transition-all duration-300 focus:bg-white/[0.07] focus:ring-2 focus:ring-cyan-400/40"
+          className="h-11 flex-1 rounded-full bg-white/5 px-4 text-sm text-neutral-100 placeholder:text-neutral-500 outline-none transition-all duration-300 focus:bg-white/[0.07] focus:ring-2 focus:ring-brand/40"
         />
         <button
           type="submit"
-          className="flex h-11 items-center gap-1.5 rounded-full bg-cyan-400 px-5 text-sm font-bold text-neutral-950 shadow-lg shadow-cyan-500/20 transition-all duration-300 hover:scale-105 hover:bg-cyan-300 disabled:opacity-50"
+          className="flex h-11 items-center gap-1.5 rounded-full bg-brand px-5 text-sm font-bold text-neutral-950 shadow-lg shadow-brand/20 transition-all duration-300 hover:scale-105 hover:bg-brand-300 disabled:opacity-50"
           disabled={!draft.trim()}
         >
           <Send className="h-4 w-4 rtl-flip" aria-hidden />
@@ -164,7 +164,7 @@ export function CommentsSection({
             return (
               <li key={c.id} className="animate-fade-up rounded-xl bg-white/5 p-3.5">
                 <div className="min-w-0">
-                  <p className="flex items-center gap-2 text-xs font-bold text-cyan-300">
+                  <p className="flex items-center gap-2 text-xs font-bold text-brand-300">
                     {c.author}
                     <span className="font-medium text-neutral-600">
                       · {timeAgo(c.createdAt, dict)}
@@ -195,7 +195,7 @@ export function CommentsSection({
                       setReplyTo(replyTo === c.id ? null : c.id);
                       setReplyDraft("");
                     }}
-                    className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold text-neutral-500 transition-colors hover:bg-white/10 hover:text-cyan-300"
+                    className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold text-neutral-500 transition-colors hover:bg-white/10 hover:text-brand-300"
                   >
                     <CornerDownRight className="h-3.5 w-3.5" aria-hidden />
                     {dict.comments.reply}
@@ -255,12 +255,12 @@ export function CommentsSection({
                       onChange={(e) => setReplyDraft(e.target.value)}
                       placeholder={`${dict.comments.replyTo} ${c.author}…`}
                       aria-label={dict.comments.replyPlaceholder}
-                      className="h-9 flex-1 rounded-full bg-white/5 px-3.5 text-xs text-neutral-100 placeholder:text-neutral-500 outline-none focus:ring-2 focus:ring-cyan-400/40"
+                      className="h-9 flex-1 rounded-full bg-white/5 px-3.5 text-xs text-neutral-100 placeholder:text-neutral-500 outline-none focus:ring-2 focus:ring-brand/40"
                     />
                     <button
                       type="submit"
                       disabled={!replyDraft.trim()}
-                      className="flex h-9 items-center gap-1 rounded-full bg-cyan-400 px-3.5 text-xs font-bold text-neutral-950 transition-all duration-300 hover:bg-cyan-300 disabled:opacity-50"
+                      className="flex h-9 items-center gap-1 rounded-full bg-brand px-3.5 text-xs font-bold text-neutral-950 transition-all duration-300 hover:bg-brand-300 disabled:opacity-50"
                     >
                       <Send className="h-3 w-3 rtl-flip" aria-hidden />
                       {dict.comments.send}
@@ -273,7 +273,7 @@ export function CommentsSection({
                   <ul className="mt-3 space-y-2 border-s-2 border-white/10 ps-3">
                     {c.replies.map((r) => (
                       <li key={r.id} className="rounded-lg bg-white/[0.04] p-2.5">
-                        <p className="flex items-center gap-2 text-[11px] font-bold text-cyan-400/90">
+                        <p className="flex items-center gap-2 text-[11px] font-bold text-brand/90">
                           {r.author}
                           <span className="font-medium text-neutral-600">
                             · {timeAgo(r.createdAt, dict)}

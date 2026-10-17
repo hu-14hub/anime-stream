@@ -43,7 +43,7 @@ export default async function WatchPage({ params, searchParams }: {
           <span aria-current="page" className="text-neutral-200">{t.watch.episode} <span dir="ltr">{num}</span></span>
         </nav>
         <h1 className="mt-3 text-2xl font-black leading-tight tracking-tight text-white sm:text-3xl">
-          {anime.title[locale]} <span dir="ltr" className="text-cyan-300">· EP {num}</span>
+          {anime.title[locale]} <span dir="ltr" className="text-brand-300">· EP {num}</span>
         </h1>
         <p className="mt-2 text-sm leading-6 text-neutral-400 sm:text-base sm:leading-7">
           {current.title[locale]} · <span dir="ltr">{current.duration}</span>

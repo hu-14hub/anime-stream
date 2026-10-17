@@ -92,13 +92,13 @@ export function IntroAnimation() {
         {/* Torii gate + neon aura + floating light particles */}
         <div className="relative mb-8 h-32 w-32">
           <span
-            className="intro-aura pointer-events-none absolute left-1/2 top-1/2 -z-10 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/25 blur-3xl"
+            className="intro-aura pointer-events-none absolute left-1/2 top-1/2 -z-10 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand/25 blur-3xl"
             aria-hidden
           />
           {PARTICLES.map((p, i) => (
             <span
               key={i}
-              className="intro-particle pointer-events-none absolute rounded-full bg-cyan-300/80 shadow-[0_0_8px_1px_rgba(6,182,212,0.7)]"
+              className="intro-particle pointer-events-none absolute rounded-full bg-brand-300/80 shadow-[0_0_8px_1px_rgba(6,182,212,0.7)]"
               style={{
                 left: p.left,
                 top: p.top,
@@ -111,7 +111,7 @@ export function IntroAnimation() {
           ))}
           <ToriiGate
             className={cn(
-              "intro-torii neon absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 text-cyan-400",
+              "intro-torii neon absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 text-brand",
               started && "is-drawing"
             )}
           />
@@ -131,7 +131,7 @@ export function IntroAnimation() {
         {/* Japanese tagline */}
         <p
           className={cn(
-            "intro-text mt-3 text-center font-jp text-base tracking-[0.35em] text-cyan-300/85 sm:text-lg",
+            "intro-text mt-3 text-center font-jp text-base tracking-[0.35em] text-brand-300/85 sm:text-lg",
             started && "is-in"
           )}
           style={started ? { animationDelay: "0.8s" } : undefined}
@@ -147,7 +147,7 @@ export function IntroAnimation() {
           )}
           style={started ? { animationDelay: "1s" } : undefined}
         >
-          <span className="block h-full w-1/3 animate-pulse rounded-full bg-cyan-400/80 shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
+          <span className="block h-full w-1/3 animate-pulse rounded-full bg-brand/80 shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
         </div>
       </div>
     </div>

@@ -56,13 +56,13 @@ export function SettingsClient({ locale, dict: t }: { locale: Locale; dict: Dict
         </p>
       )}
       <div className="mt-8 space-y-6">
-        <Card icon={<Languages className="h-5 w-5 text-cyan-400" />} title={t.settings.language} note={t.settings.languageNote}>
+        <Card icon={<Languages className="h-5 w-5 text-brand" />} title={t.settings.language} note={t.settings.languageNote}>
           <div className="flex gap-2">
             {(["en", "ar"] as Locale[]).map((l) => (
               <button key={l} type="button" disabled={pending} onClick={() => switchLocale(l)}
                 aria-pressed={locale === l}
                 className={cn("rounded-full px-5 py-2 text-sm font-bold transition-all duration-300 disabled:opacity-50",
-                  locale === l ? "bg-cyan-400 text-neutral-950" : "border border-white/10 bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white")}>
+                  locale === l ? "bg-brand text-neutral-950" : "border border-white/10 bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white")}>
                 {l === "en" ? "English" : "العربية"}
               </button>
             ))}
@@ -137,7 +137,7 @@ function Toggle({ label, note, checked, onChange }: { label: string; note?: stri
         </span>
         {note && <span className="mt-0.5 block text-xs text-neutral-500">{note}</span>}
       </span>
-      <span aria-hidden className={cn("relative h-6 w-11 shrink-0 rounded-full transition", checked ? "bg-cyan-400" : "bg-white/10")}>
+      <span aria-hidden className={cn("relative h-6 w-11 shrink-0 rounded-full transition", checked ? "bg-brand" : "bg-white/10")}>
         <span className={cn("absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all", checked ? "end-0.5" : "start-0.5")} />
       </span>
     </button>
@@ -148,7 +148,7 @@ function SubBtn({ active, label, onClick }: { active: boolean; label: string; on
   return (
     <button type="button" onClick={onClick} aria-pressed={active}
       className={cn("rounded-full px-4 py-1.5 text-xs font-bold transition",
-        active ? "bg-cyan-400 text-neutral-950" : "border border-white/10 bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white")}>
+        active ? "bg-brand text-neutral-950" : "border border-white/10 bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white")}>
       <span dir="ltr">{label}</span>
     </button>
   );

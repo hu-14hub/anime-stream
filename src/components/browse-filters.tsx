@@ -233,7 +233,7 @@ export function BrowseFilters({
             aria-haspopup="listbox"
             aria-expanded={open}
             onClick={toggleOpen}
-            className="flex h-10 w-full items-center justify-between gap-2 rounded-xl border border-zinc-800 bg-zinc-900/60 px-3 text-start text-sm font-semibold text-zinc-100 outline-none transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20"
+            className="flex h-10 w-full items-center justify-between gap-2 rounded-xl border border-zinc-800 bg-zinc-900/60 px-3 text-start text-sm font-semibold text-zinc-100 outline-none transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900 focus:border-brand/60 focus:ring-2 focus:ring-brand/20"
           >
             <span className="truncate">{selected ? selected.label : value}</span>
             <ChevronDown
@@ -269,12 +269,12 @@ export function BrowseFilters({
                       className={cn(
                         "flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-start text-sm font-semibold transition-colors duration-150",
                         isSelected
-                          ? "bg-cyan-500/15 text-cyan-200"
-                          : "text-zinc-200 hover:bg-cyan-500/10 hover:text-white focus:bg-cyan-500/20 focus:text-white"
+                          ? "bg-brand/15 text-brand-200"
+                          : "text-zinc-200 hover:bg-brand/10 hover:text-white focus:bg-brand/20 focus:text-white"
                       )}
                     >
                       <span className="truncate">{o.label}</span>
-                      {isSelected && <Check className="h-4 w-4 shrink-0 text-cyan-300" aria-hidden />}
+                      {isSelected && <Check className="h-4 w-4 shrink-0 text-brand-300" aria-hidden />}
                     </button>
                   );
                 })}
@@ -301,7 +301,7 @@ export function BrowseFilters({
             onChange={(e) => setTerm(e.target.value)}
             placeholder={dict.browse.searchLabel}
             aria-label={dict.browse.searchLabel}
-            className="h-11 w-full rounded-full border border-white/10 bg-white/5 ps-10 pe-4 text-sm text-neutral-100 placeholder:text-neutral-500 outline-none transition-all focus:border-cyan-400/50 focus:bg-white/[0.07] focus:ring-2 focus:ring-cyan-400/20"
+            className="h-11 w-full rounded-full border border-white/10 bg-white/5 ps-10 pe-4 text-sm text-neutral-100 placeholder:text-neutral-500 outline-none transition-all focus:border-brand/50 focus:bg-white/[0.07] focus:ring-2 focus:ring-brand/20"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -311,7 +311,7 @@ export function BrowseFilters({
             aria-expanded={open}
             className={cn(
               "flex h-11 items-center gap-2 rounded-full px-5 text-sm font-bold transition-all duration-300",
-              open ? "bg-cyan-400 text-neutral-950" : "bg-white/5 text-neutral-200 hover:bg-white/10"
+              open ? "bg-brand text-neutral-950" : "bg-white/5 text-neutral-200 hover:bg-white/10"
             )}
           >
             <Filter className="h-4 w-4" aria-hidden />
@@ -364,7 +364,7 @@ export function BrowseFilters({
                       className={cn(
                         "flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all duration-300",
                         active
-                          ? "bg-cyan-400 text-neutral-950 shadow-lg shadow-cyan-500/20"
+                          ? "bg-brand text-neutral-950 shadow-lg shadow-brand/20"
                           : "bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white"
                       )}
                     >
@@ -457,7 +457,7 @@ export function BrowseFilters({
               key={g}
               type="button"
               onClick={() => toggleGenre(g)}
-              className="flex items-center gap-1 rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-bold text-cyan-300 transition-all duration-300 hover:bg-cyan-400/20"
+              className="flex items-center gap-1 rounded-full bg-brand/10 px-3 py-1 text-xs font-bold text-brand-300 transition-all duration-300 hover:bg-brand/20"
             >
               {genres.find((x) => x.key === g)?.label[locale] ?? g}
               <X className="h-3 w-3" aria-hidden />

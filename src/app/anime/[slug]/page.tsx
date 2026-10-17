@@ -190,7 +190,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
                 <Link
                   key={g}
                   href={`/catalog?genres=${g}`}
-                  className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-neutral-200 backdrop-blur transition-colors duration-300 hover:bg-cyan-400/15 hover:text-cyan-300"
+                  className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-neutral-200 backdrop-blur transition-colors duration-300 hover:bg-brand/15 hover:text-brand-300"
                 >
                   {genres.find((x) => x.key === g)?.label[locale] ?? g}
                 </Link>
@@ -201,7 +201,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <Link
                 href={`/anime/${anime.slug}/watch?ep=1`}
-                className="flex items-center gap-2 rounded-full bg-cyan-400 px-7 py-3.5 text-sm font-bold text-neutral-950 shadow-xl shadow-cyan-500/25 transition-all duration-300 hover:scale-105 hover:bg-cyan-300"
+                className="flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 text-sm font-bold text-neutral-950 shadow-xl shadow-brand/25 transition-all duration-300 hover:scale-105 hover:bg-brand-300"
               >
                 <Play className="h-4 w-4 fill-neutral-950 rtl-flip" aria-hidden />
                 {t.hero.watchNow}

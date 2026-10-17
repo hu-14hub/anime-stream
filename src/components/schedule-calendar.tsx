@@ -51,7 +51,7 @@ function Countdown({ airingAt }: { airingAt: number }) {
   if (d > 0 || h > 0) parts.push(`${pad(h)}h`);
   if (d > 0 || h > 0 || m > 0) parts.push(`${pad(m)}m`);
   parts.push(`${pad(s)}s`);
-  return <span className="text-cyan-400 font-bold" dir="ltr">{parts.join(" ")}</span>;
+  return <span className="text-brand font-bold" dir="ltr">{parts.join(" ")}</span>;
 }
 
 let tAired = "Aired";
@@ -152,7 +152,7 @@ export function ScheduleCalendar({
                 key={dayKey}
                 className={cn(
                   "flex flex-col gap-3 rounded-xl border border-white/5 bg-white/[0.02] p-3 transition-colors md:flex-row md:items-start md:gap-5",
-                  today && "border-cyan-400/50 bg-cyan-400/5"
+                  today && "border-brand/50 bg-brand/5"
                 )}
               >
                 {/* Day header: left on desktop, stacked on top for mobile */}
@@ -162,13 +162,13 @@ export function ScheduleCalendar({
                       <span
                         className={cn(
                           "text-base font-extrabold tracking-tight",
-                          today ? "text-cyan-400" : "text-white"
+                          today ? "text-brand" : "text-white"
                         )}
                       >
                         {dict.schedule[dayKey]}
                       </span>
                       {today && (
-                        <span className="rounded-full bg-cyan-400 px-2 py-0.5 text-[10px] font-bold text-neutral-950">
+                        <span className="rounded-full bg-brand px-2 py-0.5 text-[10px] font-bold text-neutral-950">
                           {dict.schedule.today}
                         </span>
                       )}
@@ -188,7 +188,7 @@ export function ScheduleCalendar({
                       <li key={e.id} className="flex-shrink-0">
                         <Link
                           href={`/anime/${e.anime.slug}/watch?ep=${e.episode}`}
-                          className="group flex h-full min-w-[180px] max-w-[200px] cursor-pointer items-stretch gap-2.5 overflow-hidden rounded-lg border border-zinc-800/50 bg-zinc-900/60 p-2 transition-colors hover:border-cyan-400/40 hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400/60"
+                          className="group flex h-full min-w-[180px] max-w-[200px] cursor-pointer items-stretch gap-2.5 overflow-hidden rounded-lg border border-zinc-800/50 bg-zinc-900/60 p-2 transition-colors hover:border-brand/40 hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand/60"
                         >
                           {/* Poster thumbnail 64x88 */}
                           <span className="relative h-22 w-16 shrink-0 self-start overflow-hidden rounded-md border border-white/10 bg-neutral-900">
@@ -209,7 +209,7 @@ export function ScheduleCalendar({
                             </span>
                             <span
                               dir="auto"
-                              className="w-fit rounded bg-cyan-400/10 px-1.5 py-0.5 text-[10px] font-bold text-cyan-300"
+                              className="w-fit rounded bg-brand/10 px-1.5 py-0.5 text-[10px] font-bold text-brand-300"
                             >
                               {dict.schedule.ep} {e.episode}
                             </span>

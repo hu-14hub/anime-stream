@@ -57,7 +57,7 @@ export function WatchClient({ slug, num, anime, stream, locale, dict: t }: {
         <div className="flex-1" />
         {hasNext && (
           <Link href={`/anime/${anime.slug}/watch?ep=${num + 1}`}
-            className="flex items-center gap-2 rounded-full bg-cyan-400 px-5 py-2.5 text-sm font-bold text-neutral-950 transition-all duration-300 hover:scale-105 hover:bg-cyan-300">
+            className="flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-neutral-950 transition-all duration-300 hover:scale-105 hover:bg-brand-300">
             {t.watch.nextEpisode}
             <ChevronRight className="h-4 w-4 rtl-flip" aria-hidden />
           </Link>
@@ -70,7 +70,7 @@ export function WatchClient({ slug, num, anime, stream, locale, dict: t }: {
           {stream.sources.map((s) => (
             <span key={s.id}
               className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${
-                s.default ? "bg-cyan-400 text-neutral-950 shadow-lg shadow-cyan-500/20" : "bg-white/5 text-neutral-300"
+                s.default ? "bg-brand text-neutral-950 shadow-lg shadow-brand/20" : "bg-white/5 text-neutral-300"
               }`}>
               {s.name}
               <span dir="ltr" className="text-[10px]">{s.quality}</span>

@@ -58,7 +58,7 @@ export function AdminClient({ locale, dict: t }: { locale: Locale; dict: Diction
           return (
             <button key={tb.id} role="tab" aria-selected={active} onClick={() => setSection(tb.id)}
               className={cn("flex shrink-0 items-center gap-2 border-b-2 px-4 py-3 text-sm font-bold transition",
-                active ? "border-cyan-400 text-white" : "border-transparent text-neutral-500 hover:text-neutral-200")}>
+                active ? "border-brand text-white" : "border-transparent text-neutral-500 hover:text-neutral-200")}>
               <Icon className="h-4 w-4" aria-hidden />
               {tb.label}
             </button>
@@ -82,7 +82,7 @@ function RoleSwitch({ role, onChange, t }: { role: UserRole; onChange: (r: UserR
       <span className="ms-2 text-neutral-500">{t.admin.loginAs}:</span>
       {roles.map((r) => (
         <button key={r} type="button" onClick={() => onChange(r)} aria-pressed={role === r}
-          className={cn("rounded-full px-3 py-1.5 transition", role === r ? "bg-cyan-400 text-neutral-950" : "text-neutral-400 hover:text-white")}>
+          className={cn("rounded-full px-3 py-1.5 transition", role === r ? "bg-brand text-neutral-950" : "text-neutral-400 hover:text-white")}>
           {labels[r]}
           </button>
         ))}
@@ -100,7 +100,7 @@ function ContentSection({ t, role }: { t: Dictionary; role: UserRole }) {
         <p className="text-sm text-neutral-400">{t.admin.anime} · <span dir="ltr">{records.length}</span></p>
         {role === "admin" && (
           <button type="button" onClick={() => setEditing(blankAnime())}
-            className="rounded-full bg-cyan-400 px-4 py-2 text-xs font-bold text-neutral-950 transition-all duration-300 hover:bg-cyan-300">
+            className="rounded-full bg-brand px-4 py-2 text-xs font-bold text-neutral-950 transition-all duration-300 hover:bg-brand-300">
             {t.admin.addNew}
           </button>
         )}
@@ -168,13 +168,13 @@ function AnimeForm({ t, initial, onClose }: { t: Dictionary; initial: AdminAnime
   };
 
   return (
-    <div className="mb-6 rounded-2xl border border-cyan-400/20 bg-white/[0.03] p-5">
+    <div className="mb-6 rounded-2xl border border-brand/20 bg-white/[0.03] p-5">
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <span className="text-sm font-extrabold text-white">{t.admin.anilistImport}</span>
         <input value={anilistId} onChange={(e) => setAnilistId(e.target.value)} inputMode="numeric" dir="ltr"
           placeholder="21" className="w-24 rounded-lg border border-white/10 bg-neutral-950 px-3 py-1.5 text-sm text-white" />
         <button type="button" onClick={doImport} disabled={importing}
-          className="rounded-full bg-cyan-400 px-4 py-1.5 text-xs font-bold text-neutral-950 disabled:opacity-50">
+          className="rounded-full bg-brand px-4 py-1.5 text-xs font-bold text-neutral-950 disabled:opacity-50">
           {importing ? t.admin.importing : t.admin.import}
         </button>
         {msg && <span className="text-xs text-neutral-400">{msg}</span>}
@@ -192,7 +192,7 @@ function AnimeForm({ t, initial, onClose }: { t: Dictionary; initial: AdminAnime
           if (!rec.title.en || !rec.slug) { setMsg(t.admin.requiredField); return; }
           saveAdminAnime(rec);
           setForm(null); onClose();
-        }} className="rounded-full bg-cyan-400 px-5 py-2 text-xs font-bold text-neutral-950">{t.admin.save}</button>
+        }} className="rounded-full bg-brand px-5 py-2 text-xs font-bold text-neutral-950">{t.admin.save}</button>
         <button type="button" onClick={() => { setForm(null); onClose(); }}
           className="rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs font-bold text-neutral-300">{t.admin.cancel}</button>
       </div>
@@ -205,7 +205,7 @@ function Field({ label, value, onChange, ltr }: { label: string; value: string; 
     <label className="block">
       <span className="mb-1 block text-xs font-bold text-neutral-400">{label}</span>
       <input value={value} onChange={(e) => onChange(e.target.value)} dir={ltr ? "ltr" : undefined}
-        className="w-full rounded-xl border border-white/10 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-cyan-400/60" />
+        className="w-full rounded-xl border border-white/10 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-brand/60" />
     </label>
   );
 }
@@ -229,7 +229,7 @@ function HeroSection({ t }: { t: Dictionary }) {
           return (
             <button key={a.slug} type="button" onClick={() => toggle(a.slug)} aria-pressed={on}
               className={cn("flex items-center justify-between gap-2 rounded-2xl border px-4 py-3 text-start text-sm font-bold transition",
-                on ? "border-cyan-400/50 bg-cyan-400/10 text-white" : "border-white/5 bg-white/[0.03] text-neutral-300 hover:bg-white/[0.06]")}>
+                on ? "border-brand/50 bg-brand/10 text-white" : "border-white/5 bg-white/[0.03] text-neutral-300 hover:bg-white/[0.06]")}>
               <span className="truncate">{a.title.en}</span>
               <span className="text-xs text-neutral-500">{on ? t.admin.hide : t.admin.show}</span>
             </button>
@@ -322,7 +322,7 @@ function AnalyticsSection({ t, locale }: { t: Dictionary; locale: Locale }) {
         {top.map(([slug, v]) => (
           <div key={slug} className="flex items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.03] px-4 py-3">
             <span className="min-w-0 flex-1 truncate text-sm font-bold text-white">{slug}</span>
-            <span dir="ltr" className="text-xs font-bold text-cyan-300">{v} {t.admin.views}</span>
+            <span dir="ltr" className="text-xs font-bold text-brand-300">{v} {t.admin.views}</span>
           </div>
         ))}
       </div>

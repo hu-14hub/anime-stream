@@ -144,10 +144,10 @@ export function SearchBar({
           placeholder={placeholder}
           aria-label={placeholder}
           autoComplete="off"
-          className="h-10 w-full rounded-full border border-transparent bg-white/5 ps-9 pe-9 text-sm text-neutral-100 placeholder:text-neutral-500 outline-none transition-all duration-300 focus:border-cyan-400/50 focus:bg-white/10 focus:ring-2 focus:ring-cyan-400/20"
+          className="h-10 w-full rounded-full border border-transparent bg-white/5 ps-9 pe-9 text-sm text-neutral-100 placeholder:text-neutral-500 outline-none transition-all duration-300 focus:border-brand/50 focus:bg-white/10 focus:ring-2 focus:ring-brand/20"
         />
         {loading && (
-          <Loader2 className="absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-cyan-400" aria-hidden />
+          <Loader2 className="absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-brand" aria-hidden />
         )}
       </form>
 
@@ -202,7 +202,7 @@ export function SearchBar({
             <button
               type="button"
               onClick={() => go(`/catalog?q=${encodeURIComponent(query.trim())}`)}
-              className="w-full border-t border-white/10 px-4 py-2.5 text-center text-xs font-bold text-cyan-300 transition-colors duration-300 hover:bg-white/5 hover:text-cyan-200"
+              className="w-full border-t border-white/10 px-4 py-2.5 text-center text-xs font-bold text-brand-300 transition-colors duration-300 hover:bg-white/5 hover:text-brand-200"
             >
               {viewAllLabel}
             </button>

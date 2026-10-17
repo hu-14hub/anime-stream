@@ -25,12 +25,12 @@ type StatusMeta = { icon: LucideIcon; accent: string };
 
 /** Distinct icon + accent per status so the saved state reads at a glance. */
 const STATUS_META: Record<ListStatus, StatusMeta> = {
-  watching: { icon: Play, accent: "bg-cyan-400/15 text-cyan-300 ring-1 ring-cyan-400/50" },
+  watching: { icon: Play, accent: "bg-brand/15 text-brand-300 ring-1 ring-brand/50" },
   plan: { icon: Clock, accent: "bg-sky-400/15 text-sky-300 ring-1 ring-sky-400/40" },
   completed: { icon: CircleCheck, accent: "bg-emerald-400/15 text-emerald-300 ring-1 ring-emerald-400/50" },
   onhold: { icon: Pause, accent: "bg-amber-400/15 text-amber-300 ring-1 ring-amber-400/40" },
   dropped: { icon: CircleAlert, accent: "bg-rose-400/15 text-rose-300 ring-1 ring-rose-400/40" },
-  favorite: { icon: CircleCheck, accent: "bg-cyan-400/15 text-cyan-300 ring-1 ring-cyan-400/50" },
+  favorite: { icon: CircleCheck, accent: "bg-brand/15 text-brand-300 ring-1 ring-brand/50" },
 };
 
 /**
@@ -146,11 +146,11 @@ export function WatchlistButton({ anime, dict }: { anime: Anime; dict: Dictionar
                   )}
                 >
                   <Icon
-                    className={cn("h-4 w-4 shrink-0", active ? "text-cyan-300" : "text-neutral-400")}
+                    className={cn("h-4 w-4 shrink-0", active ? "text-brand-300" : "text-neutral-400")}
                     aria-hidden
                   />
                   <span className="flex-1">{dict.watchlist[s]}</span>
-                  {active && <Check className="h-4 w-4 shrink-0 text-cyan-300" aria-hidden />}
+                  {active && <Check className="h-4 w-4 shrink-0 text-brand-300" aria-hidden />}
                 </button>
               );
             })}

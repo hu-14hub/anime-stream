@@ -59,13 +59,13 @@ export function AnimeCard({
         </span>
         {/* Format badge */}
         {anime.format && (
-          <span dir="ltr" className="absolute end-2 top-2 rounded-full bg-black/60 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-cyan-300 backdrop-blur">
+          <span dir="ltr" className="absolute end-2 top-2 rounded-full bg-black/60 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-brand-300 backdrop-blur">
             {anime.format}
           </span>
         )}
         {/* Cinematic hover overlay: play + stats */}
         <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-neutral-950/60 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-cyan-400 text-neutral-950 shadow-xl shadow-cyan-500/30 transition-transform duration-300 group-hover:scale-110">
+          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand text-neutral-950 shadow-xl shadow-brand/30 transition-transform duration-300 group-hover:scale-110">
             <Play className="h-5 w-5 fill-neutral-950 rtl-flip" aria-hidden />
           </span>
           <span dir="ltr" className="text-xs font-bold text-white">
@@ -86,7 +86,7 @@ export function AnimeCard({
         </span>
       </div>
       <div className="mt-3 space-y-1 px-0.5">
-        <h3 className={cn("truncate text-sm font-bold text-neutral-100 transition-colors duration-300 group-hover:text-cyan-300", locale === "en" && "font-amagro")}>
+        <h3 className={cn("truncate text-sm font-bold text-neutral-100 transition-colors duration-300 group-hover:text-brand-300", locale === "en" && "font-amagro")}>
           {anime.title[locale]}
         </h3>
         <p className="flex items-center gap-2 text-xs text-neutral-500">

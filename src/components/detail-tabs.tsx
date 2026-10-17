@@ -39,7 +39,7 @@ export function DetailTabs({ tabs, ariaLabel }: { tabs: TabDef[]; ariaLabel: str
             className={cn(
               "relative shrink-0 whitespace-nowrap px-4 py-3 text-sm font-bold transition-colors duration-300",
               t.id === active
-                ? "text-cyan-300"
+                ? "text-brand-300"
                 : "text-neutral-400 hover:bg-white/5 hover:text-white"
             )}
           >
@@ -55,7 +55,7 @@ export function DetailTabs({ tabs, ariaLabel }: { tabs: TabDef[]; ariaLabel: str
             <span
               aria-hidden
               className={cn(
-                "absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-cyan-400 transition-all duration-300",
+                "absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-brand transition-all duration-300",
                 t.id === active ? "opacity-100" : "opacity-0"
               )}
             />

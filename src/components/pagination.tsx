@@ -38,12 +38,12 @@ export function Pagination({
       {nums.map((n) => (
         <Link key={n} href={pageHref(baseHref, n)} aria-current={n === page ? "page" : undefined}
           className={cn("flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold transition-colors duration-300",
-            n === page ? "bg-cyan-400 text-neutral-950" : "bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white")}>
+            n === page ? "bg-brand text-neutral-950" : "bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white")}>
           <span dir="ltr">{n}</span>
         </Link>
       ))}
       {hasNext && (
-        <Link href={pageHref(baseHref, page + 1)} className="flex h-10 items-center gap-1 rounded-full bg-cyan-400 px-4 text-sm font-bold text-neutral-950 transition-all duration-300 hover:scale-105 hover:bg-cyan-300">
+        <Link href={pageHref(baseHref, page + 1)} className="flex h-10 items-center gap-1 rounded-full bg-brand px-4 text-sm font-bold text-neutral-950 transition-all duration-300 hover:scale-105 hover:bg-brand-300">
           {nextLabel}<NextIcon className="h-4 w-4" />
         </Link>
       )}

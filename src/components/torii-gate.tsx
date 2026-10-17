@@ -4,7 +4,7 @@ import type { SVGProps } from "react";
  * A clean, modern Torii Gate (鳥居) rendered as a crisp geometric SVG.
  *
  * Uses `currentColor` for the stroke so the icon inherits any text color
- * (e.g. `text-cyan-400`) plus any glow/drop-shadow applied to it. Pure vector
+ * (e.g. `text-brand`) plus any glow/drop-shadow applied to it. Pure vector
  * shapes mean it stays sharp at any resolution or scale.
  */
 export function ToriiGate(props: SVGProps<SVGSVGElement>) {
