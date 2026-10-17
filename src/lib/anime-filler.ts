@@ -1,101 +1,106 @@
 import type { Anime } from "@/types";
+import { FILLER_MAP, FILLER_DEMO_OVERRIDES } from "@/data/filler-data";
 
 /**
- * Curated filler registry.
+ * Filler RESOLUTION + FLAG APPLICATION (logic only — data lives in
+ * `@/data/filler-data`, the single source of truth).
  *
- * Why a registry?
+ * Why a curated registry?
  *   None of the public anime APIs (AniList, Jikan/MAL) expose a per-episode
  *   `isFiller` flag. AniList's Episode type is minimal (title/thumbnail only)
- *   and Jikan/MAL simply do not tag filler. So the industry-standard approach
- *   — used by tracking apps like AniGap/MyAnimeList third-party tools — is a
- *   curated, maintainer-managed mapping of `{ canonicalKey: [fillerEpisode#] }`.
+ *   and Jikan/MAL simply do not tag filler. The industry-standard approach —
+ *   used by tracking apps like AniGap / MyAnimeList third-party tools — is a
+ *   curated, maintainer-managed mapping of `{ canonicalKey: [fillerEpisode#] }`
+ *   in `@/data/filler-data`.
  *
  * Resolution keys (try in order):
- *   1. canonical slug            — local demo data slugs (stable, curated)
+ *   1. canonical slug            — local demo slugs (stable, curated)
  *   2. normalized english title  — fuzzy match for live AniList/Jikan titles
- *   3. normalized native/jp title— catches titles whose english field is missing
+ *   3. normalized native/jp title— catches titles whose english field is absent
  *   4. `al-<id>` / numeric slug  — hard overrides keyed by AniList / MAL id
  *
- * The registry is intentionally a single source of truth: every mapper
- * (local, Jikan, AniList) funnels through {@link applyFillerFlags}, so the badge,
- * the "Hide Filler" filter, and the player notice all always agree.
+ * Fallback policy (see `FILLER_POLICY` in the data file): "canon-by-default" —
+ *   titles absent from the registry are treated as NON-filler. This is the safe,
+ *   honest default: unknown ≠ filler (we never fabricate flags for untracked shows).
  *
- * NOTE (on live data): most live AniList/Jikan titles resolve `n` (aired
- *   count) to a large number, so only registry entries whose episode numbers
- *   fall within the *generated* episode range actually surface. The seed below
- *   guarantees the feature is demonstrable out-of-the-box via the local demo
- *   titles, while the real-world keys (Naruto, Bleach, Fairy Tail, etc.) are
- *   ready to light up as soon as their airing windows include them.
+ * Single source of truth: every mapper (local, Jikan, AniList) funnels through
+ *   {@link applyFillerFlags}, so the badge, the "Hide Filler" filter, the detail
+ *   page, and the player notice all always agree.
  */
 
-const range = (from: number, to: number): number[] =>
-  Array.from({ length: to - from + 1 }, (_, i) => from + i);
+/** Demo seed slugs (illustrative overrides only — the live catalog never hits these). */
+const DEMO_SLUGS = new Set(Object.keys(FILLER_DEMO_OVERRIDES));
 
-/** Curated filler episode numbers per title. Values are 1-based episode numbers. */
-const FILLER_MAP: Record<string, number[]> = {
-  /* ── Local demo titles (seeded so the feature is visible immediately) ── */
-  "attack-on-titan": [5],
-  "demon-slayer": [6],
-  "naruto-shippuden": [4, 6, 8],
-  "one-piece": [3, 7, 10],
-  "jujutsu-kaisen": [6, 9],
-  "my-hero-academia": [5, 8],
-  "death-note": [6],
-  "spy-x-family": [4, 7],
-
-  /* ── Representative real-world filler (keyed by canonical title) ── */
-  "Naruto Shippuden": [
-    16, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 70, 71, 72, 73, 76, 77,
-    78, 79, 80, 81, 82, 83, 89, 90, 91, 92, 93, 94, 95, 96, 97,
-  ],
-  "Fairy Tail": range(161, 167),
-  "Bleach": [103, 175, 178, 179, 180, 185, 186, 197, 198, 199, 200, 283, 284, 285, 344, 358, 359],
-  "Hunter x Hunter": [93, 94, 95, 103],
-  "Cardcaptor Sakura": [14, 47, 48, 50, 70, 72, 75, 76, 100, 101, 110, 111, 127, 128],
-  "Tokyo Mew Mew": [23, 38, 45, 51],
-};
-
-/** Normalize a title into a stable map key (lowercase, alnum/collapsed). */
+/** Normalize a title/slug into a stable map key (lowercase, Latin alnum + Arabic, collapsed). */
 function norm(s: string | undefined | null): string {
-  return (s || "").toLowerCase().replace(/[^a-z0-9\u0600-\u06ff]+/gi, " ").trim();
+  return (s || "")
+    .toLowerCase()
+    .normalize("NFC")
+    .replace(/[^a-z0-9\u0600-\u06ff]+/gi, " ")
+    .trim();
 }
 
 export interface FillerSource {
   slug?: string;
   anilistId?: number;
+  malId?: number;
+  id?: number | string;
   title: { en?: string; ar?: string; jp?: string };
 }
 
 /**
- * Resolve the curated filler episode numbers for an anime.
- * Returns an empty array when nothing is known (→ no flags set).
+ * Resolve the filler episode numbers for an anime.
+ * Returns an empty array when nothing is known (→ no flags set, canon-by-default).
  */
 export function getFillerEpisodes(a: FillerSource): number[] {
+  // 1) LOCAL DEMO slugs — illustrative overrides (never present in the live catalog).
+  if (a.slug && DEMO_SLUGS.has(a.slug)) return FILLER_DEMO_OVERRIDES[a.slug];
+
+  // 2) Canonical registry — straight slug hit.
+  if (a.slug && a.slug in FILLER_MAP) return FILLER_MAP[a.slug];
+
+  // 2b) Registry — AniList (`al-<id>`) or Jikan/MAL (`<mal_id>-<title>`) slug → id.
   if (a.slug) {
-    if (a.slug in FILLER_MAP) return FILLER_MAP[a.slug];
-    // Live AniList slugs look like `al-<id>` and Jikan slugs like `<id>-<title>`.
     const idKey = a.slug.startsWith("al-")
       ? a.slug
       : a.slug.match(/^\d+/)
-        ? `${a.slug.match(/^\d+/)![0]}`
+        ? a.slug.match(/^\d+/)![0]
         : null;
     if (idKey && idKey in FILLER_MAP) return FILLER_MAP[idKey];
   }
-  // Fall back to normalized title matching (covers live API titles).
+
+  // 2c) Registry — explicit numeric ids (AniList / MAL).
+  for (const id of [a.anilistId, a.malId, Number(a.id)]) {
+    const key = Number.isFinite(id) ? String(id) : null;
+    if (key && key in FILLER_MAP) return FILLER_MAP[key];
+  }
+
+  // 3) Normalized-title match — exact first, then safe substring (avoids e.g.
+  //    a live "Dragon Ball" short-title matching the "dragon ball z" key).
+  const cands: Array<[string, number[]]> = Object.entries(FILLER_MAP).map(
+    ([raw, eps]) => [norm(raw), eps]
+  );
   const byEn = norm(a.title.en);
   const byNative = norm(a.title.jp) || norm(a.title.ar);
-  for (const [key, eps] of Object.entries(FILLER_MAP)) {
-    const k = norm(key);
-    if ((byEn && k === byEn) || (byNative && k === byNative)) return eps;
-  }
-  return [];
+  const match = (target: string): number[] | null => {
+    if (!target) return null;
+    // exact
+    const exact = cands.find(([k]) => k === target);
+    if (exact) return exact[1];
+    // then substring (query is a contained fragment of a key / vice-versa)
+    const sub = cands.find(
+      ([k]) => k.length > 3 && (k.includes(target) || target.includes(k))
+    );
+    return sub ? sub[1] : null;
+  };
+  return match(byEn) ?? match(byNative) ?? [];
 }
 
 /**
  * Pure, idempotent: tag each episode with `isFiller` from the curated registry.
- * Safe to call on anime already processed (reads the real array length, so it
- * won't double-count or mutate in a loop). Intended for every mapper so the
- * flag is available in ONE place for badges, filters, and the player notice.
+ * Safe to call on anime already processed (reads the real array, so it won't
+ * double-count or mutate in a loop). Intended for every mapper so the flag is
+ * available in ONE place for badges, filters, and the player notice.
  */
 export function applyFillerFlags(anime: Anime): Anime {
   if (!anime.episodes?.length) return anime;
@@ -110,4 +115,9 @@ export function applyFillerFlags(anime: Anime): Anime {
 /** Number of filler episodes in an anime (for counts / badges). */
 export function countFiller(anime: Anime): number {
   return anime.episodes.reduce((n, e) => (e.isFiller ? n + 1 : n), 0);
+}
+
+/** True when at least one known filler episode falls within this anime's range. */
+export function hasFiller(anime: Anime): boolean {
+  return countFiller(anime) > 0;
 }
