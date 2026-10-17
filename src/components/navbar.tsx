@@ -19,7 +19,6 @@ interface NavbarProps {
 const links = [
   { href: "/", key: "home" },
   { href: "/catalog", key: "catalog" },
-  { href: "/genres", key: "genres" },
   { href: "/schedule", key: "schedule" },
   { href: "/profile", key: "profile" },
   { href: "/settings", key: "settings" },
