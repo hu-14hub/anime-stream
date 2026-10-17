@@ -95,10 +95,7 @@ export function HeroBanner({
       <div className="absolute inset-x-0 bottom-0 z-30">
         <div className="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 sm:pb-14">
           <div key={active.id} className="animate-fade-up max-w-2xl">
-            <p className="inline-flex items-center gap-2 rounded-full bg-brand/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest text-brand-300 backdrop-blur">
-              {dict.hero.trendingBadge}
-            </p>
-            <h1 className={cn("mt-4 text-4xl font-black leading-[1.1] tracking-tight text-white drop-shadow-2xl sm:text-6xl sm:leading-[1.05]", !isRtl && "font-amagro")}>
+            <h1 className={cn("text-4xl font-black leading-[1.1] tracking-tight text-white drop-shadow-2xl sm:text-6xl sm:leading-[1.05]", !isRtl && "font-amagro")}>
               {active.title[locale]}
             </h1>
           <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
